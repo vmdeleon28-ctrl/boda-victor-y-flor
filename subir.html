@@ -1,13 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Víctor & Flor de Liz - Álbum & Planning</title>
+    <title>Víctor & Flor de Liz - Experiencia Interactiva</title>
     
     <!-- Tipografías elegantes -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Librería para efectos de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <!-- SDK de Cloudinary -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
@@ -18,77 +20,122 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0f0f0f;
+            background-color: #0b0b0c;
             color: #ffffff;
             text-align: left;
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
-            padding: 16px 16px 90px 16px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            padding: 16px 16px 100px 16px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* CARD HEADER (BANNER SUPERIOR CON FOTO DE PAREJA) */
+        /* EFECTO GLOW AMBIENTAL EN EL FONDO */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* BANNER HEADER CON ANIMACIÓN DE ENTRADA Y SHIMMER */
         .event-card-app {
             position: relative;
-            height: 200px;
-            border-radius: 20px;
+            height: 220px;
+            border-radius: 24px;
             overflow: hidden;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%), url('foto_pareja.jpg') center 25%/cover;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(11, 11, 12, 0.95) 100%), url('foto_pareja.jpg') center 25%/cover;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-            margin-bottom: 16px;
+            padding: 22px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            margin-bottom: 20px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .badge-premium {
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.72rem;
-            font-weight: 500;
+            font-weight: 600;
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-        .event-card-app h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #ffffff;
-            line-height: 1.1;
-            margin-bottom: 4px;
-        }
-        .event-card-app p {
-            font-size: 0.8rem;
-            opacity: 0.85;
-            font-weight: 400;
-            color: #e0e0e0;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* BARRA DE MENÚ (PESTAÑAS/TAB BAR) */
+        .badge-premium::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #d4af37;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #d4af37;
+        }
+
+        .event-card-app h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.05;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .event-card-app p {
+            font-size: 0.82rem;
+            opacity: 0.9;
+            font-weight: 400;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* NAVEGACIÓN TABS CON TRANSICIÓN SUAVE Y ACTIVE GLOW */
         .app-actions {
             display: flex;
             justify-content: space-around;
-            padding: 16px 10px;
-            background: #1c1c1e;
-            border-radius: 22px;
-            border: 1px solid #2a2a2d;
-            margin-bottom: 20px;
+            padding: 8px;
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
         }
+
         .action-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: none;
             border: none;
             color: #8e8e93;
@@ -97,154 +144,311 @@
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             flex: 1;
+            padding: 8px 0;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 18px;
         }
-        .action-btn.active {
-            color: #ffffff;
-            font-weight: 600;
-        }
+
         .action-icon {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             background: #2c2c2e;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.2s ease;
+            font-size: 1.25rem;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid transparent;
         }
+
+        .action-btn.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
         .action-btn.active .action-icon {
             background: #ffffff;
             color: #121212;
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
         }
 
-        /* PESTAÑAS (TAB CONTENT) */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        /* CONTENEDOR CON PESTAÑAS Y ANIMACIÓN DE ENTRADA */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+            position: relative;
+        }
 
-        /* PLANNING / ITINERARIO */
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* PLANNING / ITINERARIO CON EFECTO HOVER / PRESS */
         .timeline-item {
             display: flex;
             align-items: center;
-            background: #1c1c1e;
-            padding: 22px 20px;
-            border-radius: 18px;
+            background: rgba(28, 28, 30, 0.75);
+            backdrop-filter: blur(12px);
+            padding: 20px 20px;
+            border-radius: 20px;
             margin-bottom: 12px;
-            border: 1px solid #2a2a2d;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            animation: fadeInUp 0.5s ease forwards;
         }
+
+        .timeline-item:active {
+            transform: scale(0.98);
+            background: rgba(44, 44, 46, 0.9);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
         .timeline-time {
             font-size: 0.95rem;
             font-weight: 700;
             color: #d4af37;
-            min-width: 80px;
+            min-width: 85px;
+            letter-spacing: 0.3px;
         }
+
         .timeline-info h4 {
             font-size: 1.05rem;
             font-weight: 700;
             color: #ffffff;
             margin-bottom: 3px;
         }
+
         .timeline-info p {
             font-size: 0.82rem;
-            color: #8e8e93;
+            color: #98989d;
         }
 
-        /* FOTOS / GALERÍA */
+        /* VISTA DE FOTOS & FILTRO CON GLASSMORPHISM */
+        .photos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .photos-count {
+            font-size: 0.82rem;
+            color: #8e8e93;
+            font-weight: 500;
+        }
+
+        .sort-select {
+            background: #1c1c1e;
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 14px;
         }
+
         .photo-item {
             position: relative;
             aspect-ratio: 1 / 1;
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
             background: #1c1c1e;
-            border: 1px solid #2a2a2d;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
+
+        .photo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .photo-item:active {
+            transform: scale(0.95);
+        }
+
         .photo-item img, .photo-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        .time-tag {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.65rem;
-            color: #ffffff;
-            z-index: 2;
+            display: block;
+            transition: transform 0.5s ease;
         }
 
-        /* CHAT */
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .time-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .video-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        /* REACCIONES DE CORAZONES EN FOTOS */
+        .like-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 3;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .like-btn:active {
+            transform: scale(1.3);
+        }
+
+        /* CHAT BUBBLES CON ANIMACIÓN */
         .chat-box {
-            background: #1c1c1e;
-            border-radius: 20px;
-            height: 380px;
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            height: 400px;
             display: flex;
             flex-direction: column;
-            padding: 16px;
-            border: 1px solid #2a2a2d;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         }
+
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            padding-right: 4px;
         }
+
         .message {
             background: #2c2c2e;
             padding: 12px 16px;
-            border-radius: 16px;
+            border-radius: 18px 18px 18px 4px;
             max-width: 85%;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             line-height: 1.4;
             color: #e5e5ea;
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+
+        .message.self {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #3a3a3c 0%, #2c2c2e 100%);
+            border-radius: 18px 18px 4px 18px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
         .message .user {
             font-weight: 700;
             font-size: 0.72rem;
             color: #d4af37;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
+
         .chat-input {
             display: flex;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 14px;
         }
+
         .chat-input input {
             flex: 1;
             background: #2c2c2e;
-            border: 1px solid #3a3a3c;
-            padding: 12px 16px;
-            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 18px;
+            border-radius: 24px;
             color: #fff;
             outline: none;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             font-family: 'Montserrat', sans-serif;
-        }
-        .chat-input button {
-            background: #d4af37;
-            border: none;
-            color: #121212;
-            padding: 0 18px;
-            border-radius: 22px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.2s ease;
         }
 
-        /* BOTÓN FLOTANTE */
+        .chat-input input:focus {
+            border-color: #d4af37;
+        }
+
+        .chat-input button {
+            background: linear-gradient(135deg, #d4af37 0%, #aa892c 100%);
+            border: none;
+            color: #121212;
+            padding: 0 20px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 0.84rem;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .chat-input button:active {
+            transform: scale(0.94);
+        }
+
+        /* BOTÓN FLOTANTE GOLDEN GLOW CON PULSACIÓN */
         .upload-btn-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 0;
             right: 0;
             display: flex;
@@ -252,35 +456,129 @@
             z-index: 1000;
             pointer-events: none;
         }
+
         .upload-btn-main {
             pointer-events: auto;
-            background: #bfa15f;
-            background: linear-gradient(135deg, #caba87 0%, #a38948 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, #d9c58d 0%, #b39343 100%);
+            color: #0d0d0d;
             border: none;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.88rem;
+            padding: 16px 32px;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 0.9rem;
             font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(179, 147, 67, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: subtlePulse 3s infinite;
+        }
+
+        .upload-btn-main:active {
+            transform: scale(0.93);
+            box-shadow: 0 5px 15px rgba(179, 147, 67, 0.3);
+        }
+
+        /* LIGHTBOX MODAL DE VISUALIZACIÓN ULTRA HD CON ETIQUETAS */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 2000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .lightbox-close:active {
+            transform: scale(0.88);
+        }
+
+        .lightbox-content {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 20px;
+            object-fit: contain;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lightbox-caption {
+            margin-top: 16px;
+            font-size: 0.88rem;
+            color: #d4af37;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        /* ANIMACIONES KEYFRAMES */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.85) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
     </style>
 </head>
 <body>
 
-    <!-- CARD HEADER CON FOTO DE PAREJA -->
+    <!-- CARD HEADER CON EFECTO DE GLOW Y ENTRADA -->
     <div class="event-card-app">
-        <span class="badge-premium">Álbum Boda ✦</span>
+        <span class="badge-premium">Álbum Boda</span>
         <h3>Víctor & Flor de Liz</h3>
-        <p>12 de Diciembre de 2026 · Orizaba, Ver.</p>
+        <p>📍 12 de Diciembre de 2026 · Orizaba, Ver.</p>
     </div>
 
-    <!-- PESTAÑAS NAVEGACIÓN -->
+    <!-- PESTAÑAS DE NAVEGACIÓN -->
     <div class="app-actions">
         <button class="action-btn" onclick="switchTab('fotos', this)">
             <div class="action-icon">🖼️</div>
@@ -296,33 +594,35 @@
         </button>
     </div>
 
-    <!-- TAB 1: FOTOS -->
+    <!-- TAB 1: FOTOS (INTERACTIVA CON REACCIONES Y FILTROS) -->
     <div id="tab-fotos" class="tab-content">
-        <div class="photo-grid" id="gallery">
-            <div class="photo-item">
-                <span class="time-tag">16:00 h</span>
-                <img src="foto_pareja.jpg" alt="Portada">
-            </div>
+        <div class="photos-header">
+            <span class="photos-count" id="photos-count">0 archivos compartidos</span>
+            <select class="sort-select" id="sort-select" onchange="renderGallery()">
+                <option value="newest">⚡ Más recientes primero</option>
+                <option value="oldest">⏳ Más antiguas primero</option>
+            </select>
         </div>
+        <div class="photo-grid" id="gallery"></div>
     </div>
 
-    <!-- TAB 2: PLANNING -->
+    <!-- TAB 2: PLANNING (CON EFECTO TÁCTIL) -->
     <div id="tab-planning" class="tab-content active">
-        <div class="timeline-item">
+        <div class="timeline-item" style="animation-delay: 0.1s;">
             <div class="timeline-time">16:00 h</div>
             <div class="timeline-info">
                 <h4>Ceremonia Civil</h4>
                 <p>Jardín de las Orquídeas</p>
             </div>
         </div>
-        <div class="timeline-item">
+        <div class="timeline-item" style="animation-delay: 0.2s;">
             <div class="timeline-time">18:00 h</div>
             <div class="timeline-info">
                 <h4>Brindis & Recepción</h4>
                 <p>Jardín Central</p>
             </div>
         </div>
-        <div class="timeline-item">
+        <div class="timeline-item" style="animation-delay: 0.3s;">
             <div class="timeline-time">20:00 h</div>
             <div class="timeline-info">
                 <h4>Cena & Baile</h4>
@@ -331,45 +631,164 @@
         </div>
     </div>
 
-    <!-- TAB 3: CHAT PERMANENTE -->
+    <!-- TAB 3: CHAT (BURBUJAS ANIMADAS) -->
     <div id="tab-chat" class="tab-content">
         <div class="chat-box">
             <div class="chat-messages" id="chat-messages">
                 <div class="message">
                     <div class="user">Flor & Víctor</div>
-                    ¡Bienvenidos a nuestra boda! Dejen sus felicitaciones aquí ❤️
+                    ¡Bienvenidos a nuestra boda! Dejen sus felicitaciones y recuerdos aquí ❤️
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" id="msg-input" placeholder="Escribe un mensaje...">
+                <input type="text" id="msg-input" placeholder="Escribe un mensaje de felicitación...">
                 <button onclick="sendMessage()">Enviar</button>
             </div>
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE -->
+    <!-- BOTÓN FLOTANTE PRINCIPAL -->
     <div class="upload-btn-container">
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">
-            📷 Subir Foto o Video
+            📸 Subir Foto o Video
         </button>
     </div>
 
+    <!-- LIGHTBOX PARA VER ARCHIVOS -->
+    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+        <div id="lightbox-body" style="display:flex; flex-direction:column; align-items:center; max-width:100%;"></div>
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
     <script>
-        // CAMBIO DE PESTAÑAS
+        // ESTADO GLOBAL CON LOCALSTORAGE
+        let galleryItems = JSON.parse(localStorage.getItem('boda_media_items')) || [
+            {
+                id: 'default-1',
+                url: 'foto_pareja.jpg',
+                type: 'image',
+                timeStr: '16:00 h',
+                timestamp: Date.now() - 3600000,
+                likes: 3
+            }
+        ];
+
+        // DISPARO DE CONFETI AL CARGAR O SUBIR
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.85 },
+                    colors: ['#d4af37', '#ffffff', '#aa892c']
+                });
+            }
+        }
+
+        // RENDERIZAR GALERÍA CON TRANSICIONES Y REACCIONES DE ME GUSTA
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            const sortOrder = document.getElementById('sort-select').value;
+            const countLabel = document.getElementById('photos-count');
+
+            let sortedItems = [...galleryItems].sort((a, b) => {
+                return sortOrder === 'newest' ? b.timestamp - a.timestamp : a.timestamp - b.timestamp;
+            });
+
+            countLabel.textContent = `${sortedItems.length} ${sortedItems.length === 1 ? 'archivo' : 'archivos'}`;
+            gallery.innerHTML = '';
+
+            sortedItems.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'photo-item';
+                card.style.animation = `fadeInUp 0.4s ease forwards ${index * 0.05}s`;
+
+                const timeTag = `<span class="time-tag">⏱️ ${item.timeStr}</span>`;
+                const likeBtn = `
+                    <div class="like-btn" onclick="toggleLike(event, '${item.id}')">
+                        ❤️ <span>${item.likes || 0}</span>
+                    </div>
+                `;
+
+                if (item.type === 'video') {
+                    card.innerHTML = `
+                        ${timeTag}
+                        <video src="${item.url}#t=0.5" preload="metadata"></video>
+                        <div class="video-indicator">▶</div>
+                        ${likeBtn}
+                    `;
+                } else {
+                    card.innerHTML = `
+                        ${timeTag}
+                        <img src="${item.url}" alt="Foto Boda" loading="lazy">
+                        ${likeBtn}
+                    `;
+                }
+
+                // Click abre lightbox salvo si da click en Me gusta
+                card.onclick = (e) => {
+                    if (!e.target.closest('.like-btn')) {
+                        openLightbox(item);
+                    }
+                };
+
+                gallery.appendChild(card);
+            });
+        }
+
+        // SISTEMA DE REACCIONES (ME GUSTA)
+        function toggleLike(e, itemId) {
+            e.stopPropagation();
+            const item = galleryItems.find(i => i.id === itemId);
+            if (item) {
+                item.likes = (item.likes || 0) + 1;
+                localStorage.setItem('boda_media_items', JSON.stringify(galleryItems));
+                renderGallery();
+            }
+        }
+
+        // ABRIR PANTALLA COMPLETA CON VISTA ULTRA HD
+        function openLightbox(item) {
+            const modal = document.getElementById('lightbox');
+            const body = document.getElementById('lightbox-body');
+            const caption = document.getElementById('lightbox-caption');
+
+            if (item.type === 'video') {
+                body.innerHTML = `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`;
+            } else {
+                body.innerHTML = `<img src="${item.url}" class="lightbox-content">`;
+            }
+
+            caption.textContent = `Compartido a las ${item.timeStr} · ❤️ ${item.likes || 0} Me gusta`;
+            modal.classList.add('active');
+        }
+
+        function closeLightbox(e) {
+            if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+                const modal = document.getElementById('lightbox');
+                const body = document.getElementById('lightbox-body');
+                modal.classList.remove('active');
+                body.innerHTML = '';
+            }
+        }
+
+        // NAVEGACIÓN ENTRE PESTAÑAS
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
             
-            document.getElementById('tab-' + tabId).classList.add('active');
+            const selectedTab = document.getElementById('tab-' + tabId);
+            selectedTab.classList.add('active');
             btn.classList.add('active');
         }
 
-        // SUBIDA CON OPCIÓN A ELEGIR (GALERÍA O CÁMARA) SIN APERTURA AUTOMÁTICA
+        // SUBIDA CON CLOUDINARY + CONFETI CELEBRATORIO
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
                 cloudName: 'pheewujq',
                 uploadPreset: 'ml_default',
-                sources: ['local', 'camera'], // Muestra opciones para subir fotos guardadas o tomar fotos nuevas
+                sources: ['local', 'camera'],
                 multiple: true,
                 maxFiles: 10,
                 styles: {
@@ -388,33 +807,36 @@
                 }
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
-                    const gallery = document.getElementById('gallery');
                     const now = new Date();
                     const hours = now.getHours().toString().padStart(2, '0');
                     const mins = now.getMinutes().toString().padStart(2, '0');
                     const timeStr = `${hours}:${mins} h`;
                     
-                    const newItem = document.createElement('div');
-                    newItem.className = 'photo-item';
+                    const newItem = {
+                        id: 'media-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+                        url: result.info.secure_url,
+                        type: result.info.resource_type === 'video' ? 'video' : 'image',
+                        timeStr: timeStr,
+                        timestamp: Date.now(),
+                        likes: 0
+                    };
 
-                    if(result.info.resource_type === 'video') {
-                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><video src="${result.info.secure_url}" controls style="width:100%;height:100%;object-fit:cover;"></video>`;
-                    } else {
-                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><img src="${result.info.secure_url}">`;
-                    }
-                    
-                    gallery.prepend(newItem);
+                    galleryItems.push(newItem);
+                    localStorage.setItem('boda_media_items', JSON.stringify(galleryItems));
+
+                    renderGallery();
+                    triggerConfetti();
                     switchTab('fotos', document.querySelectorAll('.action-btn')[0]);
                 }
             });
         }
 
-        // CHAT PERMANENTE CON LOCALSTORAGE + FIREBASE
+        // CHAT INTERACTIVO CON BURBUJAS DE MENSAJE
         const chatContainer = document.getElementById('chat-messages');
 
-        function appendMessage(user, message) {
+        function appendMessage(user, message, isSelf = false) {
             const msg = document.createElement('div');
-            msg.className = 'message';
+            msg.className = `message ${isSelf ? 'self' : ''}`;
             msg.innerHTML = `<div class="user">${user}</div>${message}`;
             chatContainer.appendChild(msg);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -424,7 +846,7 @@
             const saved = localStorage.getItem('chat_boda_messages');
             if (saved) {
                 const messages = JSON.parse(saved);
-                messages.forEach(m => appendMessage(m.user, m.message));
+                messages.forEach(m => appendMessage(m.user, m.message, m.isSelf));
             }
         }
 
@@ -433,10 +855,10 @@
             const text = input.value.trim();
             
             if (text !== "") {
-                appendMessage("Invitado", text);
+                appendMessage("Invitado", text, true);
 
                 let saved = JSON.parse(localStorage.getItem('chat_boda_messages') || "[]");
-                saved.push({ user: "Invitado", message: text });
+                saved.push({ user: "Invitado", message: text, isSelf: true });
                 localStorage.setItem('chat_boda_messages', JSON.stringify(saved));
 
                 if (typeof firebase !== 'undefined' && firebase.apps.length) {
@@ -452,6 +874,7 @@
         };
 
         window.onload = function() {
+            renderGallery();
             loadSavedMessages();
         };
     </script>
