@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Víctor Miguel & Flor de Liz - Boda Civil</title>
-    <!-- Tipografías elegantes de la invitación -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Alex+Brush&display=swap" rel="stylesheet">
+    <!-- Tipografías elegantes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+    <!-- SDK de Cloudinary para subida de fotos -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,15 +19,15 @@
             max-width: 480px;
             margin: 0 auto;
             box-shadow: 0 0 25px rgba(0,0,0,0.08);
-            padding-bottom: 60px;
+            padding-bottom: 90px;
         }
 
-        /* 1. Portada con su foto ajustada para centrar la pareja */
+        /* 1. Portada con su foto perfectamente centrada */
         .hero {
             position: relative;
             height: 85vh;
             background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)), url('foto_pareja.jpg');
-            background-position: 70% center; /* Ajusta el encuadre horizontal para que queden centrados */
+            background-position: 70% center;
             background-size: cover;
             background-repeat: no-repeat;
             display: flex;
@@ -199,31 +201,191 @@
             margin-top: 20px;
         }
 
-        /* Barra flotante audio */
-        .sticky-audio-bar {
+        /* ---------------------------------- */
+        /* ESTILOS DEL ÁLBUM COMPARTIDO     */
+        /* ---------------------------------- */
+        .album-wrapper {
+            background-color: #121212;
+            color: #ffffff;
+            padding: 25px 15px 40px 15px;
+            border-radius: 24px 24px 0 0;
+            margin-top: 40px;
+            text-align: left;
+        }
+        .event-card-app {
+            position: relative;
+            height: 180px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.75)), url('foto_pareja.jpg') center 30%/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        .badge-premium {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #ffffff;
+        }
+        .event-card-app h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .event-card-app p { font-size: 0.75rem; opacity: 0.85; font-family: 'Montserrat', sans-serif; }
+
+        .app-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background: #1e1e1e;
+            border-radius: 18px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 20px;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #888888;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .action-btn.active { color: #ffffff; font-weight: 600; }
+        .action-icon {
+            width: 44px;
+            height: 44px;
+            background: #2a2a2a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .action-btn.active .action-icon {
+            background: #ffffff;
+            color: #121212;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #252525;
+        }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+        .time-tag {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+            border: 1px solid #2a2a2a;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .timeline-time { font-size: 0.85rem; font-weight: 700; color: #bfa15f; min-width: 60px; }
+        .timeline-info h4 { font-size: 0.95rem; margin-bottom: 2px; color: #fff; }
+        .timeline-info p { font-size: 0.75rem; color: #888888; }
+
+        .chat-box {
+            background: #1e1e1e;
+            border-radius: 18px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            border: 1px solid #2a2a2a;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message { background: #2a2a2a; padding: 10px 14px; border-radius: 14px; max-width: 85%; font-size: 0.8rem; }
+        .message .user { font-weight: 600; font-size: 0.7rem; color: #bfa15f; margin-bottom: 2px; }
+        .chat-input { display: flex; gap: 8px; margin-top: 12px; }
+        .chat-input input {
+            flex: 1;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            padding: 12px 16px;
+            border-radius: 22px;
+            color: #fff;
+            outline: none;
+            font-size: 0.8rem;
+        }
+        .chat-input button {
+            background: #bfa15f;
+            border: none;
+            color: #ffffff;
+            padding: 0 18px;
+            border-radius: 22px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .upload-btn-main {
             position: fixed;
-            bottom: 0;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            background: rgba(107, 94, 82, 0.95);
+            background: linear-gradient(135deg, #c3a462, #9a8553);
             color: #ffffff;
-            padding: 10px;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
         }
     </style>
 </head>
 <body>
-
-    <!-- BARRA INFORMATIVA FLOTANTE -->
-    <div class="sticky-audio-bar">
-        🎵 Toca el reproductor abajo para escuchar "Novatos"
-    </div>
 
     <!-- 1. PORTADA CON FOTO DE PAREJA -->
     <div class="hero">
@@ -239,7 +401,6 @@
         <h2>NUESTRA HISTORIA</h2>
         <p class="story-text">"Nos conocimos por casualidad, siendo de lugares distintos y siempre buscando la manera de coincidir. Hoy elegimos caminar juntos el resto de la vida y formalizar este amor que no ha parado de crecer."</p>
         
-        <!-- FOTO EN LA SECCIÓN DE HISTORIA -->
         <img src="foto_pareja.jpg" alt="Víctor Miguel y Flor de Liz" class="photo-frame">
 
         <div class="audio-container">
@@ -327,13 +488,90 @@
         <a href="https://api.whatsapp.com/send?phone=2871213085&text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20civil%20de%20Víctor%20y%20Flor." target="_blank" class="btn-rsvp">
             Confirmar por WhatsApp
         </a>
-        
-        <br><br><br>
-        <div class="ampersand-gold" style="font-size: 2rem;">Víctor & Flor</div>
-        <p style="font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;">¡Gracias por acompañarnos!</p>
     </div>
 
+    <!-- 9. SECCIÓN ÁLBUM DE FOTOS COMPARTIDO INTEGRADO -->
+    <div class="album-wrapper">
+        <div class="event-card-app">
+            <span class="badge-premium">Álbum Boda ✦</span>
+            <h3>Víctor & Flor de Liz</h3>
+            <p>12 de Diciembre de 2026 • Orizaba, Ver.</p>
+        </div>
+
+        <div class="app-actions">
+            <button class="action-btn active" onclick="switchTab('fotos', this)">
+                <div class="action-icon">🖼️</div>
+                Fotos
+            </button>
+            <button class="action-btn" onclick="switchTab('planning', this)">
+                <div class="action-icon">📋</div>
+                Planning
+            </button>
+            <button class="action-btn" onclick="switchTab('chat', this)">
+                <div class="action-icon">💬</div>
+                Chat
+            </button>
+        </div>
+
+        <!-- TAB FOTOS -->
+        <div id="tab-fotos" class="tab-content active">
+            <div class="photo-grid" id="gallery">
+                <div class="photo-item">
+                    <span class="time-tag">16:00 h</span>
+                    <img src="foto_pareja.jpg" alt="Portada">
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB PLANNING -->
+        <div id="tab-planning" class="tab-content">
+            <div class="timeline-item">
+                <div class="timeline-time">16:00 h</div>
+                <div class="timeline-info">
+                    <h4>Ceremonia Civil</h4>
+                    <p>Jardín de las Orquídeas</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">18:00 h</div>
+                <div class="timeline-info">
+                    <h4>Brindis & Recepción</h4>
+                    <p>Jardín Central</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">20:00 h</div>
+                <div class="timeline-info">
+                    <h4>Cena & Baile</h4>
+                    <p>Salón Principal</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CHAT -->
+        <div id="tab-chat" class="tab-content">
+            <div class="chat-box">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message">
+                        <div class="user">Flor & Víctor</div>
+                        ¡Bienvenidos! Suban sus fotos y videos del evento aquí ❤️
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="msg-input" placeholder="Escribe un mensaje...">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÓN FLOTANTE CÁMARA -->
+    <button class="upload-btn-main" onclick="openCloudinaryWidget()">
+        📷 Subir Foto o Video
+    </button>
+
     <script>
+        // CONTEO REGRESIVO
         const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -344,6 +582,76 @@
             document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
         }, 1000);
+
+        // NAVEGACIÓN ÁLBUM
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // CHAT
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const container = document.getElementById('chat-messages');
+            if(input.value.trim() !== "") {
+                const msg = document.createElement('div');
+                msg.className = 'message';
+                msg.innerHTML = `<div class="user">Invitado</div>${input.value.trim()}`;
+                container.appendChild(msg);
+                input.value = "";
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        // CLOUDINARY WIDGET (pheewujq)
+        function openCloudinaryWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: 'pheewujq', 
+                uploadPreset: 'ml_default',
+                sources: ['local', 'camera'],
+                multiple: true,
+                maxFiles: 10,
+                styles: {
+                    palette: {
+                        window: "#121212",
+                        sourceBg: "#1e1e1e",
+                        windowBorder: "#bfa15f",
+                        tabIcon: "#ffffff",
+                        inactiveTabIcon: "#888888",
+                        menuIcons: "#bfa15f",
+                        link: "#bfa15f",
+                        action: "#bfa15f",
+                        inProgress: "#007fff",
+                        complete: "#20b832",
+                        error: "#ea2727",
+                        textDark: "#000000",
+                        textLight: "#ffffff"
+                    }
+                }
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    const gallery = document.getElementById('gallery');
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const mins = now.getMinutes().toString().padStart(2, '0');
+                    const timeStr = `${hours}:${mins} h`;
+                    
+                    const newItem = document.createElement('div');
+                    newItem.className = 'photo-item';
+
+                    if(result.info.resource_type === 'video') {
+                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><video src="${result.info.secure_url}" controls style="width:100%;height:100%;object-fit:cover;"></video>`;
+                    } else {
+                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><img src="${result.info.secure_url}">`;
+                    }
+                    
+                    gallery.prepend(newItem);
+                }
+            });
+        }
     </script>
 </body>
 </html>
