@@ -14,7 +14,7 @@
     <!-- SDK de Cloudinary -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     
-    <!-- SDK de Firebase (Chat) -->
+    <!-- SDK de Firebase (Chat & Galería Realtime) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -35,7 +35,6 @@
             position: relative;
         }
 
-        /* EFECTO GLOW AMBIENTAL EN EL FONDO */
         body::before {
             content: '';
             position: fixed;
@@ -49,7 +48,6 @@
             pointer-events: none;
         }
 
-        /* BANNER HEADER CON ANIMACIÓN DE ENTRADA Y SHIMMER */
         .event-card-app {
             position: relative;
             height: 220px;
@@ -116,7 +114,6 @@
             gap: 6px;
         }
 
-        /* NAVEGACIÓN TABS CON TRANSICIÓN SUAVE Y ACTIVE GLOW */
         .app-actions {
             display: flex;
             justify-content: space-around;
@@ -174,7 +171,6 @@
             box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
         }
 
-        /* CONTENEDOR CON PESTAÑAS Y ANIMACIÓN DE ENTRADA */
         .tab-content {
             display: none;
             opacity: 0;
@@ -190,7 +186,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* PLANNING / ITINERARIO CON EFECTO HOVER / PRESS */
         .timeline-item {
             display: flex;
             align-items: center;
@@ -230,7 +225,6 @@
             color: #98989d;
         }
 
-        /* VISTA DE FOTOS & FILTRO CON GLASSMORPHISM */
         .photos-header {
             display: flex;
             justify-content: space-between;
@@ -333,7 +327,6 @@
             color: #fff;
         }
 
-        /* REACCIONES DE CORAZONES EN FOTOS */
         .like-btn {
             position: absolute;
             bottom: 10px;
@@ -356,7 +349,6 @@
             transform: scale(1.3);
         }
 
-        /* CHAT BUBBLES CON ANIMACIÓN */
         .chat-box {
             background: rgba(28, 28, 30, 0.8);
             backdrop-filter: blur(16px);
@@ -445,7 +437,6 @@
             transform: scale(0.94);
         }
 
-        /* BOTÓN FLOTANTE GOLDEN GLOW CON PULSACIÓN */
         .upload-btn-container {
             position: fixed;
             bottom: 24px;
@@ -481,7 +472,6 @@
             box-shadow: 0 5px 15px rgba(179, 147, 67, 0.3);
         }
 
-        /* LIGHTBOX MODAL DE VISUALIZACIÓN ULTRA HD CON ETIQUETAS */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -542,7 +532,6 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
 
-        /* ANIMACIONES KEYFRAMES */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -571,14 +560,12 @@
 </head>
 <body>
 
-    <!-- CARD HEADER CON EFECTO DE GLOW Y ENTRADA -->
     <div class="event-card-app">
         <span class="badge-premium">Álbum Boda</span>
         <h3>Víctor & Flor de Liz</h3>
         <p>📍 12 de Diciembre de 2026 · Orizaba, Ver.</p>
     </div>
 
-    <!-- PESTAÑAS DE NAVEGACIÓN -->
     <div class="app-actions">
         <button class="action-btn" onclick="switchTab('fotos', this)">
             <div class="action-icon">🖼️</div>
@@ -594,7 +581,6 @@
         </button>
     </div>
 
-    <!-- TAB 1: FOTOS (INTERACTIVA CON REACCIONES Y FILTROS) -->
     <div id="tab-fotos" class="tab-content">
         <div class="photos-header">
             <span class="photos-count" id="photos-count">0 archivos compartidos</span>
@@ -606,7 +592,6 @@
         <div class="photo-grid" id="gallery"></div>
     </div>
 
-    <!-- TAB 2: PLANNING (CON EFECTO TÁCTIL) -->
     <div id="tab-planning" class="tab-content active">
         <div class="timeline-item" style="animation-delay: 0.1s;">
             <div class="timeline-time">16:00 h</div>
@@ -631,7 +616,6 @@
         </div>
     </div>
 
-    <!-- TAB 3: CHAT (BURBUJAS ANIMADAS) -->
     <div id="tab-chat" class="tab-content">
         <div class="chat-box">
             <div class="chat-messages" id="chat-messages">
@@ -647,14 +631,12 @@
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE PRINCIPAL -->
     <div class="upload-btn-container">
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">
             📸 Subir Foto o Video
         </button>
     </div>
 
-    <!-- LIGHTBOX PARA VER ARCHIVOS -->
     <div class="lightbox-modal" id="lightbox" onclick="closeLightbox(event)">
         <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
         <div id="lightbox-body" style="display:flex; flex-direction:column; align-items:center; max-width:100%;"></div>
@@ -662,19 +644,23 @@
     </div>
 
     <script>
-        // ESTADO GLOBAL CON LOCALSTORAGE
-        let galleryItems = JSON.parse(localStorage.getItem('boda_media_items')) || [
-            {
-                id: 'default-1',
-                url: 'foto_pareja.jpg',
-                type: 'image',
-                timeStr: '16:00 h',
-                timestamp: Date.now() - 3600000,
-                likes: 3
-            }
-        ];
+        // Configuración exacta obtenida de tu proyecto de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
+            authDomain: "boda-victor-flor.firebaseapp.com",
+            databaseURL: "https://boda-victor-flor-default-rtdb.firebaseio.com",
+            projectId: "boda-victor-flor",
+            storageBucket: "boda-victor-flor.firebasestorage.app",
+            messagingSenderId: "461181016128",
+            appId: "1:461181016128:web:36c3fa9307e1fc7d88e7a5"
+        };
 
-        // DISPARO DE CONFETI AL CARGAR O SUBIR
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let galleryItems = [];
+
         function triggerConfetti() {
             if (typeof confetti === 'function') {
                 confetti({
@@ -686,7 +672,19 @@
             }
         }
 
-        // RENDERIZAR GALERÍA CON TRANSICIONES Y REACCIONES DE ME GUSTA
+        // Leer fotos desde Firebase Realtime Database
+        db.ref("galeria_boda").on("value", (snapshot) => {
+            const data = snapshot.val();
+            galleryItems = [];
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    galleryItems.push({ id: key, ...data[key] });
+                });
+            }
+            renderGallery();
+        });
+
         function renderGallery() {
             const gallery = document.getElementById('gallery');
             const sortOrder = document.getElementById('sort-select').value;
@@ -726,7 +724,6 @@
                     `;
                 }
 
-                // Click abre lightbox salvo si da click en Me gusta
                 card.onclick = (e) => {
                     if (!e.target.closest('.like-btn')) {
                         openLightbox(item);
@@ -737,18 +734,14 @@
             });
         }
 
-        // SISTEMA DE REACCIONES (ME GUSTA)
         function toggleLike(e, itemId) {
             e.stopPropagation();
-            const item = galleryItems.find(i => i.id === itemId);
-            if (item) {
-                item.likes = (item.likes || 0) + 1;
-                localStorage.setItem('boda_media_items', JSON.stringify(galleryItems));
-                renderGallery();
-            }
+            const itemRef = db.ref(`galeria_boda/${itemId}`);
+            itemRef.child("likes").transaction((currentLikes) => {
+                return (currentLikes || 0) + 1;
+            });
         }
 
-        // ABRIR PANTALLA COMPLETA CON VISTA ULTRA HD
         function openLightbox(item) {
             const modal = document.getElementById('lightbox');
             const body = document.getElementById('lightbox-body');
@@ -773,7 +766,6 @@
             }
         }
 
-        // NAVEGACIÓN ENTRE PESTAÑAS
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
@@ -783,7 +775,6 @@
             btn.classList.add('active');
         }
 
-        // SUBIDA CON CLOUDINARY + CONFETI CELEBRATORIO
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
                 cloudName: 'pheewujq',
@@ -813,7 +804,6 @@
                     const timeStr = `${hours}:${mins} h`;
                     
                     const newItem = {
-                        id: 'media-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
                         url: result.info.secure_url,
                         type: result.info.resource_type === 'video' ? 'video' : 'image',
                         timeStr: timeStr,
@@ -821,17 +811,14 @@
                         likes: 0
                     };
 
-                    galleryItems.push(newItem);
-                    localStorage.setItem('boda_media_items', JSON.stringify(galleryItems));
+                    db.ref("galeria_boda").push(newItem);
 
-                    renderGallery();
                     triggerConfetti();
                     switchTab('fotos', document.querySelectorAll('.action-btn')[0]);
                 }
             });
         }
 
-        // CHAT INTERACTIVO CON BURBUJAS DE MENSAJE
         const chatContainer = document.getElementById('chat-messages');
 
         function appendMessage(user, message, isSelf = false) {
@@ -842,40 +829,25 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        function loadSavedMessages() {
-            const saved = localStorage.getItem('chat_boda_messages');
-            if (saved) {
-                const messages = JSON.parse(saved);
-                messages.forEach(m => appendMessage(m.user, m.message, m.isSelf));
-            }
-        }
+        db.ref("chat_boda").on("child_added", (snapshot) => {
+            const msg = snapshot.val();
+            appendMessage(msg.user, msg.message, msg.isSelf || false);
+        });
 
         window.sendMessage = function() {
             const input = document.getElementById('msg-input');
             const text = input.value.trim();
             
             if (text !== "") {
-                appendMessage("Invitado", text, true);
-
-                let saved = JSON.parse(localStorage.getItem('chat_boda_messages') || "[]");
-                saved.push({ user: "Invitado", message: text, isSelf: true });
-                localStorage.setItem('chat_boda_messages', JSON.stringify(saved));
-
-                if (typeof firebase !== 'undefined' && firebase.apps.length) {
-                    firebase.database().ref("chat_boda").push({
-                        user: "Invitado",
-                        message: text,
-                        timestamp: Date.now()
-                    });
-                }
+                db.ref("chat_boda").push({
+                    user: "Invitado",
+                    message: text,
+                    timestamp: Date.now(),
+                    isSelf: true
+                });
 
                 input.value = "";
             }
-        };
-
-        window.onload = function() {
-            renderGallery();
-            loadSavedMessages();
         };
     </script>
 </body>
