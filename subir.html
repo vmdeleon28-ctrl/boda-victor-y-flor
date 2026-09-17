@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Víctor & Flor - Compartir Fotos y Chat</title>
+    <title>Víctor & Flor de Liz - Álbum & Planning</title>
     
     <!-- Tipografías elegantes -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- SDK de Cloudinary -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
@@ -18,128 +19,177 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Cormorant Garamond', serif;
-            background-color: #f7f5f0;
-            color: #333333;
-            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            text-align: left;
             max-width: 480px;
             margin: 0 auto;
-            box-shadow: 0 0 25px rgba(0,0,0,0.08);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding: 16px 16px 90px 16px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        /* ENCABEZADO CON LA FOTO DE LA INVITACIÓN */
-        .hero-header {
+        /* CARD HEADER (BANNER SUPERIOR CON FOTO DE PAREJA) */
+        .event-card-app {
             position: relative;
-            height: 220px;
-            background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)), url('foto_pareja.jpg');
-            background-position: center 30%;
-            background-size: cover;
-            background-repeat: no-repeat;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%), url('foto_pareja.jpg') center 25%/cover;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
-            padding: 15px;
-            border-bottom: 2px solid #bfa15f;
-        }
-        .hero-header h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            letter-spacing: 3px;
-            font-weight: 400;
-            text-transform: uppercase;
-            color: #ffffff;
-        }
-        .hero-header .ampersand {
-            font-family: 'Alex Brush', cursive;
-            font-size: 2.8rem;
-            color: #f3ece0;
-            margin: -10px 0;
-            display: block;
-        }
-        .hero-header p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #e5dfd3;
-            margin-top: 5px;
-        }
-
-        /* CONTENEDOR PRINCIPAL ESTILO APP */
-        .content-wrapper {
-            background-color: #121212;
-            color: #ffffff;
-            flex: 1;
-            padding: 20px 15px 40px 15px;
-            text-align: left;
-        }
-
-        /* CARD PARA CÁMARA */
-        .upload-card {
-            background: #1e1e1e;
-            border: 1px solid #2a2a2a;
-            border-radius: 18px;
-            padding: 20px 15px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        .upload-card h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            color: #bfa15f;
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-        }
-        .upload-card p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.78rem;
-            color: #aaaaaa;
+            justify-content: flex-end;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
             margin-bottom: 16px;
-            line-height: 1.4;
         }
-        .btn-upload-main {
-            background: linear-gradient(135deg, #c3a462, #9a8553);
+        .badge-premium {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 30px;
+            letter-spacing: 0.5px;
+        }
+        .event-card-app h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 6px 20px rgba(195, 164, 98, 0.3);
-            display: inline-flex;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        .event-card-app p {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            font-weight: 400;
+            color: #e0e0e0;
+        }
+
+        /* BARRA DE MENÚ (PESTAÑAS/TAB BAR) */
+        .app-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 10px;
+            background: #1c1c1e;
+            border-radius: 22px;
+            border: 1px solid #2a2a2d;
+            margin-bottom: 20px;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 8px;
+            background: none;
+            border: none;
+            color: #8e8e93;
+            font-size: 0.75rem;
+            font-weight: 500;
             cursor: pointer;
-            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1;
+        }
+        .action-btn.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .action-icon {
+            width: 46px;
+            height: 46px;
+            background: #2c2c2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .action-btn.active .action-icon {
+            background: #ffffff;
+            color: #121212;
         }
 
-        /* SECCIÓN DE CHAT PERMANENTE */
-        .chat-section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            color: #ffffff;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            padding-left: 5px;
-        }
-        .chat-box {
-            background: #1e1e1e;
+        /* PESTAÑAS (TAB CONTENT) */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* PLANNING / ITINERARIO */
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            background: #1c1c1e;
+            padding: 22px 20px;
             border-radius: 18px;
-            height: 320px;
+            margin-bottom: 12px;
+            border: 1px solid #2a2a2d;
+        }
+        .timeline-time {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #d4af37;
+            min-width: 80px;
+        }
+        .timeline-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+        .timeline-info p {
+            font-size: 0.82rem;
+            color: #8e8e93;
+        }
+
+        /* FOTOS / GALERÍA */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1c1c1e;
+            border: 1px solid #2a2a2d;
+        }
+        .photo-item img, .photo-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .time-tag {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            color: #ffffff;
+            z-index: 2;
+        }
+
+        /* CHAT */
+        .chat-box {
+            background: #1c1c1e;
+            border-radius: 20px;
+            height: 380px;
             display: flex;
             flex-direction: column;
-            padding: 15px;
-            border: 1px solid #2a2a2a;
-            font-family: 'Montserrat', sans-serif;
+            padding: 16px;
+            border: 1px solid #2a2a2d;
         }
         .chat-messages {
             flex: 1;
@@ -149,18 +199,18 @@
             gap: 10px;
         }
         .message {
-            background: #2a2a2a;
-            padding: 10px 14px;
-            border-radius: 14px;
-            max-width: 88%;
-            font-size: 0.8rem;
+            background: #2c2c2e;
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 85%;
+            font-size: 0.82rem;
             line-height: 1.4;
-            color: #dddddd;
+            color: #e5e5ea;
         }
         .message .user {
-            font-weight: 600;
-            font-size: 0.7rem;
-            color: #bfa15f;
+            font-weight: 700;
+            font-size: 0.72rem;
+            color: #d4af37;
             margin-bottom: 2px;
         }
         .chat-input {
@@ -170,57 +220,124 @@
         }
         .chat-input input {
             flex: 1;
-            background: #2a2a2a;
-            border: 1px solid #3a3a3a;
+            background: #2c2c2e;
+            border: 1px solid #3a3a3c;
             padding: 12px 16px;
             border-radius: 22px;
             color: #fff;
             outline: none;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-family: 'Montserrat', sans-serif;
         }
         .chat-input button {
-            background: #bfa15f;
+            background: #d4af37;
             border: none;
-            color: #ffffff;
+            color: #121212;
             padding: 0 18px;
             border-radius: 22px;
-            font-weight: 600;
-            font-size: 0.8rem;
+            font-weight: 700;
+            font-size: 0.82rem;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
+        }
+
+        /* BOTÓN FLOTANTE */
+        .upload-btn-container {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .upload-btn-main {
+            pointer-events: auto;
+            background: #bfa15f;
+            background: linear-gradient(135deg, #caba87 0%, #a38948 100%);
+            color: #ffffff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- ENCABEZADO CON LA FOTO DE LA INVITACIÓN -->
-    <div class="hero-header">
-        <h1>Víctor Miguel</h1>
-        <span class="ampersand">&</span>
-        <h1>Flor de Liz</h1>
-        <p>12 de Diciembre de 2026 • Orizaba, Ver.</p>
+    <!-- CARD HEADER CON FOTO DE PAREJA -->
+    <div class="event-card-app">
+        <span class="badge-premium">Álbum Boda ✦</span>
+        <h3>Víctor & Flor de Liz</h3>
+        <p>12 de Diciembre de 2026 · Orizaba, Ver.</p>
     </div>
 
-    <!-- CONTENIDO TIPO APP -->
-    <div class="content-wrapper">
-        
-        <!-- CÁMARA / SUBIDA DE FOTOS -->
-        <div class="upload-card">
-            <h2>📷 Álbum Digital de Bodas</h2>
-            <p>Toma una foto o video para guardarlo permanentemente en nuestro álbum de bodas.</p>
-            <button class="btn-upload-main" onclick="openCloudinaryWidget()">
-                📷 Abrir Cámara / Galería
-            </button>
-        </div>
+    <!-- PESTAÑAS NAVEGACIÓN -->
+    <div class="app-actions">
+        <button class="action-btn" onclick="switchTab('fotos', this)">
+            <div class="action-icon">🖼️</div>
+            Fotos
+        </button>
+        <button class="action-btn active" onclick="switchTab('planning', this)">
+            <div class="action-icon">📋</div>
+            Planning
+        </button>
+        <button class="action-btn" onclick="switchTab('chat', this)">
+            <div class="action-icon">💬</div>
+            Chat
+        </button>
+    </div>
 
-        <!-- CHAT PERMANENTE -->
-        <div class="chat-section-title">💬 Felicitaciones & Chat</div>
+    <!-- TAB 1: FOTOS -->
+    <div id="tab-fotos" class="tab-content">
+        <div class="photo-grid" id="gallery">
+            <div class="photo-item">
+                <span class="time-tag">16:00 h</span>
+                <img src="foto_pareja.jpg" alt="Portada">
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: PLANNING -->
+    <div id="tab-planning" class="tab-content active">
+        <div class="timeline-item">
+            <div class="timeline-time">16:00 h</div>
+            <div class="timeline-info">
+                <h4>Ceremonia Civil</h4>
+                <p>Jardín de las Orquídeas</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-time">18:00 h</div>
+            <div class="timeline-info">
+                <h4>Brindis & Recepción</h4>
+                <p>Jardín Central</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-time">20:00 h</div>
+            <div class="timeline-info">
+                <h4>Cena & Baile</h4>
+                <p>Salón Principal</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: CHAT PERMANENTE -->
+    <div id="tab-chat" class="tab-content">
         <div class="chat-box">
             <div class="chat-messages" id="chat-messages">
                 <div class="message">
                     <div class="user">Flor & Víctor</div>
-                    ¡Gracias por acompañarnos! Déjanos tu mensaje aquí ❤️
+                    ¡Bienvenidos a nuestra boda! Dejen sus felicitaciones aquí ❤️
                 </div>
             </div>
             <div class="chat-input">
@@ -228,40 +345,71 @@
                 <button onclick="sendMessage()">Enviar</button>
             </div>
         </div>
+    </div>
 
+    <!-- BOTÓN FLOTANTE -->
+    <div class="upload-btn-container">
+        <button class="upload-btn-main" onclick="openCloudinaryWidget()">
+            📷 Subir Foto o Video
+        </button>
     </div>
 
     <script>
-        // CONFIGURACIÓN CLOUDINARY (pheewujq)
+        // CAMBIO DE PESTAÑAS
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // SUBIDA CON OPCIÓN A ELEGIR (GALERÍA O CÁMARA) SIN APERTURA AUTOMÁTICA
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
                 cloudName: 'pheewujq',
                 uploadPreset: 'ml_default',
-                sources: ['camera', 'local'],
+                sources: ['local', 'camera'], // Muestra opciones para subir fotos guardadas o tomar fotos nuevas
                 multiple: true,
                 maxFiles: 10,
                 styles: {
                     palette: {
                         window: "#121212",
-                        sourceBg: "#1e1e1e",
-                        windowBorder: "#bfa15f",
+                        sourceBg: "#1c1c1e",
+                        windowBorder: "#d4af37",
                         tabIcon: "#ffffff",
-                        inactiveTabIcon: "#888888",
-                        menuIcons: "#bfa15f",
-                        link: "#bfa15f",
-                        action: "#bfa15f",
+                        inactiveTabIcon: "#8e8e93",
+                        menuIcons: "#d4af37",
+                        link: "#d4af37",
+                        action: "#d4af37",
                         textDark: "#000000",
                         textLight: "#ffffff"
                     }
                 }
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
-                    alert("¡Muchas gracias! Tu foto se guardó con éxito.");
+                    const gallery = document.getElementById('gallery');
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const mins = now.getMinutes().toString().padStart(2, '0');
+                    const timeStr = `${hours}:${mins} h`;
+                    
+                    const newItem = document.createElement('div');
+                    newItem.className = 'photo-item';
+
+                    if(result.info.resource_type === 'video') {
+                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><video src="${result.info.secure_url}" controls style="width:100%;height:100%;object-fit:cover;"></video>`;
+                    } else {
+                        newItem.innerHTML = `<span class="time-tag">${timeStr}</span><img src="${result.info.secure_url}">`;
+                    }
+                    
+                    gallery.prepend(newItem);
+                    switchTab('fotos', document.querySelectorAll('.action-btn')[0]);
                 }
             });
         }
 
-        // SISTEMA DE CHAT PERMANENTE (Persistencia con LocalStorage + Firebase)
+        // CHAT PERMANENTE CON LOCALSTORAGE + FIREBASE
         const chatContainer = document.getElementById('chat-messages');
 
         function appendMessage(user, message) {
@@ -272,7 +420,6 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // Cargar mensajes guardados previamente
         function loadSavedMessages() {
             const saved = localStorage.getItem('chat_boda_messages');
             if (saved) {
@@ -281,7 +428,6 @@
             }
         }
 
-        // Guardar nuevo mensaje permanente
         window.sendMessage = function() {
             const input = document.getElementById('msg-input');
             const text = input.value.trim();
@@ -289,12 +435,10 @@
             if (text !== "") {
                 appendMessage("Invitado", text);
 
-                // Guardar en almacenamiento local para no perder nada al recargar
                 let saved = JSON.parse(localStorage.getItem('chat_boda_messages') || "[]");
                 saved.push({ user: "Invitado", message: text });
                 localStorage.setItem('chat_boda_messages', JSON.stringify(saved));
 
-                // Intento opcional de sincronización con Firebase Realtime Database
                 if (typeof firebase !== 'undefined' && firebase.apps.length) {
                     firebase.database().ref("chat_boda").push({
                         user: "Invitado",
@@ -307,10 +451,8 @@
             }
         };
 
-        // Cargar historial al iniciar
         window.onload = function() {
             loadSavedMessages();
-            setTimeout(openCloudinaryWidget, 600);
         };
     </script>
 </body>
