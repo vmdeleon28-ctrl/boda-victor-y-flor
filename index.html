@@ -24,7 +24,10 @@
         .hero {
             position: relative;
             height: 85vh;
-            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)), url('foto_pareja.jpg') center/cover;
+            background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)), url('foto_pareja.jpg');
+            background-position: 70% center; /* Ajusta el encuadre horizontal para que queden centrados */
+            background-size: cover;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
