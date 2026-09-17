@@ -422,6 +422,7 @@
             color: #e5e5ea;
             animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
         }
 
         .message.self {
@@ -559,7 +560,7 @@
 
         .lightbox-content {
             max-width: 100%;
-            max-height: 75vh;
+            max-height: 70vh;
             border-radius: 20px;
             object-fit: contain;
             box-shadow: 0 15px 40px rgba(0,0,0,0.9);
@@ -572,6 +573,26 @@
             color: #d4af37;
             font-weight: 600;
             text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .lightbox-delete-btn {
+            margin-top: 14px;
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid rgba(255, 59, 48, 0.5);
+            color: #ff453a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lightbox-delete-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 59, 48, 0.4);
         }
 
         @keyframes fadeInDown {
@@ -631,7 +652,7 @@
                     <option value="newest">⚡ Recientes</option>
                     <option value="oldest">⏳ Antiguas</option>
                 </select>
-                <button class="clear-btn" onclick="borrarFotos()">🗑️ Limpiar</button>
+                <button class="clear-btn" onclick="borrarTodasLasFotos()">🗑️ Limpiar Todo</button>
             </div>
         </div>
         <div class="photo-grid" id="gallery"></div>
@@ -667,12 +688,7 @@
                 <span class="chat-title">Mensajes en Vivo</span>
                 <button class="clear-btn" onclick="borrarChat()">🗑️ Limpiar Chat</button>
             </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message">
-                    <div class="user">Flor & Víctor</div>
-                    ¡Bienvenidos a nuestra boda! Dejen sus felicitaciones y recuerdos aquí ❤️
-                </div>
-            </div>
+            <div class="chat-messages" id="chat-messages"></div>
             <div class="chat-input">
                 <input type="text" id="msg-input" placeholder="Escribe un mensaje de felicitación...">
                 <button onclick="sendMessage()">Enviar</button>
@@ -690,12 +706,12 @@
         <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
         <div id="lightbox-body" style="display:flex; flex-direction:column; align-items:center; max-width:100%;"></div>
         <div class="lightbox-caption" id="lightbox-caption"></div>
+        <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️ Eliminar esta foto</button>
     </div>
 
     <script>
         const CONTRASEÑA_ADMIN = "1234";
 
-        // Configuración exacta de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
             authDomain: "boda-victor-flor.firebaseapp.com",
@@ -706,11 +722,11 @@
             appId: "1:461181016128:web:36c3fa9307e1fc7d88e7a5"
         };
 
-        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         let galleryItems = [];
+        let currentOpenItemId = null;
 
         function triggerConfetti() {
             if (typeof confetti === 'function') {
@@ -723,7 +739,6 @@
             }
         }
 
-        // Leer fotos desde Firebase Realtime Database
         db.ref("galeria_boda").on("value", (snapshot) => {
             const data = snapshot.val();
             galleryItems = [];
@@ -794,9 +809,11 @@
         }
 
         function openLightbox(item) {
+            currentOpenItemId = item.id;
             const modal = document.getElementById('lightbox');
             const body = document.getElementById('lightbox-body');
             const caption = document.getElementById('lightbox-caption');
+            const deleteBtn = document.getElementById('lightbox-delete-btn');
 
             if (item.type === 'video') {
                 body.innerHTML = `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`;
@@ -805,6 +822,9 @@
             }
 
             caption.textContent = `Compartido a las ${item.timeStr} · ❤️ ${item.likes || 0} Me gusta`;
+            
+            deleteBtn.onclick = () => borrarFotoEspecifica(item.id);
+
             modal.classList.add('active');
         }
 
@@ -814,6 +834,33 @@
                 const body = document.getElementById('lightbox-body');
                 modal.classList.remove('active');
                 body.innerHTML = '';
+                currentOpenItemId = null;
+            }
+        }
+
+        function borrarFotoEspecifica(itemId) {
+            const pass = prompt("Ingresa la contraseña de administrador para eliminar esta foto:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref(`galeria_boda/${itemId}`).remove()
+                    .then(() => {
+                        alert("Foto eliminada correctamente.");
+                        const modal = document.getElementById('lightbox');
+                        modal.classList.remove('active');
+                    })
+                    .catch((err) => console.error(err));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        }
+
+        function borrarTodasLasFotos() {
+            const pass = prompt("Para borrar TODAS las fotos de la galería, ingresa la contraseña de administrador:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref("galeria_boda").remove()
+                    .then(() => alert("Todas las fotos han sido eliminadas."))
+                    .catch((error) => console.error(error));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
             }
         }
 
@@ -872,27 +919,31 @@
 
         const chatContainer = document.getElementById('chat-messages');
 
-        function appendMessage(user, message, isSelf = false) {
-            const msg = document.createElement('div');
-            msg.className = `message ${isSelf ? 'self' : ''}`;
-            msg.innerHTML = `<div class="user">${user}</div>${message}`;
-            chatContainer.appendChild(msg);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Cargar mensajes del chat desde Firebase
+        // Escuchar mensajes de Firebase Realtime Database
         db.ref("chat_boda").on("value", (snapshot) => {
             chatContainer.innerHTML = '';
-            const data = snapshot.val();
             
-            appendMessage("Flor & Víctor", "¡Bienvenidos a nuestra boda! Dejen sus felicitaciones y recuerdos aquí ❤️", false);
+            // Mensaje fijo de bienvenida
+            const welcomeMsg = document.createElement('div');
+            welcomeMsg.className = 'message';
+            welcomeMsg.innerHTML = `<div class="user">Flor & Víctor</div>¡Bienvenidos a nuestra boda! Dejen sus felicitaciones y recuerdos aquí ❤️`;
+            chatContainer.appendChild(welcomeMsg);
 
+            const data = snapshot.val();
             if (data) {
-                Object.keys(data).forEach(key => {
-                    const msg = data[key];
-                    appendMessage(msg.user, msg.message, msg.isSelf || false);
+                Object.keys(data).forEach(msgId => {
+                    const msg = data[msgId];
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `message ${msg.isSelf ? 'self' : ''}`;
+                    msgDiv.innerHTML = `<div class="user">${msg.user}</div>${msg.message}`;
+                    
+                    // Al hacer clic en un mensaje, se puede eliminar
+                    msgDiv.onclick = () => borrarMensajeEspecifico(msgId);
+
+                    chatContainer.appendChild(msgDiv);
                 });
             }
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         });
 
         window.sendMessage = function() {
@@ -911,26 +962,22 @@
             }
         };
 
-        // Función con contraseña para vaciar el chat
-        window.borrarChat = function() {
-            const pass = prompt("Para borrar el chat, ingresa la contraseña de administrador:");
-            
+        function borrarMensajeEspecifico(msgId) {
+            const pass = prompt("Ingresa la contraseña de administrador para eliminar este mensaje:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref("chat_boda").remove()
-                    .then(() => alert("El chat ha sido vaciado correctamente."))
-                    .catch((error) => console.error(error));
+                db.ref(`chat_boda/${msgId}`).remove()
+                    .then(() => alert("Mensaje eliminado."))
+                    .catch((err) => console.error(err));
             } else if (pass !== null) {
                 alert("Contraseña incorrecta.");
             }
-        };
+        }
 
-        // Función con contraseña para borrar todas las fotos de la galería
-        window.borrarFotos = function() {
-            const pass = prompt("Para borrar TODAS las fotos de la galería, ingresa la contraseña de administrador:");
-            
+        window.borrarChat = function() {
+            const pass = prompt("Para borrar TODO el chat, ingresa la contraseña de administrador:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref("galeria_boda").remove()
-                    .then(() => alert("Todas las fotos de la galería han sido eliminadas."))
+                db.ref("chat_boda").remove()
+                    .then(() => alert("El chat ha sido vaciado."))
                     .catch((error) => console.error(error));
             } else if (pass !== null) {
                 alert("Contraseña incorrecta.");
