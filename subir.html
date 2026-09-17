@@ -231,6 +231,7 @@
             align-items: center;
             margin-bottom: 16px;
             padding: 0 4px;
+            gap: 8px;
         }
 
         .photos-count {
@@ -239,17 +240,42 @@
             font-weight: 500;
         }
 
+        .photos-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .sort-select {
             background: #1c1c1e;
             color: #d4af37;
             border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 8px 14px;
+            padding: 8px 10px;
             border-radius: 14px;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-family: 'Montserrat', sans-serif;
             outline: none;
             cursor: pointer;
             transition: border-color 0.2s ease;
+        }
+
+        .clear-btn {
+            background: rgba(255, 59, 48, 0.15);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: #ff453a;
+            padding: 8px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .clear-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 59, 48, 0.3);
         }
 
         .photo-grid {
@@ -359,6 +385,22 @@
             padding: 18px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #d4af37;
         }
 
         .chat-messages {
@@ -583,11 +625,14 @@
 
     <div id="tab-fotos" class="tab-content">
         <div class="photos-header">
-            <span class="photos-count" id="photos-count">0 archivos compartidos</span>
-            <select class="sort-select" id="sort-select" onchange="renderGallery()">
-                <option value="newest">⚡ Más recientes primero</option>
-                <option value="oldest">⏳ Más antiguas primero</option>
-            </select>
+            <span class="photos-count" id="photos-count">0 archivos</span>
+            <div class="photos-controls">
+                <select class="sort-select" id="sort-select" onchange="renderGallery()">
+                    <option value="newest">⚡ Recientes</option>
+                    <option value="oldest">⏳ Antiguas</option>
+                </select>
+                <button class="clear-btn" onclick="borrarFotos()">🗑️ Limpiar</button>
+            </div>
         </div>
         <div class="photo-grid" id="gallery"></div>
     </div>
@@ -618,6 +663,10 @@
 
     <div id="tab-chat" class="tab-content">
         <div class="chat-box">
+            <div class="chat-header-actions">
+                <span class="chat-title">Mensajes en Vivo</span>
+                <button class="clear-btn" onclick="borrarChat()">🗑️ Limpiar Chat</button>
+            </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="message">
                     <div class="user">Flor & Víctor</div>
@@ -644,7 +693,9 @@
     </div>
 
     <script>
-        // Configuración exacta obtenida de tu proyecto de Firebase
+        const CONTRASEÑA_ADMIN = "1234";
+
+        // Configuración exacta de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
             authDomain: "boda-victor-flor.firebaseapp.com",
@@ -829,9 +880,19 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        db.ref("chat_boda").on("child_added", (snapshot) => {
-            const msg = snapshot.val();
-            appendMessage(msg.user, msg.message, msg.isSelf || false);
+        // Cargar mensajes del chat desde Firebase
+        db.ref("chat_boda").on("value", (snapshot) => {
+            chatContainer.innerHTML = '';
+            const data = snapshot.val();
+            
+            appendMessage("Flor & Víctor", "¡Bienvenidos a nuestra boda! Dejen sus felicitaciones y recuerdos aquí ❤️", false);
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const msg = data[key];
+                    appendMessage(msg.user, msg.message, msg.isSelf || false);
+                });
+            }
         });
 
         window.sendMessage = function() {
@@ -847,6 +908,32 @@
                 });
 
                 input.value = "";
+            }
+        };
+
+        // Función con contraseña para vaciar el chat
+        window.borrarChat = function() {
+            const pass = prompt("Para borrar el chat, ingresa la contraseña de administrador:");
+            
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref("chat_boda").remove()
+                    .then(() => alert("El chat ha sido vaciado correctamente."))
+                    .catch((error) => console.error(error));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        };
+
+        // Función con contraseña para borrar todas las fotos de la galería
+        window.borrarFotos = function() {
+            const pass = prompt("Para borrar TODAS las fotos de la galería, ingresa la contraseña de administrador:");
+            
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref("galeria_boda").remove()
+                    .then(() => alert("Todas las fotos de la galería han sido eliminadas."))
+                    .catch((error) => console.error(error));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
             }
         };
     </script>
