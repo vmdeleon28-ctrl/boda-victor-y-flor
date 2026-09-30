@@ -311,13 +311,13 @@
             min-width: 85px;
         }
 
-        /* ESTILOS DEL CHAT */
+        /* ESTILOS DEL CHAT Y DISTINCIÓN DE USUARIOS */
         .chat-container {
             background: rgba(22, 22, 24, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
-            height: 480px;
+            height: 520px;
             display: flex;
             flex-direction: column;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -326,30 +326,47 @@
         }
 
         .chat-header {
-            padding: 14px 18px;
-            background: rgba(30, 30, 32, 0.9);
+            padding: 12px 16px;
+            background: rgba(30, 30, 32, 0.95);
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-header-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .chat-header-user {
+        .chat-user-settings {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .role-select {
+            background: #1c1c1e;
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            cursor: pointer;
         }
 
         .name-badge {
             background: rgba(212, 175, 55, 0.15);
             border: 1px solid rgba(212, 175, 55, 0.3);
             color: #d4af37;
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.72rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .chat-messages {
@@ -369,14 +386,8 @@
             position: relative;
         }
 
-        .chat-msg-row.other {
-            align-self: flex-start;
-        }
-
-        .chat-msg-row.me {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
+        .chat-msg-row.other { align-self: flex-start; }
+        .chat-msg-row.me { align-self: flex-end; flex-direction: row-reverse; }
 
         .chat-avatar {
             width: 32px;
@@ -397,6 +408,13 @@
             background: linear-gradient(135deg, #3a3a3c 0%, #1c1c1e 100%);
             color: #d4af37;
             border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        /* Avatar especial para los novios */
+        .chat-msg-row.novios .chat-avatar {
+            background: linear-gradient(135deg, #ffe066 0%, #d4af37 100%);
+            color: #000;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
         }
 
         .chat-bubble {
@@ -421,16 +439,33 @@
             border-bottom-right-radius: 4px;
         }
 
+        /* Diseño de burbuja resaltada para los novios */
+        .chat-msg-row.novios .chat-bubble {
+            background: linear-gradient(135deg, #382c0c 0%, #1a1608 100%);
+            color: #ffffff;
+            border: 1px solid #d4af37;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+        }
+
         .chat-author {
             font-size: 0.68rem;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             color: #d4af37;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .chat-msg-row.me .chat-author {
-            color: #2a2003;
+        .chat-msg-row.me .chat-author { color: #2a2003; }
+        .chat-msg-row.novios .chat-author { color: #ffe066; }
+
+        .role-tag {
+            font-size: 0.6rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-weight: 500;
         }
 
         .chat-meta {
@@ -448,7 +483,6 @@
             color: #ff453a;
             font-weight: bold;
             font-size: 0.75rem;
-            padding: 0 2px;
         }
 
         .chat-input-area {
@@ -665,13 +699,22 @@
     <div id="tab-chat" class="tab-content">
         <div class="chat-container">
             <div class="chat-header">
-                <div class="chat-header-user">
-                    <span style="font-size: 0.8rem; color: #8e8e93;">Tu nombre:</span>
-                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️</button>
+                <div class="chat-header-top">
+                    <span style="font-size: 0.78rem; color: #8e8e93;">Perfil de Chat:</span>
+                    <span style="font-size: 0.7rem; color: #34c759; display: flex; align-items: center; gap: 4px;">
+                        <span style="width: 6px; height: 6px; background:#34c759; border-radius:50%;"></span> En vivo
+                    </span>
                 </div>
-                <span style="font-size: 0.7rem; color: #34c759; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; background:#34c759; border-radius:50%;"></span> En vivo
-                </span>
+                <div class="chat-user-settings">
+                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️</button>
+                    <select class="role-select" id="role-select" onchange="guardarRol()">
+                        <option value="Invitado">👥 Invitado</option>
+                        <option value="Novio (Víctor)">🤵 Novio (Víctor)</option>
+                        <option value="Novia (Flor de Liz)">👰 Novia (Flor de Liz)</option>
+                        <option value="Familia">❤️ Familia</option>
+                        <option value="Dama de Honor">🌸 Dama de Honor</option>
+                    </select>
+                </div>
             </div>
 
             <div class="chat-messages" id="chat-messages"></div>
@@ -721,11 +764,14 @@
         const db = firebase.database();
 
         let myName = localStorage.getItem('chat_username') || '';
+        let myRole = localStorage.getItem('chat_userrole') || 'Invitado';
+
         if (!myName) {
             myName = 'Invitado ' + Math.floor(100 + Math.random() * 900);
             localStorage.setItem('chat_username', myName);
         }
         document.getElementById('current-user-badge').textContent = myName + ' ✏️';
+        document.getElementById('role-select').value = myRole;
 
         function cambiarNombre() {
             const nuevo = prompt("Introduce tu nombre:", myName);
@@ -734,6 +780,22 @@
                 localStorage.setItem('chat_username', myName);
                 document.getElementById('current-user-badge').textContent = myName + ' ✏️';
             }
+        }
+
+        function guardarRol() {
+            const select = document.getElementById('role-select');
+            myRole = select.value;
+            
+            // Verificación opcional de clave si eligen rol de Novios
+            if (myRole.includes('Novio') || myRole.includes('Novia')) {
+                const pass = prompt("Para identificarte como Novio/Novia ingresa la clave:");
+                if (pass !== CONTRASEÑA_ADMIN) {
+                    alert("Clave incorrecta. Se mantendrá como Invitado.");
+                    myRole = 'Invitado';
+                    select.value = 'Invitado';
+                }
+            }
+            localStorage.setItem('chat_userrole', myRole);
         }
 
         let galleryItems = [];
@@ -813,7 +875,6 @@
             });
         }
 
-        /* VISTA Y NAVEGACIÓN EN CARRUSEL */
         function openCarousel(index) {
             currentIndex = index;
             updateCarouselContent();
@@ -871,7 +932,7 @@
             btn.classList.add('active');
         }
 
-        /* CHAT REALTIME Y ELIMINACIÓN COMO ADMIN */
+        /* CHAT REALTIME CON DISTINCIÓN DE ROL Y USUARIO */
         db.ref("chat_boda").on("value", (snapshot) => {
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
@@ -880,18 +941,21 @@
                 Object.keys(data).forEach(k => {
                     const msg = data[k];
                     const isMe = msg.nombre === myName;
+                    const isNovios = msg.rol && (msg.rol.includes('Novio') || msg.rol.includes('Novia'));
                     const initial = (msg.nombre || 'I').charAt(0);
                     
                     const dateObj = new Date(msg.timestamp || Date.now());
                     const timeStr = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`;
 
                     const row = document.createElement('div');
-                    row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
+                    row.className = `chat-msg-row ${isMe ? 'me' : 'other'} ${isNovios ? 'novios' : ''}`;
                     
+                    const roleLabel = msg.rol ? `<span class="role-tag">${msg.rol}</span>` : '';
+
                     row.innerHTML = `
                         <div class="chat-avatar">${initial}</div>
                         <div class="chat-bubble">
-                            <span class="chat-author">${isMe ? 'Tú' : msg.nombre}</span>
+                            <span class="chat-author">${isMe ? 'Tú' : msg.nombre} ${roleLabel}</span>
                             <div>${msg.texto}</div>
                             <div class="chat-meta">
                                 <span>${timeStr}</span>
@@ -912,6 +976,7 @@
             if (texto) {
                 db.ref("chat_boda").push({
                     nombre: myName,
+                    rol: myRole,
                     texto: texto,
                     timestamp: Date.now()
                 });
