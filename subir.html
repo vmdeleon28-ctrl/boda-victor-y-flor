@@ -8,7 +8,7 @@
     <!-- Tipografías elegantes -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Librerías desde CDN -->
+    <!-- Librerías CDN -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     
@@ -46,13 +46,11 @@
             pointer-events: none;
         }
 
-        /* TARJETA CON LA FOTO REAL DE LA PAREJA */
         .event-card-app {
             position: relative;
             height: 250px;
             border-radius: 24px;
             overflow: hidden;
-            /* Fondo con la imagen de la pareja y gradiente para legibilidad del texto */
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(11, 11, 12, 0.85) 100%), 
                         url('foto_pareja.jpg') center 30%/cover no-repeat;
             display: flex;
@@ -280,13 +278,19 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 14px;
-            padding: 4px 8px;
-            font-size: 0.7rem;
+            padding: 4px 10px;
+            font-size: 0.72rem;
             color: #fff;
             display: flex;
             align-items: center;
             gap: 4px;
             z-index: 3;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .like-btn:active {
+            transform: scale(0.9);
         }
 
         .timeline-item {
@@ -307,59 +311,184 @@
             min-width: 85px;
         }
 
-        .chat-box {
-            background: rgba(28, 28, 30, 0.8);
-            backdrop-filter: blur(16px);
-            border-radius: 22px;
-            height: 380px;
+        /* ESTILOS DEL CHAT */
+        .chat-container {
+            background: rgba(22, 22, 24, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            height: 480px;
             display: flex;
             flex-direction: column;
-            padding: 18px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .chat-header {
+            padding: 14px 18px;
+            background: rgba(30, 30, 32, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .name-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #d4af37;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding-right: 4px;
         }
 
-        .message {
-            background: #2c2c2e;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.82rem;
-            color: #e5e5ea;
-        }
-
-        .chat-input {
+        .chat-msg-row {
             display: flex;
-            gap: 8px;
-            margin-top: 14px;
+            gap: 10px;
+            align-items: flex-end;
+            max-width: 85%;
+            position: relative;
         }
 
-        .chat-input input {
-            flex: 1;
+        .chat-msg-row.other {
+            align-self: flex-start;
+        }
+
+        .chat-msg-row.me {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4af37 0%, #8a6f22 100%);
+            color: #121212;
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .chat-msg-row.me .chat-avatar {
+            background: linear-gradient(135deg, #3a3a3c 0%, #1c1c1e 100%);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .chat-bubble {
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.83rem;
+            line-height: 1.4;
+            position: relative;
+            word-break: break-word;
+        }
+
+        .chat-msg-row.other .chat-bubble {
             background: #2c2c2e;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px 18px;
-            border-radius: 24px;
-            color: #fff;
-            outline: none;
-            font-size: 0.84rem;
+            color: #f2f2f7;
+            border-bottom-left-radius: 4px;
         }
 
-        .chat-input button {
+        .chat-msg-row.me .chat-bubble {
+            background: linear-gradient(135deg, #d4af37 0%, #b59129 100%);
+            color: #0d0d0d;
+            font-weight: 500;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-author {
+            font-size: 0.68rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: #d4af37;
+            display: block;
+        }
+
+        .chat-msg-row.me .chat-author {
+            color: #2a2003;
+        }
+
+        .chat-meta {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.62rem;
+            margin-top: 4px;
+            opacity: 0.75;
+        }
+
+        .delete-msg-icon {
+            cursor: pointer;
+            color: #ff453a;
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 0 2px;
+        }
+
+        .chat-input-area {
+            padding: 12px 14px;
+            background: rgba(28, 28, 30, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 16px;
+            border-radius: 20px;
+            color: #ffffff;
+            outline: none;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .chat-send-btn {
             background: linear-gradient(135deg, #d4af37 0%, #aa892c 100%);
             border: none;
-            color: #121212;
-            padding: 0 18px;
-            border-radius: 24px;
-            font-weight: 700;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #121212;
         }
 
         .upload-btn-container {
@@ -386,6 +515,7 @@
             cursor: pointer;
         }
 
+        /* MODAL CARRUSEL */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -401,20 +531,71 @@
 
         .lightbox-modal.active { display: flex; }
 
+        .lightbox-container {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .lightbox-content {
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 65vh;
             border-radius: 20px;
+            object-fit: contain;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .nav-btn.prev { left: -10px; }
+        .nav-btn.next { right: -10px; }
+
+        .lightbox-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         .lightbox-delete-btn {
-            margin-top: 14px;
             background: rgba(255, 59, 48, 0.2);
             border: 1px solid rgba(255, 59, 48, 0.5);
             color: #ff453a;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 20px;
             font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .lightbox-close-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
         }
 
@@ -434,7 +615,7 @@
 
     <div class="app-actions">
         <button class="action-btn active" onclick="switchTab('fotos', this)">
-            <div class="action-icon">🖼️️</div>
+            <div class="action-icon">🖼</div>
             Fotos
         </button>
         <button class="action-btn" onclick="switchTab('planning', this)">
@@ -447,6 +628,7 @@
         </button>
     </div>
 
+    <!-- PESTAÑA GALERÍA DE FOTOS -->
     <div id="tab-fotos" class="tab-content active">
         <div class="photos-header">
             <span class="photos-count" id="photos-count">0 archivos</span>
@@ -461,6 +643,7 @@
         <div class="photo-grid" id="gallery"></div>
     </div>
 
+    <!-- PESTAÑA PLANNING -->
     <div id="tab-planning" class="tab-content">
         <div class="timeline-item">
             <div class="timeline-time">16:00 h</div>
@@ -478,12 +661,26 @@
         </div>
     </div>
 
+    <!-- PESTAÑA CHAT -->
     <div id="tab-chat" class="tab-content">
-        <div class="chat-box">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-user">
+                    <span style="font-size: 0.8rem; color: #8e8e93;">Tu nombre:</span>
+                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️</button>
+                </div>
+                <span style="font-size: 0.7rem; color: #34c759; display: flex; align-items: center; gap: 4px;">
+                    <span style="width: 6px; height: 6px; background:#34c759; border-radius:50%;"></span> En vivo
+                </span>
+            </div>
+
             <div class="chat-messages" id="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="msg-input" placeholder="Escribe tu mensaje..." onkeypress="if(event.key==='Enter') sendMessage()">
-                <button onclick="sendMessage()">Enviar</button>
+
+            <div class="chat-input-area">
+                <input type="text" id="msg-input" placeholder="Escribe un mensaje para los novios..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button class="chat-send-btn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -492,9 +689,17 @@
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto o Video</button>
     </div>
 
-    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox(event)">
-        <div id="lightbox-body" style="display:flex; flex-direction:column; align-items:center;"></div>
-        <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️ Eliminar foto</button>
+    <!-- MODAL VISOR EN CARRUSEL -->
+    <div class="lightbox-modal" id="lightbox">
+        <div class="lightbox-container">
+            <button class="nav-btn prev" onclick="navigateCarousel(-1)">❮</button>
+            <div id="lightbox-body" style="display:flex; justify-content:center; width: 100%;"></div>
+            <button class="nav-btn next" onclick="navigateCarousel(1)">❯</button>
+        </div>
+        <div class="lightbox-actions">
+            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️ Eliminar</button>
+            <button class="lightbox-close-btn" onclick="closeLightbox()">Cerrar</button>
+        </div>
     </div>
 
     <script>
@@ -515,7 +720,25 @@
         }
         const db = firebase.database();
 
+        let myName = localStorage.getItem('chat_username') || '';
+        if (!myName) {
+            myName = 'Invitado ' + Math.floor(100 + Math.random() * 900);
+            localStorage.setItem('chat_username', myName);
+        }
+        document.getElementById('current-user-badge').textContent = myName + ' ✏️';
+
+        function cambiarNombre() {
+            const nuevo = prompt("Introduce tu nombre:", myName);
+            if (nuevo && nuevo.trim() !== '') {
+                myName = nuevo.trim();
+                localStorage.setItem('chat_username', myName);
+                document.getElementById('current-user-badge').textContent = myName + ' ✏️';
+            }
+        }
+
         let galleryItems = [];
+        let sortedItems = [];
+        let currentIndex = 0;
 
         db.ref("galeria_boda").on("value", (snapshot) => {
             const data = snapshot.val();
@@ -533,14 +756,14 @@
             const sortOrder = document.getElementById('sort-select').value;
             const countLabel = document.getElementById('photos-count');
 
-            let sortedItems = [...galleryItems].sort((a, b) => {
+            sortedItems = [...galleryItems].sort((a, b) => {
                 return sortOrder === 'newest' ? b.timestamp - a.timestamp : a.timestamp - b.timestamp;
             });
 
             countLabel.textContent = `${sortedItems.length} archivos`;
             gallery.innerHTML = '';
 
-            sortedItems.forEach((item) => {
+            sortedItems.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'photo-item';
 
@@ -554,7 +777,7 @@
                 }
 
                 card.onclick = (e) => {
-                    if (!e.target.closest('.like-btn')) openLightbox(item);
+                    if (!e.target.closest('.like-btn')) openCarousel(index);
                 };
 
                 gallery.appendChild(card);
@@ -590,36 +813,54 @@
             });
         }
 
-        function openLightbox(item) {
-            const modal = document.getElementById('lightbox');
+        /* VISTA Y NAVEGACIÓN EN CARRUSEL */
+        function openCarousel(index) {
+            currentIndex = index;
+            updateCarouselContent();
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function updateCarouselContent() {
             const body = document.getElementById('lightbox-body');
             const deleteBtn = document.getElementById('lightbox-delete-btn');
+            const item = sortedItems[currentIndex];
+
+            if (!item) return;
 
             body.innerHTML = item.type === 'video' 
                 ? `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`
                 : `<img src="${item.url}" class="lightbox-content">`;
 
-            deleteBtn.onclick = () => {
-                const pass = prompt("Contraseña de administrador:");
-                if (pass === CONTRASEÑA_ADMIN) {
-                    db.ref(`galeria_boda/${item.id}`).remove();
-                    modal.classList.remove('active');
-                }
-            };
-
-            modal.classList.add('active');
+            deleteBtn.onclick = () => deletePhotoAdmin(item.id);
         }
 
-        function closeLightbox(e) {
-            if (e.target.id === 'lightbox') {
-                document.getElementById('lightbox').classList.remove('active');
+        function navigateCarousel(direction) {
+            if (sortedItems.length === 0) return;
+            currentIndex = (currentIndex + direction + sortedItems.length) % sortedItems.length;
+            updateCarouselContent();
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function deletePhotoAdmin(itemId) {
+            const pass = prompt("Contraseña de administrador para borrar foto:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref(`galeria_boda/${itemId}`).remove().then(() => {
+                    closeLightbox();
+                });
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta");
             }
         }
 
         function borrarTodasLasFotos() {
-            const pass = prompt("Contraseña para limpiar la galería:");
+            const pass = prompt("Contraseña de administrador para borrar TODA la galería:");
             if (pass === CONTRASEÑA_ADMIN) {
                 db.ref("galeria_boda").remove();
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta");
             }
         }
 
@@ -630,16 +871,36 @@
             btn.classList.add('active');
         }
 
+        /* CHAT REALTIME Y ELIMINACIÓN COMO ADMIN */
         db.ref("chat_boda").on("value", (snapshot) => {
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
             const data = snapshot.val();
             if (data) {
                 Object.keys(data).forEach(k => {
-                    const div = document.createElement('div');
-                    div.className = 'message';
-                    div.innerHTML = `<strong>${data[k].nombre}:</strong> ${data[k].texto}`;
-                    container.appendChild(div);
+                    const msg = data[k];
+                    const isMe = msg.nombre === myName;
+                    const initial = (msg.nombre || 'I').charAt(0);
+                    
+                    const dateObj = new Date(msg.timestamp || Date.now());
+                    const timeStr = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`;
+
+                    const row = document.createElement('div');
+                    row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
+                    
+                    row.innerHTML = `
+                        <div class="chat-avatar">${initial}</div>
+                        <div class="chat-bubble">
+                            <span class="chat-author">${isMe ? 'Tú' : msg.nombre}</span>
+                            <div>${msg.texto}</div>
+                            <div class="chat-meta">
+                                <span>${timeStr}</span>
+                                <span class="delete-msg-icon" onclick="deleteMessageAdmin('${k}')" title="Borrar mensaje">🗑️</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(row);
                 });
                 container.scrollTop = container.scrollHeight;
             }
@@ -647,13 +908,23 @@
 
         function sendMessage() {
             const input = document.getElementById('msg-input');
-            if (input.value.trim()) {
+            const texto = input.value.trim();
+            if (texto) {
                 db.ref("chat_boda").push({
-                    nombre: "Invitado",
-                    texto: input.value.trim(),
+                    nombre: myName,
+                    texto: texto,
                     timestamp: Date.now()
                 });
                 input.value = '';
+            }
+        }
+
+        function deleteMessageAdmin(msgId) {
+            const pass = prompt("Contraseña de administrador para eliminar mensaje:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref(`chat_boda/${msgId}`).remove();
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta");
             }
         }
     </script>
