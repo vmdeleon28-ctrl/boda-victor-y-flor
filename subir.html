@@ -422,7 +422,7 @@
             color: #e5e5ea;
             animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            cursor: pointer;
+            word-break: break-word;
         }
 
         .message.self {
@@ -690,7 +690,7 @@
             </div>
             <div class="chat-messages" id="chat-messages"></div>
             <div class="chat-input">
-                <input type="text" id="msg-input" placeholder="Escribe un mensaje de felicitación...">
+                <input type="text" id="msg-input" placeholder="Escribe un mensaje de felicitación..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Enviar</button>
             </div>
         </div>
@@ -931,58 +931,57 @@
 
             const data = snapshot.val();
             if (data) {
-                Object.keys(data).forEach(msgId => {
-                    const msg = data[msgId];
+                Object.keys(data).forEach(key => {
+                    const msg = data[key];
                     const msgDiv = document.createElement('div');
-                    msgDiv.className = `message ${msg.isSelf ? 'self' : ''}`;
-                    msgDiv.innerHTML = `<div class="user">${msg.user}</div>${msg.message}`;
-                    
-                    // Al hacer clic en un mensaje, se puede eliminar
-                    msgDiv.onclick = () => borrarMensajeEspecifico(msgId);
-
+                    msgDiv.className = 'message self';
+                    msgDiv.innerHTML = `
+                        <div class="user">${msg.nombre || 'Invitado'}</div>
+                        ${msg.texto}
+                    `;
                     chatContainer.appendChild(msgDiv);
                 });
             }
             chatContainer.scrollTop = chatContainer.scrollHeight;
         });
 
-        window.sendMessage = function() {
+        function sendMessage() {
             const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            
-            if (text !== "") {
-                db.ref("chat_boda").push({
-                    user: "Invitado",
-                    message: text,
-                    timestamp: Date.now(),
-                    isSelf: true
-                });
+            const texto = input.value.trim();
+            if (!texto) return;
 
-                input.value = "";
+            let nombre = localStorage.getItem('guest_name');
+            if (!nombre) {
+                nombre = prompt("Ingresa tu nombre para identificarte en el chat:") || "Invitado";
+                localStorage.setItem('guest_name', nombre);
             }
-        };
 
-        function borrarMensajeEspecifico(msgId) {
-            const pass = prompt("Ingresa la contraseña de administrador para eliminar este mensaje:");
-            if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`chat_boda/${msgId}`).remove()
-                    .then(() => alert("Mensaje eliminado."))
-                    .catch((err) => console.error(err));
-            } else if (pass !== null) {
-                alert("Contraseña incorrecta.");
+            db.ref("chat_boda").push({
+                nombre: nombre,
+                texto: texto,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+            triggerConfetti();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
         }
 
-        window.borrarChat = function() {
-            const pass = prompt("Para borrar TODO el chat, ingresa la contraseña de administrador:");
+        function borrarChat() {
+            const pass = prompt("Para borrar todos los mensajes del chat, ingresa la contraseña de administrador:");
             if (pass === CONTRASEÑA_ADMIN) {
                 db.ref("chat_boda").remove()
-                    .then(() => alert("El chat ha sido vaciado."))
+                    .then(() => alert("El chat ha sido limpiado."))
                     .catch((error) => console.error(error));
             } else if (pass !== null) {
                 alert("Contraseña incorrecta.");
             }
-        };
+        }
     </script>
 </body>
 </html>
