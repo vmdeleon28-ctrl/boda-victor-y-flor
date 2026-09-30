@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Víctor & Flor de Liz - Experiencia Interactiva</title>
     
-    <!-- Tipografías -->
+    <!-- Tipografías elegantes -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Librerías de Confeti, Cloudinary y Firebase SDK Compat -->
+    <!-- Librerías de Confeti, Cloudinary y Firebase SDK Compat (para GitHub Pages) -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -16,93 +16,638 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #0b0b0c;
             color: #ffffff;
+            text-align: left;
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             padding: 16px 16px 100px 16px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
             overflow-x: hidden;
+            position: relative;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .event-card-app {
             position: relative;
             height: 220px;
             border-radius: 24px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(11,11,12,0.95) 100%), #1c1c1e;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(11, 11, 12, 0.95) 100%), #1c1c1e;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 22px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
             margin-bottom: 20px;
+            z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .event-card-app h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; }
+
+        .badge-premium {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-premium::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #d4af37;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #d4af37;
+        }
+
+        .event-card-app h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.05;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .event-card-app p {
+            font-size: 0.82rem;
+            opacity: 0.9;
+            font-weight: 400;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .app-actions {
             display: flex;
             justify-content: space-around;
             padding: 8px;
             background: rgba(28, 28, 30, 0.8);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
         }
+
         .action-btn {
-            background: none; border: none; color: #8e8e93; font-size: 0.75rem;
-            cursor: pointer; font-family: 'Montserrat', sans-serif; flex: 1; padding: 8px 0;
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #8e8e93;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1;
+            padding: 8px 0;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 18px;
         }
-        .action-btn.active { color: #ffffff; font-weight: 600; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            background: #2c2c2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid transparent;
+        }
+
+        .action-btn.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .action-btn.active .action-icon {
+            background: #ffffff;
+            color: #121212;
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+            position: relative;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            background: rgba(28, 28, 30, 0.75);
+            backdrop-filter: blur(12px);
+            padding: 20px 20px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .timeline-item:active {
+            transform: scale(0.98);
+            background: rgba(44, 44, 46, 0.9);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .timeline-time {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #d4af37;
+            min-width: 85px;
+            letter-spacing: 0.3px;
+        }
+
+        .timeline-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .timeline-info p {
+            font-size: 0.82rem;
+            color: #98989d;
+        }
+
+        .photos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+            gap: 8px;
+        }
+
+        .photos-count {
+            font-size: 0.82rem;
+            color: #8e8e93;
+            font-weight: 500;
+        }
+
+        .photos-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-select {
+            background: #1c1c1e;
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            background: rgba(255, 59, 48, 0.15);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: #ff453a;
+            padding: 8px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .clear-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 59, 48, 0.3);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
         .photo-item {
-            position: relative; aspect-ratio: 1 / 1; border-radius: 18px;
-            overflow: hidden; background: #1c1c1e; border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .photo-item img, .photo-item video { width: 100%; height: 100%; object-fit: cover; }
+
+        .photo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .photo-item img, .photo-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .time-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .video-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .like-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 3;
+        }
+
+        .chat-box {
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        .chat-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #d4af37;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+        }
+
+        .message {
+            background: #2c2c2e;
+            padding: 12px 16px;
+            border-radius: 18px 18px 18px 4px;
+            max-width: 85%;
+            font-size: 0.84rem;
+            line-height: 1.4;
+            color: #e5e5ea;
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            word-break: break-word;
+        }
+
+        .message.self {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #3a3a3c 0%, #2c2c2e 100%);
+            border-radius: 18px 18px 4px 18px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .message .user {
+            font-weight: 700;
+            font-size: 0.72rem;
+            color: #d4af37;
+            margin-bottom: 3px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: #2c2c2e;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 18px;
+            border-radius: 24px;
+            color: #fff;
+            outline: none;
+            font-size: 0.84rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .chat-input button {
+            background: linear-gradient(135deg, #d4af37 0%, #aa892c 100%);
+            border: none;
+            color: #121212;
+            padding: 0 20px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 0.84rem;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
         .upload-btn-container {
-            position: fixed; bottom: 24px; left: 0; right: 0;
-            display: flex; justify-content: center; z-index: 1000;
+            position: fixed;
+            bottom: 24px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
         }
+
         .upload-btn-main {
+            pointer-events: auto;
             background: linear-gradient(135deg, #d9c58d 0%, #b39343 100%);
-            color: #0d0d0d; border: none; padding: 16px 32px; border-radius: 35px;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(179, 147, 67, 0.4);
+            color: #0d0d0d;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 35px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 10px 30px rgba(179, 147, 67, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            animation: subtlePulse 3s infinite;
+        }
+
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .lightbox-content {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 20px;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            margin-top: 16px;
+            font-size: 0.88rem;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .lightbox-delete-btn {
+            margin-top: 14px;
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid rgba(255, 59, 48, 0.5);
+            color: #ff453a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.85) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
     </style>
 </head>
 <body>
 
     <div class="event-card-app">
+        <span class="badge-premium">Álbum Boda</span>
         <h3>Víctor & Flor de Liz</h3>
-        <p>📍 Orizaba, Ver.</p>
+        <p>📍 12 de Diciembre de 2026 · Orizaba, Ver.</p>
     </div>
 
     <div class="app-actions">
-        <button class="action-btn active" onclick="switchTab('fotos', this)">🖼️ Fotos</button>
-        <button class="action-btn" onclick="switchTab('chat', this)">💬 Chat</button>
+        <button class="action-btn active" onclick="switchTab('fotos', this)">
+            <div class="action-icon">🖼️</div>
+            Fotos
+        </button>
+        <button class="action-btn" onclick="switchTab('planning', this)">
+            <div class="action-icon">📋</div>
+            Planning
+        </button>
+        <button class="action-btn" onclick="switchTab('chat', this)">
+            <div class="action-icon">💬</div>
+            Chat
+        </button>
     </div>
 
     <div id="tab-fotos" class="tab-content active">
+        <div class="photos-header">
+            <span class="photos-count" id="photos-count">0 archivos</span>
+            <div class="photos-controls">
+                <select class="sort-select" id="sort-select" onchange="renderGallery()">
+                    <option value="newest">⚡ Recientes</option>
+                    <option value="oldest">⏳ Antiguas</option>
+                </select>
+                <button class="clear-btn" onclick="borrarTodasLasFotos()">🗑️ Limpiar Todo</button>
+            </div>
+        </div>
         <div class="photo-grid" id="gallery"></div>
     </div>
 
+    <div id="tab-planning" class="tab-content">
+        <div class="timeline-item">
+            <div class="timeline-time">16:00 h</div>
+            <div class="timeline-info">
+                <h4>Ceremonia Civil</h4>
+                <p>Jardín de las Orquídeas</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-time">18:00 h</div>
+            <div class="timeline-info">
+                <h4>Brindis & Recepción</h4>
+                <p>Jardín Central</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-time">20:00 h</div>
+            <div class="timeline-info">
+                <h4>Cena & Baile</h4>
+                <p>Salón Principal</p>
+            </div>
+        </div>
+    </div>
+
     <div id="tab-chat" class="tab-content">
-        <div id="chat-messages" style="height:250px; overflow-y:auto; margin-bottom:10px;"></div>
-        <input type="text" id="msg-input" placeholder="Mensaje..." style="width:70%; padding:10px; border-radius:12px;">
-        <button onclick="sendMessage()" style="padding:10px; border-radius:12px;">Enviar</button>
+        <div class="chat-box">
+            <div class="chat-header-actions">
+                <span class="chat-title">Mensajes en Vivo</span>
+                <button class="clear-btn" onclick="borrarChat()">🗑️ Limpiar Chat</button>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="msg-input" placeholder="Escribe un mensaje de felicitación..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
     </div>
 
     <div class="upload-btn-container">
-        <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto o Video</button>
+        <button class="upload-btn-main" onclick="openCloudinaryWidget()">
+            📸 Subir Foto o Video
+        </button>
+    </div>
+
+    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+        <div id="lightbox-body" style="display:flex; flex-direction:column; align-items:center; max-width:100%;"></div>
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️ Eliminar esta foto</button>
     </div>
 
     <script>
-        // Configuración oficial de Firebase con tu API Key
+        const CONTRASEÑA_ADMIN = "1234";
+
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
             authDomain: "boda-victor-flor.firebaseapp.com",
@@ -118,25 +663,143 @@
         }
         const db = firebase.database();
 
-        // Escuchar Galería en tiempo real
-        db.ref("galeria_boda").on("value", (snapshot) => {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
-            const data = snapshot.val();
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const item = data[key];
-                    const div = document.createElement('div');
-                    div.className = 'photo-item';
-                    div.innerHTML = item.type === 'video' 
-                        ? `<video src="${item.url}" controls></video>` 
-                        : `<img src="${item.url}" loading="lazy">`;
-                    gallery.appendChild(div);
+        let galleryItems = [];
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.85 },
+                    colors: ['#d4af37', '#ffffff', '#aa892c']
                 });
             }
+        }
+
+        db.ref("galeria_boda").on("value", (snapshot) => {
+            const data = snapshot.val();
+            galleryItems = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    galleryItems.push({ id: key, ...data[key] });
+                });
+            }
+            renderGallery();
         });
 
-        // Widget de Cloudinary
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            const sortOrder = document.getElementById('sort-select').value;
+            const countLabel = document.getElementById('photos-count');
+
+            let sortedItems = [...galleryItems].sort((a, b) => {
+                return sortOrder === 'newest' ? b.timestamp - a.timestamp : a.timestamp - b.timestamp;
+            });
+
+            countLabel.textContent = `${sortedItems.length} ${sortedItems.length === 1 ? 'archivo' : 'archivos'}`;
+            gallery.innerHTML = '';
+
+            sortedItems.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'photo-item';
+                card.style.animation = `fadeInUp 0.4s ease forwards ${index * 0.05}s`;
+
+                const timeTag = `<span class="time-tag">⏱️ ${item.timeStr || ''}</span>`;
+                const likeBtn = `
+                    <div class="like-btn" onclick="toggleLike(event, '${item.id}')">
+                        ❤️ <span>${item.likes || 0}</span>
+                    </div>
+                `;
+
+                if (item.type === 'video') {
+                    card.innerHTML = `
+                        ${timeTag}
+                        <video src="${item.url}#t=0.5" preload="metadata"></video>
+                        <div class="video-indicator">▶</div>
+                        ${likeBtn}
+                    `;
+                } else {
+                    card.innerHTML = `
+                        ${timeTag}
+                        <img src="${item.url}" alt="Foto Boda" loading="lazy">
+                        ${likeBtn}
+                    `;
+                }
+
+                card.onclick = (e) => {
+                    if (!e.target.closest('.like-btn')) {
+                        openLightbox(item);
+                    }
+                };
+
+                gallery.appendChild(card);
+            });
+        }
+
+        function toggleLike(e, itemId) {
+            e.stopPropagation();
+            const itemRef = db.ref(`galeria_boda/${itemId}`);
+            itemRef.child("likes").transaction((currentLikes) => {
+                return (currentLikes || 0) + 1;
+            });
+        }
+
+        function openLightbox(item) {
+            const modal = document.getElementById('lightbox');
+            const body = document.getElementById('lightbox-body');
+            const caption = document.getElementById('lightbox-caption');
+            const deleteBtn = document.getElementById('lightbox-delete-btn');
+
+            if (item.type === 'video') {
+                body.innerHTML = `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`;
+            } else {
+                body.innerHTML = `<img src="${item.url}" class="lightbox-content">`;
+            }
+
+            caption.textContent = `Compartido a las ${item.timeStr || ''} · ❤️ ${item.likes || 0} Me gusta`;
+            deleteBtn.onclick = () => borrarFotoEspecifica(item.id);
+
+            modal.classList.add('active');
+        }
+
+        function closeLightbox(e) {
+            if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+                const modal = document.getElementById('lightbox');
+                const body = document.getElementById('lightbox-body');
+                modal.classList.remove('active');
+                body.innerHTML = '';
+            }
+        }
+
+        function borrarFotoEspecifica(itemId) {
+            const pass = prompt("Ingresa la contraseña de administrador:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref(`galeria_boda/${itemId}`).remove()
+                    .then(() => {
+                        alert("Foto eliminada correctamente.");
+                        document.getElementById('lightbox').classList.remove('active');
+                    });
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        }
+
+        function borrarTodasLasFotos() {
+            const pass = prompt("Para borrar TODAS las fotos, ingresa la contraseña:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref("galeria_boda").remove().then(() => alert("Galería limpiada."));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
                 cloudName: 'pheewujq',
@@ -145,48 +808,77 @@
                 multiple: true
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
+                    const now = new Date();
+                    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} h`;
+                    
                     db.ref("galeria_boda").push({
                         url: result.info.secure_url,
                         type: result.info.resource_type === 'video' ? 'video' : 'image',
-                        timeStr: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                        timeStr: timeStr,
                         timestamp: Date.now(),
                         likes: 0
                     });
-                    if (typeof confetti === 'function') confetti();
+
+                    triggerConfetti();
+                    switchTab('fotos', document.querySelectorAll('.action-btn')[0]);
                 }
             });
         }
 
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            btn.classList.add('active');
-        }
+        // Chat en Vivo
+        const chatContainer = document.getElementById('chat-messages');
 
-        // Chat
         db.ref("chat_boda").on("value", (snapshot) => {
-            const container = document.getElementById('chat-messages');
-            container.innerHTML = '';
+            chatContainer.innerHTML = '';
+            const welcomeMsg = document.createElement('div');
+            welcomeMsg.className = 'message';
+            welcomeMsg.innerHTML = `<div class="user">Flor & Víctor</div>¡Bienvenidos a nuestra boda! Dejen sus mensajes aquí ❤️`;
+            chatContainer.appendChild(welcomeMsg);
+
             const data = snapshot.val();
             if (data) {
-                Object.keys(data).forEach(k => {
-                    const p = document.createElement('p');
-                    p.textContent = `${data[k].nombre}: ${data[k].texto}`;
-                    container.appendChild(p);
+                Object.keys(data).forEach(key => {
+                    const msg = data[key];
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message self';
+                    msgDiv.innerHTML = `<div class="user">${msg.nombre || 'Invitado'}</div>${msg.texto}`;
+                    chatContainer.appendChild(msgDiv);
                 });
             }
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         });
 
         function sendMessage() {
             const input = document.getElementById('msg-input');
-            if (input.value.trim()) {
-                db.ref("chat_boda").push({
-                    nombre: "Invitado",
-                    texto: input.value,
-                    timestamp: Date.now()
-                });
-                input.value = '';
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            let nombre = localStorage.getItem('guest_name');
+            if (!nombre) {
+                nombre = prompt("Tu nombre para el chat:") || "Invitado";
+                localStorage.setItem('guest_name', nombre);
+            }
+
+            db.ref("chat_boda").push({
+                nombre: nombre,
+                texto: texto,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+            triggerConfetti();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function borrarChat() {
+            const pass = prompt("Contraseña para limpiar chat:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                db.ref("chat_boda").remove().then(() => alert("Chat limpiado."));
+            } else if (pass !== null) {
+                alert("Contraseña incorrecta.");
             }
         }
     </script>
