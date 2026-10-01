@@ -21,7 +21,6 @@
         
         body {
             font-family: 'Montserrat', sans-serif;
-            /* Fondo botánico floral de rosas blancas y eucalipto */
             background: #f7f9f7 url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed;
             color: #2c352b;
             text-align: left;
@@ -34,7 +33,6 @@
             position: relative;
         }
 
-        /* Capa suavizante de contraste sobre el fondo */
         body::before {
             content: '';
             position: fixed;
@@ -185,7 +183,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* REPRODUCTOR DE MÚSICA FLOTANTE */
         .music-player-btn {
             position: fixed;
             top: 20px;
@@ -348,7 +345,6 @@
             min-width: 85px;
         }
 
-        /* CHAT VERDE PASTEL Y BLANCO */
         .chat-container {
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
@@ -584,7 +580,6 @@
             cursor: pointer;
         }
 
-        /* MODAL VISOR EN CARRUSEL */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -782,7 +777,7 @@
             <button class="nav-btn next" onclick="navigateCarousel(1)">❯</button>
         </div>
         <div class="lightbox-actions">
-            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️️ Eliminar</button>
+            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑 Eliminar</button>
             <button class="lightbox-close-btn" onclick="closeLightbox()">Cerrar</button>
         </div>
     </div>
@@ -962,27 +957,30 @@
 
             if (!item) return;
 
-            body.innerHTML = item.type === 'video' 
-                ? `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`
-                : `<img src="${item.url}" class="lightbox-content">`;
+            if (item.type === 'video') {
+                body.innerHTML = `<video class="lightbox-content" src="${item.url}" controls autoplay></video>`;
+            } else {
+                body.innerHTML = `<img class="lightbox-content" src="${item.url}" alt="Foto boda">`;
+            }
 
-            deleteBtn.onclick = () => deletePhotoAdmin(item.id);
+            deleteBtn.onclick = () => borrarFoto(item.id);
         }
 
-        function navigateCarousel(direction) {
+        function navigateCarousel(step) {
             if (sortedItems.length === 0) return;
-            currentIndex = (currentIndex + direction + sortedItems.length) % sortedItems.length;
+            currentIndex = (currentIndex + step + sortedItems.length) % sortedItems.length;
             updateCarouselContent();
         }
 
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
+            document.getElementById('lightbox-body').innerHTML = '';
         }
 
-        function deletePhotoAdmin(itemId) {
-            const pass = prompt("Para eliminar este elemento ingresa la clave:");
+        function borrarFoto(id) {
+            const pass = prompt("Para eliminar esta foto ingresa la clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`galeria_boda/${itemId}`).remove().then(() => {
+                db.ref(`galeria_boda/${id}`).remove().then(() => {
                     closeLightbox();
                 });
             } else if (pass !== null) {
@@ -991,17 +989,15 @@
         }
 
         function borrarTodasLasFotos() {
-            const pass = prompt("Clave de administrador para borrar TODAS las fotos:");
+            const pass = prompt("¿Seguro que deseas borrar TODAS las fotos? Ingresa la clave:");
             if (pass === CONTRASEÑA_ADMIN) {
-                if (confirm("¿Estás seguro de vaciar el álbum por completo?")) {
-                    db.ref("galeria_boda").remove();
-                }
+                db.ref("galeria_boda").remove();
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
         }
 
-        /* --- LÓGICA DE CHAT EN TIEMPO REAL --- */
+        /* --- LÓGICA DE CHAT EN VIVO --- */
         db.ref("chat_boda").on("value", (snapshot) => {
             const data = snapshot.val();
             const container = document.getElementById('chat-messages');
@@ -1010,28 +1006,35 @@
             if (data) {
                 Object.keys(data).forEach(key => {
                     const msg = data[key];
-                    const isMe = msg.author === myName;
-                    const isNovios = msg.role.includes('Novio') || msg.role.includes('Novia');
+                    const isMe = msg.name === myName;
+                    const isNovios = msg.role && (msg.role.includes('Novio') || msg.role.includes('Novia'));
 
-                    const row = document.createElement('div');
-                    row.className = `chat-msg-row ${isMe ? 'me' : 'other'} ${isNovios ? 'novios' : ''}`;
+                    let rowClass = 'chat-msg-row ';
+                    if (isNovios) rowClass += 'novios ';
+                    else if (isMe) rowClass += 'me ';
+                    else rowClass += 'other ';
 
-                    const initial = msg.author ? msg.author.charAt(0).toUpperCase() : 'I';
-                    
-                    row.innerHTML = `
+                    const initial = (msg.name || 'I').charAt(0).toUpperCase();
+
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = rowClass;
+
+                    msgDiv.innerHTML = `
                         <div class="chat-avatar">${initial}</div>
                         <div class="chat-bubble">
                             <div class="chat-author">
-                                ${msg.author} <span class="role-tag">${msg.role}</span>
+                                ${msg.name} 
+                                <span class="role-tag">${msg.role || 'Invitado'}</span>
                             </div>
                             <div>${msg.text}</div>
                             <div class="chat-meta">
                                 <span>${msg.timeStr || ''}</span>
-                                <span class="delete-msg-icon" onclick="deleteMsgAdmin('${key}')">×</span>
+                                <span class="delete-msg-icon" onclick="borrarMensaje('${key}')">×</span>
                             </div>
                         </div>
                     `;
-                    container.appendChild(row);
+
+                    container.appendChild(msgDiv);
                 });
                 container.scrollTop = container.scrollHeight;
             }
@@ -1043,10 +1046,10 @@
 
             if (text !== '') {
                 const now = new Date();
-                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} h`;
 
                 db.ref("chat_boda").push({
-                    author: myName,
+                    name: myName,
                     role: myRole,
                     text: text,
                     timeStr: timeStr,
@@ -1057,10 +1060,10 @@
             }
         }
 
-        function deleteMsgAdmin(msgId) {
-            const pass = prompt("Clave para eliminar mensaje:");
+        function borrarMensaje(key) {
+            const pass = prompt("Para eliminar este mensaje ingresa la clave:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`chat_boda/${msgId}`).remove();
+                db.ref(`chat_boda/${key}`).remove();
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
