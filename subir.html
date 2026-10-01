@@ -21,27 +21,27 @@
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0b0b0c;
-            color: #ffffff;
+            /* Fondo botánico floral de rosas blancas y eucalipto */
+            background: #f7f9f7 url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed;
+            color: #2c352b;
             text-align: left;
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             padding: 16px 16px 100px 16px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
             overflow-x: hidden;
             position: relative;
         }
 
+        /* Capa suavizante de contraste sobre el fondo */
         body::before {
             content: '';
             position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
             z-index: 0;
             pointer-events: none;
         }
@@ -51,16 +51,16 @@
             height: 250px;
             border-radius: 24px;
             overflow: hidden;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(11, 11, 12, 0.85) 100%), 
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(20, 30, 20, 0.75) 100%), 
                         url('foto_pareja.jpg') center 30%/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 22px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 10px 25px rgba(44, 53, 43, 0.15);
             margin-bottom: 22px;
             z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -68,15 +68,15 @@
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.72rem;
             font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #ffffff;
+            border: 1px solid rgba(138, 163, 134, 0.3);
+            color: #3b493a;
             letter-spacing: 0.8px;
             display: flex;
             align-items: center;
@@ -87,9 +87,9 @@
             content: '';
             width: 6px;
             height: 6px;
-            background: #d4af37;
+            background: #7a9a76;
             border-radius: 50%;
-            box-shadow: 0 0 8px #d4af37;
+            box-shadow: 0 0 6px #7a9a76;
         }
 
         .event-card-app h3 {
@@ -99,32 +99,32 @@
             color: #ffffff;
             line-height: 1.05;
             margin-bottom: 4px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .event-card-app p {
             font-size: 0.82rem;
-            opacity: 0.95;
-            font-weight: 400;
-            color: #f0f0f0;
+            font-weight: 500;
+            color: #f0f4f0;
             display: flex;
             align-items: center;
             gap: 6px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
         }
 
         .app-actions {
             display: flex;
             justify-content: space-around;
             padding: 8px;
-            background: rgba(28, 28, 30, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(138, 163, 134, 0.25);
             margin-bottom: 22px;
             position: relative;
             z-index: 1;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         .action-btn {
@@ -134,9 +134,9 @@
             gap: 6px;
             background: none;
             border: none;
-            color: #8e8e93;
+            color: #637562;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             flex: 1;
@@ -148,26 +148,26 @@
         .action-icon {
             width: 48px;
             height: 48px;
-            background: #2c2c2e;
+            background: #edf2ed;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid transparent;
+            border: 1px solid rgba(138, 163, 134, 0.2);
         }
 
         .action-btn.active {
-            color: #ffffff;
-            font-weight: 600;
+            color: #2c352b;
+            font-weight: 700;
         }
 
         .action-btn.active .action-icon {
-            background: #ffffff;
-            color: #121212;
+            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            color: #ffffff;
             transform: translateY(-4px) scale(1.08);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 18px rgba(126, 157, 119, 0.35);
         }
 
         .tab-content {
@@ -185,6 +185,46 @@
             transform: translateY(0) scale(1);
         }
 
+        /* REPRODUCTOR DE MÚSICA FLOTANTE */
+        .music-player-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(138, 163, 134, 0.4);
+            border-radius: 30px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #3b493a;
+            transition: transform 0.2s ease;
+        }
+
+        .music-player-btn:active {
+            transform: scale(0.95);
+        }
+
+        .music-icon {
+            font-size: 1rem;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .music-player-btn.playing .music-icon {
+            animation-play-state: running;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
         .photos-header {
             display: flex;
             justify-content: space-between;
@@ -196,8 +236,8 @@
 
         .photos-count {
             font-size: 0.82rem;
-            color: #8e8e93;
-            font-weight: 500;
+            color: #4a5a48;
+            font-weight: 600;
         }
 
         .photos-controls {
@@ -207,9 +247,9 @@
         }
 
         .sort-select {
-            background: #1c1c1e;
-            color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c352b;
+            border: 1px solid rgba(138, 163, 134, 0.4);
             padding: 8px 10px;
             border-radius: 14px;
             font-size: 0.75rem;
@@ -219,14 +259,14 @@
         }
 
         .clear-btn {
-            background: rgba(255, 59, 48, 0.15);
-            border: 1px solid rgba(255, 59, 48, 0.3);
-            color: #ff453a;
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.25);
+            color: #d32f2f;
             padding: 8px 10px;
             border-radius: 14px;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            font-weight: 600;
         }
 
         .photo-grid {
@@ -240,11 +280,11 @@
             aspect-ratio: 1 / 1;
             border-radius: 18px;
             overflow: hidden;
-            background: #1c1c1e;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             cursor: pointer;
             transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         }
 
         .photo-item img, .photo-item video {
@@ -258,77 +298,74 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.68rem;
             font-weight: 600;
-            color: #ffffff;
+            color: #2c352b;
             z-index: 2;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(138, 163, 134, 0.2);
         }
 
         .like-btn {
             position: absolute;
             bottom: 10px;
             left: 10px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(138, 163, 134, 0.2);
             border-radius: 14px;
             padding: 4px 10px;
             font-size: 0.72rem;
-            color: #fff;
+            color: #2c352b;
             display: flex;
             align-items: center;
             gap: 4px;
             z-index: 3;
             cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .like-btn:active {
-            transform: scale(0.9);
+            font-weight: 600;
         }
 
         .timeline-item {
             display: flex;
             align-items: center;
-            background: rgba(28, 28, 30, 0.75);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(138, 163, 134, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
         .timeline-time {
             font-size: 0.95rem;
             font-weight: 700;
-            color: #d4af37;
+            color: #557053;
             min-width: 85px;
         }
 
-        /* ESTILOS DEL CHAT Y DISTINCIÓN DE USUARIOS */
+        /* CHAT VERDE PASTEL Y BLANCO */
         .chat-container {
-            background: rgba(22, 22, 24, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             height: 520px;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(138, 163, 134, 0.25);
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
         }
 
         .chat-header {
             padding: 12px 16px;
-            background: rgba(30, 30, 32, 0.95);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(240, 245, 240, 0.95);
+            border-bottom: 1px solid rgba(138, 163, 134, 0.2);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -347,9 +384,9 @@
         }
 
         .role-select {
-            background: #1c1c1e;
-            color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: #ffffff;
+            color: #2c352b;
+            border: 1px solid rgba(138, 163, 134, 0.4);
             padding: 4px 8px;
             border-radius: 10px;
             font-size: 0.72rem;
@@ -359,9 +396,9 @@
         }
 
         .name-badge {
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #d4af37;
+            background: rgba(138, 163, 134, 0.15);
+            border: 1px solid rgba(138, 163, 134, 0.3);
+            color: #3b493a;
             padding: 4px 10px;
             border-radius: 10px;
             font-size: 0.72rem;
@@ -393,8 +430,8 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #d4af37 0%, #8a6f22 100%);
-            color: #121212;
+            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            color: #ffffff;
             font-weight: 700;
             font-size: 0.75rem;
             display: flex;
@@ -405,16 +442,14 @@
         }
 
         .chat-msg-row.me .chat-avatar {
-            background: linear-gradient(135deg, #3a3a3c 0%, #1c1c1e 100%);
-            color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, #557053 0%, #3b493a 100%);
+            color: #ffffff;
         }
 
-        /* Avatar especial para los novios */
         .chat-msg-row.novios .chat-avatar {
-            background: linear-gradient(135deg, #ffe066 0%, #d4af37 100%);
-            color: #000;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            background: linear-gradient(135deg, #cde0ca 0%, #8fa18e 100%);
+            color: #1c261b;
+            box-shadow: 0 0 8px rgba(138, 163, 134, 0.5);
         }
 
         .chat-bubble {
@@ -427,42 +462,41 @@
         }
 
         .chat-msg-row.other .chat-bubble {
-            background: #2c2c2e;
-            color: #f2f2f7;
+            background: #f0f4f0;
+            color: #2c352b;
             border-bottom-left-radius: 4px;
+            border: 1px solid rgba(138, 163, 134, 0.15);
         }
 
         .chat-msg-row.me .chat-bubble {
-            background: linear-gradient(135deg, #d4af37 0%, #b59129 100%);
-            color: #0d0d0d;
+            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            color: #ffffff;
             font-weight: 500;
             border-bottom-right-radius: 4px;
         }
 
-        /* Diseño de burbuja resaltada para los novios */
         .chat-msg-row.novios .chat-bubble {
-            background: linear-gradient(135deg, #382c0c 0%, #1a1608 100%);
+            background: #233022;
             color: #ffffff;
-            border: 1px solid #d4af37;
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+            border: 1px solid #a4be9e;
         }
 
         .chat-author {
             font-size: 0.68rem;
             font-weight: 700;
             margin-bottom: 2px;
-            color: #d4af37;
+            color: #4a5a48;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        .chat-msg-row.me .chat-author { color: #2a2003; }
-        .chat-msg-row.novios .chat-author { color: #ffe066; }
+        .chat-msg-row.me .chat-author { color: #f0f4f0; }
+        .chat-msg-row.novios .chat-author { color: #cde0ca; }
 
         .role-tag {
             font-size: 0.6rem;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.08);
             padding: 1px 5px;
             border-radius: 6px;
             font-weight: 500;
@@ -475,20 +509,20 @@
             gap: 6px;
             font-size: 0.62rem;
             margin-top: 4px;
-            opacity: 0.75;
+            opacity: 0.8;
         }
 
         .delete-msg-icon {
             cursor: pointer;
-            color: #ff453a;
+            color: #d32f2f;
             font-weight: bold;
             font-size: 0.75rem;
         }
 
         .chat-input-area {
             padding: 12px 14px;
-            background: rgba(28, 28, 30, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(240, 245, 240, 0.95);
+            border-top: 1px solid rgba(138, 163, 134, 0.2);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -496,18 +530,18 @@
 
         .chat-input-area input {
             flex: 1;
-            background: #1c1c1e;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #ffffff;
+            border: 1px solid rgba(138, 163, 134, 0.3);
             padding: 12px 16px;
             border-radius: 20px;
-            color: #ffffff;
+            color: #2c352b;
             outline: none;
             font-size: 0.85rem;
             font-family: 'Montserrat', sans-serif;
         }
 
         .chat-send-btn {
-            background: linear-gradient(135deg, #d4af37 0%, #aa892c 100%);
+            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
             border: none;
             width: 42px;
             height: 42px;
@@ -517,12 +551,13 @@
             justify-content: center;
             cursor: pointer;
             flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(126, 157, 119, 0.3);
         }
 
         .chat-send-btn svg {
             width: 18px;
             height: 18px;
-            fill: #121212;
+            fill: #ffffff;
         }
 
         .upload-btn-container {
@@ -538,23 +573,23 @@
 
         .upload-btn-main {
             pointer-events: auto;
-            background: linear-gradient(135deg, #d9c58d 0%, #b39343 100%);
-            color: #0d0d0d;
+            background: linear-gradient(135deg, #9bb895 0%, #71936a 100%);
+            color: #ffffff;
             border: none;
             padding: 16px 32px;
             border-radius: 35px;
             font-weight: 700;
             font-size: 0.9rem;
-            box-shadow: 0 10px 30px rgba(179, 147, 67, 0.4);
+            box-shadow: 0 10px 25px rgba(113, 147, 106, 0.4);
             cursor: pointer;
         }
 
-        /* MODAL CARRUSEL */
+        /* MODAL VISOR EN CARRUSEL */
         .lightbox-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(15, 20, 15, 0.92);
             backdrop-filter: blur(15px);
             z-index: 2000;
             flex-direction: column;
@@ -579,15 +614,15 @@
             max-height: 65vh;
             border-radius: 20px;
             object-fit: contain;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
         }
 
         .nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
             width: 44px;
             height: 44px;
@@ -623,8 +658,8 @@
         }
 
         .lightbox-close-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: #ffffff;
             padding: 10px 18px;
             border-radius: 20px;
@@ -640,6 +675,13 @@
     </style>
 </head>
 <body>
+
+    <!-- REPRODUCTOR DE MÚSICA -->
+    <button class="music-player-btn" id="music-toggle" onclick="toggleMusic()">
+        <span class="music-icon">🎵</span>
+        <span id="music-text">Música</span>
+    </button>
+    <audio id="bg-music" src="cancion.mp3" loop></audio>
 
     <div class="event-card-app">
         <span class="badge-premium">Álbum Boda</span>
@@ -683,14 +725,14 @@
             <div class="timeline-time">16:00 h</div>
             <div>
                 <h4>Ceremonia Civil</h4>
-                <p style="font-size: 0.8rem; opacity:0.7;">Jardín de las Orquídeas</p>
+                <p style="font-size: 0.8rem; opacity:0.75;">Jardín de las Orquídeas</p>
             </div>
         </div>
         <div class="timeline-item">
             <div class="timeline-time">18:00 h</div>
             <div>
                 <h4>Recepción</h4>
-                <p style="font-size: 0.8rem; opacity:0.7;">Jardín Central</p>
+                <p style="font-size: 0.8rem; opacity:0.75;">Jardín Central</p>
             </div>
         </div>
     </div>
@@ -700,9 +742,9 @@
         <div class="chat-container">
             <div class="chat-header">
                 <div class="chat-header-top">
-                    <span style="font-size: 0.78rem; color: #8e8e93;">Perfil de Chat:</span>
-                    <span style="font-size: 0.7rem; color: #34c759; display: flex; align-items: center; gap: 4px;">
-                        <span style="width: 6px; height: 6px; background:#34c759; border-radius:50%;"></span> En vivo
+                    <span style="font-size: 0.78rem; color: #4a5a48; font-weight: 600;">Perfil de Chat:</span>
+                    <span style="font-size: 0.7rem; color: #557053; display: flex; align-items: center; gap: 4px; font-weight:600;">
+                        <span style="width: 6px; height: 6px; background:#557053; border-radius:50%;"></span> En vivo
                     </span>
                 </div>
                 <div class="chat-user-settings">
@@ -728,7 +770,7 @@
         </div>
     </div>
 
-    <div class="upload-btn-container">
+    <div class="upload-btn-container" id="upload-btn-container">
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto o Video</button>
     </div>
 
@@ -740,13 +782,30 @@
             <button class="nav-btn next" onclick="navigateCarousel(1)">❯</button>
         </div>
         <div class="lightbox-actions">
-            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️ Eliminar</button>
+            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑️️ Eliminar</button>
             <button class="lightbox-close-btn" onclick="closeLightbox()">Cerrar</button>
         </div>
     </div>
 
     <script>
         const CONTRASEÑA_ADMIN = "1234";
+
+        /* --- CONTROL DE MÚSICA --- */
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+        const musicText = document.getElementById('music-text');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicText.textContent = 'Pausa';
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicText.textContent = 'Música';
+            }
+        }
 
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
@@ -773,6 +832,21 @@
         document.getElementById('current-user-badge').textContent = myName + ' ✏️';
         document.getElementById('role-select').value = myRole;
 
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            btn.classList.add('active');
+
+            const uploadContainer = document.getElementById('upload-btn-container');
+            if (tabName === 'fotos') {
+                uploadContainer.style.display = 'flex';
+            } else {
+                uploadContainer.style.display = 'none';
+            }
+        }
+
         function cambiarNombre() {
             const nuevo = prompt("Introduce tu nombre:", myName);
             if (nuevo && nuevo.trim() !== '') {
@@ -786,7 +860,6 @@
             const select = document.getElementById('role-select');
             myRole = select.value;
             
-            // Verificación opcional de clave si eligen rol de Novios
             if (myRole.includes('Novio') || myRole.includes('Novia')) {
                 const pass = prompt("Para identificarte como Novio/Novia ingresa la clave:");
                 if (pass !== CONTRASEÑA_ADMIN) {
@@ -798,6 +871,7 @@
             localStorage.setItem('chat_userrole', myRole);
         }
 
+        /* --- LÓGICA DE FOTOS Y GALERÍA --- */
         let galleryItems = [];
         let sortedItems = [];
         let currentIndex = 0;
@@ -906,64 +980,57 @@
         }
 
         function deletePhotoAdmin(itemId) {
-            const pass = prompt("Contraseña de administrador para borrar foto:");
+            const pass = prompt("Para eliminar este elemento ingresa la clave:");
             if (pass === CONTRASEÑA_ADMIN) {
                 db.ref(`galeria_boda/${itemId}`).remove().then(() => {
                     closeLightbox();
                 });
             } else if (pass !== null) {
-                alert("Contraseña incorrecta");
+                alert("Clave incorrecta.");
             }
         }
 
         function borrarTodasLasFotos() {
-            const pass = prompt("Contraseña de administrador para borrar TODA la galería:");
+            const pass = prompt("Clave de administrador para borrar TODAS las fotos:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref("galeria_boda").remove();
+                if (confirm("¿Estás seguro de vaciar el álbum por completo?")) {
+                    db.ref("galeria_boda").remove();
+                }
             } else if (pass !== null) {
-                alert("Contraseña incorrecta");
+                alert("Clave incorrecta.");
             }
         }
 
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        /* CHAT REALTIME CON DISTINCIÓN DE ROL Y USUARIO */
+        /* --- LÓGICA DE CHAT EN TIEMPO REAL --- */
         db.ref("chat_boda").on("value", (snapshot) => {
+            const data = snapshot.val();
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
-            const data = snapshot.val();
+
             if (data) {
-                Object.keys(data).forEach(k => {
-                    const msg = data[k];
-                    const isMe = msg.nombre === myName;
-                    const isNovios = msg.rol && (msg.rol.includes('Novio') || msg.rol.includes('Novia'));
-                    const initial = (msg.nombre || 'I').charAt(0);
-                    
-                    const dateObj = new Date(msg.timestamp || Date.now());
-                    const timeStr = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`;
+                Object.keys(data).forEach(key => {
+                    const msg = data[key];
+                    const isMe = msg.author === myName;
+                    const isNovios = msg.role.includes('Novio') || msg.role.includes('Novia');
 
                     const row = document.createElement('div');
                     row.className = `chat-msg-row ${isMe ? 'me' : 'other'} ${isNovios ? 'novios' : ''}`;
-                    
-                    const roleLabel = msg.rol ? `<span class="role-tag">${msg.rol}</span>` : '';
 
+                    const initial = msg.author ? msg.author.charAt(0).toUpperCase() : 'I';
+                    
                     row.innerHTML = `
                         <div class="chat-avatar">${initial}</div>
                         <div class="chat-bubble">
-                            <span class="chat-author">${isMe ? 'Tú' : msg.nombre} ${roleLabel}</span>
-                            <div>${msg.texto}</div>
+                            <div class="chat-author">
+                                ${msg.author} <span class="role-tag">${msg.role}</span>
+                            </div>
+                            <div>${msg.text}</div>
                             <div class="chat-meta">
-                                <span>${timeStr}</span>
-                                <span class="delete-msg-icon" onclick="deleteMessageAdmin('${k}')" title="Borrar mensaje">🗑️</span>
+                                <span>${msg.timeStr || ''}</span>
+                                <span class="delete-msg-icon" onclick="deleteMsgAdmin('${key}')">×</span>
                             </div>
                         </div>
                     `;
-                    
                     container.appendChild(row);
                 });
                 container.scrollTop = container.scrollHeight;
@@ -972,24 +1039,30 @@
 
         function sendMessage() {
             const input = document.getElementById('msg-input');
-            const texto = input.value.trim();
-            if (texto) {
+            const text = input.value.trim();
+
+            if (text !== '') {
+                const now = new Date();
+                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
                 db.ref("chat_boda").push({
-                    nombre: myName,
-                    rol: myRole,
-                    texto: texto,
+                    author: myName,
+                    role: myRole,
+                    text: text,
+                    timeStr: timeStr,
                     timestamp: Date.now()
                 });
+
                 input.value = '';
             }
         }
 
-        function deleteMessageAdmin(msgId) {
-            const pass = prompt("Contraseña de administrador para eliminar mensaje:");
+        function deleteMsgAdmin(msgId) {
+            const pass = prompt("Clave para eliminar mensaje:");
             if (pass === CONTRASEÑA_ADMIN) {
                 db.ref(`chat_boda/${msgId}`).remove();
             } else if (pass !== null) {
-                alert("Contraseña incorrecta");
+                alert("Clave incorrecta.");
             }
         }
     </script>
