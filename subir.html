@@ -24,7 +24,7 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #eaf0ea; /* Simplificado para evitar lag en scroll */
+            background: #eaf0ea;
             color: #2c352b;
             text-align: left;
             max-width: 480px;
@@ -147,7 +147,7 @@
             color: #3b493a;
         }
 
-        /* GALERÍA DE BAJO CONSUMO */
+        /* GALERÍA */
         .photos-header {
             display: flex;
             justify-content: space-between;
@@ -170,6 +170,7 @@
             font-size: 0.7rem;
             outline: none;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .admin-btn-select.active {
@@ -190,7 +191,7 @@
             overflow: hidden;
             background: #d8e2d7;
             cursor: pointer;
-            content-visibility: auto; /* Optimiza rendimiento de renderizado en móviles */
+            content-visibility: auto;
         }
 
         .photo-item img {
@@ -208,14 +209,15 @@
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .time-tag {
             position: absolute;
             top: 6px;
             left: 6px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             padding: 2px 6px;
             border-radius: 8px;
             font-size: 0.6rem;
@@ -254,7 +256,7 @@
             text-decoration: none;
         }
 
-        /* BARRA FLOTANTE */
+        /* BARRAS FLOTANTES DE ACCIÓN MASIVA */
         .bulk-action-bar {
             position: fixed;
             bottom: 75px;
@@ -279,6 +281,7 @@
             border-radius: 10px;
             font-weight: 700;
             font-size: 0.7rem;
+            cursor: pointer;
         }
 
         .btn-bulk-download { background: #71936a; }
@@ -326,6 +329,7 @@
             border-radius: 6px;
             font-size: 0.68rem;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .chat-messages {
@@ -443,12 +447,12 @@
             cursor: pointer;
         }
 
-        /* LIGHTBOX OPTIMIZADO */
+        /* LIGHTBOX */
         .lightbox-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000000;
+            background: rgba(0, 0, 0, 0.95);
             z-index: 2000;
             flex-direction: column;
             justify-content: center;
@@ -488,6 +492,7 @@
             justify-content: center;
             font-size: 1rem;
             z-index: 10;
+            cursor: pointer;
         }
 
         .nav-btn.prev { left: 4px; }
@@ -509,6 +514,7 @@
             font-size: 0.72rem;
             font-weight: 600;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .lightbox-btn.download { background: #71936a; }
@@ -517,7 +523,7 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR -->
+    <!-- REPRODUCTOR DE MÚSICA -->
     <button class="music-player-btn" id="music-toggle" onclick="toggleMusic()">
         <span>🎵</span>
         <span id="music-text">Música</span>
@@ -560,7 +566,7 @@
         <div class="photo-grid" id="gallery"></div>
     </div>
 
-    <!-- BARRA FLOTANTE DE FOTOS -->
+    <!-- BARRA FLOTANTE DE FOTOS MASIVA -->
     <div class="bulk-action-bar" id="bulk-bar-photos">
         <span id="selected-photos-count">0 sel.</span>
         <button class="btn-bulk-download" id="btn-download-zip" onclick="descargarFotosSeleccionadas()">📥 ZIP</button>
@@ -585,7 +591,7 @@
             <div class="chat-header">
                 <button class="admin-btn-select" id="btn-select-mode-chat" onclick="toggleSelectModeChat()">☑️ Seleccionar</button>
                 <div class="chat-user-settings">
-                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️</button>
+                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️️</button>
                     <select class="role-select" id="role-select" onchange="guardarRol()">
                         <option value="Invitado">👥 Invitado</option>
                         <option value="Novio (Víctor)">🤵 Novio (Víctor)</option>
@@ -606,17 +612,18 @@
         </div>
     </div>
 
-    <!-- BARRA BORRADO MASIVO CHAT -->
+    <!-- BARRA FLOTANTE DE BORRADO MASIVO CHAT -->
     <div class="bulk-action-bar" id="bulk-bar-chat">
         <span id="selected-chat-count">0 sel.</span>
         <button class="btn-bulk-delete" onclick="borrarChatSeleccionado()">🗑 Borrar</button>
     </div>
 
+    <!-- BOTÓN FLOTANTE DE SUBIDA -->
     <div class="upload-btn-container" id="upload-btn-container">
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto/Video</button>
     </div>
 
-    <!-- LIGHTBOX -->
+    <!-- LIGHTBOX / CARRUSEL MODAL -->
     <div class="lightbox-modal" id="lightbox">
         <div class="lightbox-container">
             <button class="nav-btn prev" onclick="navigateCarousel(-1)">❮</button>
@@ -648,7 +655,7 @@
             }
         }
 
-        /* FIREBASE CONFIG */
+        /* CONFIGURACIÓN FIREBASE */
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
             authDomain: "boda-victor-flor.firebaseapp.com",
@@ -709,7 +716,6 @@
         let isSelectModePhotos = false;
         let currentIndex = 0;
 
-        // Limita la lectura inicial para ahorrar memoria y datos en celulares de gama baja
         db.ref("galeria_boda").limitToLast(100).on("value", (snapshot) => {
             const data = snapshot.val();
             galleryItems = [];
@@ -731,7 +737,6 @@
             renderGallery();
         }
 
-        /* Optimización de URLs Cloudinary para imágenes livianas en grid */
         function getOptimizedUrl(url, type) {
             if (type === 'image' && url.includes('cloudinary.com')) {
                 return url.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
@@ -761,10 +766,9 @@
                 const overlay = `
                     <div class="photo-actions-overlay">
                         <span class="action-pill" onclick="toggleLike(event, '${item.id}')">❤️ ${item.likes || 0}</span>
-                        <a href="${item.url}" download target="_blank" class="action-pill" onclick="event.stopPropagation()">📥 Baja</a>
+                        <a href="${item.url}" download target="_blank" class="action-pill" onclick="event.stopPropagation()">📥 Descargar</a>
                     </div>`;
 
-                // Reemplazo de preview de video por un contenedor ligero para no saturar memoria/red
                 if (item.type === 'video') {
                     card.innerHTML = `${timeTag}${checkbox}<div class="video-placeholder">▶ Video</div>${overlay}`;
                 } else {
@@ -835,7 +839,7 @@
                 saveAs(zipContent, "Fotos_Boda_Victor_y_Flor.zip");
 
             } catch (error) {
-                alert("Red lenta o no soporta ZIP. Abriendo descargas en pestañas individuales.");
+                alert("Abriendo descargas dinámicas individuales...");
                 itemsToDownload.forEach(item => window.open(item.url, '_blank'));
             } finally {
                 btnDownload.textContent = originalText;
@@ -883,7 +887,6 @@
                         likes: 0
                     });
 
-                    // Carga dinámicamente confetti solo al terminar de subir
                     if (!window.confetti) {
                         const script = document.createElement('script');
                         script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
@@ -905,7 +908,7 @@
 
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
-            document.getElementById('lightbox-body').innerHTML = ''; // Limpia memoria de video/imagen al cerrar
+            document.getElementById('lightbox-body').innerHTML = '';
         }
 
         function navigateCarousel(direction) {
@@ -921,21 +924,19 @@
 
             if (!item) return;
 
+            downloadLink.href = item.url;
+
             if (item.type === 'video') {
                 body.innerHTML = `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`;
             } else {
                 body.innerHTML = `<img src="${item.url}" class="lightbox-content">`;
             }
-
-            downloadLink.href = item.url;
         }
 
         function deleteCurrentLightboxItem() {
-            const item = sortedItems[currentIndex];
-            if (!item) return;
-
-            const pass = prompt("Clave admin:");
+            const pass = prompt("Clave admin para borrar:");
             if (pass === CONTRASEÑA_ADMIN) {
+                const item = sortedItems[currentIndex];
                 db.ref(`galeria_boda/${item.id}`).remove().then(() => {
                     closeLightbox();
                 });
@@ -944,13 +945,36 @@
             }
         }
 
-        /* LÓGICA CHAT */
+        /* GESTOS SWIPE PARA MÓVILES EN LIGHTBOX */
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const lightboxElem = document.getElementById('lightbox');
+
+        lightboxElem.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lightboxElem.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                navigateCarousel(1); // Siguiente
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                navigateCarousel(-1); // Anterior
+            }
+        }
+
+        /* MÓDULO CHAT EN TIEMPO REAL */
         let chatMessages = [];
         let selectedChatMsgs = new Set();
         let isSelectModeChat = false;
 
-        // Limita a los últimos 50 mensajes en móviles gama baja
-        db.ref("chat_boda").limitToLast(50).on("value", (snapshot) => {
+        db.ref("chat_boda").limitToLast(80).on("value", (snapshot) => {
             const data = snapshot.val();
             chatMessages = [];
             if (data) {
@@ -961,38 +985,14 @@
             renderChat();
         });
 
-        function sendMessage() {
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            db.ref("chat_boda").push({
-                author: myName,
-                role: myRole,
-                text: text,
-                timestamp: Date.now()
-            });
-
-            input.value = '';
-        }
-
         function toggleSelectModeChat() {
             isSelectModeChat = !isSelectModeChat;
             selectedChatMsgs.clear();
             const btn = document.getElementById('btn-select-mode-chat');
             btn.classList.toggle('active', isSelectModeChat);
-            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️ Seleccionar';
+            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️️ Seleccionar';
             updateBulkBarChat();
             renderChat();
-        }
-
-        function toggleSelectChatMsg(id) {
-            if (selectedChatMsgs.has(id)) {
-                selectedChatMsgs.delete(id);
-            } else {
-                selectedChatMsgs.add(id);
-            }
-            updateBulkBarChat();
         }
 
         function updateBulkBarChat() {
@@ -1006,8 +1006,63 @@
             }
         }
 
+        function toggleSelectChatMsg(e, id) {
+            if (e) e.stopPropagation();
+            if (selectedChatMsgs.has(id)) {
+                selectedChatMsgs.delete(id);
+            } else {
+                selectedChatMsgs.add(id);
+            }
+            updateBulkBarChat();
+        }
+
+        function renderChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+
+            chatMessages.forEach(msg => {
+                const isMe = msg.author === myName;
+                const row = document.createElement('div');
+                row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
+
+                const initial = msg.author ? msg.author.charAt(0).toUpperCase() : 'U';
+                const avatar = `<div class="chat-avatar">${initial}</div>`;
+                
+                const checkbox = isSelectModeChat ? 
+                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChatMsg(event, '${msg.id}')">` : '';
+
+                row.innerHTML = `
+                    ${avatar}
+                    <div>
+                        <div class="chat-author" style="${isMe ? 'text-align:right;' : ''}">${msg.author} (${msg.role || 'Invitado'})</div>
+                        <div class="chat-bubble">${msg.text}</div>
+                    </div>
+                    ${checkbox}
+                `;
+
+                container.appendChild(row);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (text === '') return;
+
+            db.ref("chat_boda").push({
+                author: myName,
+                role: myRole,
+                text: text,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+        }
+
         function borrarChatSeleccionado() {
-            const pass = prompt("Clave admin:");
+            const pass = prompt("Clave admin para borrar mensajes:");
             if (pass === CONTRASEÑA_ADMIN) {
                 const updates = {};
                 selectedChatMsgs.forEach(id => {
@@ -1020,35 +1075,6 @@
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
-        }
-
-        function renderChat() {
-            const container = document.getElementById('chat-messages');
-            container.innerHTML = '';
-
-            chatMessages.sort((a, b) => a.timestamp - b.timestamp);
-
-            chatMessages.forEach(msg => {
-                const isMe = msg.author === myName;
-                const row = document.createElement('div');
-                row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
-
-                const initial = msg.author ? msg.author.charAt(0).toUpperCase() : '?';
-                const avatar = `<div class="chat-avatar">${initial}</div>`;
-                const checkbox = isSelectModeChat ? 
-                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChatMsg('${msg.id}')">` : '';
-
-                const bubble = `
-                    <div>
-                        <div class="chat-author">${msg.author} (${msg.role || 'Invitado'})</div>
-                        <div class="chat-bubble">${msg.text}</div>
-                    </div>`;
-
-                row.innerHTML = `${checkbox}${avatar}${bubble}`;
-                container.appendChild(row);
-            });
-
-            container.scrollTop = container.scrollHeight;
         }
     </script>
 </body>
