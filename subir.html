@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Víctor & Flor de Liz - Boda</title>
     
-    <!-- Tipografías elegantes -->
+    <!-- Tipografías -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Librerías CDN -->
@@ -25,7 +25,8 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #eaf0ea url('fondo.jpg') center top / cover no-repeat fixed;
+            /* Vinculado exacto con tu imagen de Zazzle subida a GitHub */
+            background: #eaf0ea url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed;
             color: #2c352b;
             text-align: left;
             max-width: 480px;
@@ -53,6 +54,7 @@
             height: 250px;
             border-radius: 24px;
             overflow: hidden;
+            /* Vinculado a tu foto_pareja.jpg */
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(20, 30, 20, 0.8) 100%), 
                         #4a5a48 url('foto_pareja.jpg') center 30%/cover no-repeat;
             display: flex;
@@ -675,12 +677,12 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR DE MÚSICA -->
+    <!-- REPRODUCTOR VINCULADO A Tu novatos.mp3 -->
     <button class="music-player-btn" id="music-toggle" onclick="toggleMusic()">
         <span class="music-icon">🎵</span>
         <span id="music-text">Música</span>
     </button>
-    <audio id="bg-music" src="cancion.mp3" loop></audio>
+    <audio id="bg-music" src="novatos.mp3" loop></audio>
 
     <div class="event-card-app">
         <span class="badge-premium">Álbum Boda</span>
