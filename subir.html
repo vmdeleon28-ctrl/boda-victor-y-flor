@@ -591,7 +591,7 @@
             <div class="chat-header">
                 <button class="admin-btn-select" id="btn-select-mode-chat" onclick="toggleSelectModeChat()">☑️ Seleccionar</button>
                 <div class="chat-user-settings">
-                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️️</button>
+                    <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏</button>
                     <select class="role-select" id="role-select" onchange="guardarRol()">
                         <option value="Invitado">👥 Invitado</option>
                         <option value="Novio (Víctor)">🤵 Novio (Víctor)</option>
@@ -937,44 +937,22 @@
             const pass = prompt("Clave admin para borrar:");
             if (pass === CONTRASEÑA_ADMIN) {
                 const item = sortedItems[currentIndex];
-                db.ref(`galeria_boda/${item.id}`).remove().then(() => {
-                    closeLightbox();
-                });
+                if (item) {
+                    db.ref(`galeria_boda/${item.id}`).remove().then(() => {
+                        closeLightbox();
+                    });
+                }
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
         }
 
-        /* GESTOS SWIPE PARA MÓVILES EN LIGHTBOX */
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const lightboxElem = document.getElementById('lightbox');
-
-        lightboxElem.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        lightboxElem.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                navigateCarousel(1); // Siguiente
-            }
-            if (touchEndX > touchStartX + swipeThreshold) {
-                navigateCarousel(-1); // Anterior
-            }
-        }
-
-        /* MÓDULO CHAT EN TIEMPO REAL */
+        /* LÓGICA DEL CHAT DE FIREBASE */
         let chatMessages = [];
         let selectedChatMsgs = new Set();
         let isSelectModeChat = false;
 
-        db.ref("chat_boda").limitToLast(80).on("value", (snapshot) => {
+        db.ref("chat_boda").limitToLast(50).on("value", (snapshot) => {
             const data = snapshot.val();
             chatMessages = [];
             if (data) {
@@ -985,14 +963,71 @@
             renderChat();
         });
 
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            db.ref("chat_boda").push({
+                author: myName,
+                role: myRole,
+                text: text,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+        }
+
         function toggleSelectModeChat() {
             isSelectModeChat = !isSelectModeChat;
             selectedChatMsgs.clear();
             const btn = document.getElementById('btn-select-mode-chat');
             btn.classList.toggle('active', isSelectModeChat);
-            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️️ Seleccionar';
+            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️ Seleccionar';
             updateBulkBarChat();
             renderChat();
+        }
+
+        function renderChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+
+            chatMessages.forEach(msg => {
+                const isMe = msg.author === myName;
+                const row = document.createElement('div');
+                row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
+
+                const initial = msg.author ? msg.author.charAt(0).toUpperCase() : '?';
+                const avatar = `<div class="chat-avatar">${initial}</div>`;
+                
+                const checkbox = isSelectModeChat ? 
+                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChat(event, '${msg.id}')">` : '';
+
+                const roleBadge = msg.role && msg.role !== 'Invitado' ? ` (${msg.role})` : '';
+
+                row.innerHTML = `
+                    ${checkbox}
+                    ${avatar}
+                    <div>
+                        <div class="chat-author">${msg.author}${roleBadge}</div>
+                        <div class="chat-bubble">${msg.text}</div>
+                    </div>
+                `;
+
+                container.appendChild(row);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function toggleSelectChat(e, id) {
+            if (e) e.stopPropagation();
+            if (selectedChatMsgs.has(id)) {
+                selectedChatMsgs.delete(id);
+            } else {
+                selectedChatMsgs.add(id);
+            }
+            updateBulkBarChat();
         }
 
         function updateBulkBarChat() {
@@ -1006,63 +1041,8 @@
             }
         }
 
-        function toggleSelectChatMsg(e, id) {
-            if (e) e.stopPropagation();
-            if (selectedChatMsgs.has(id)) {
-                selectedChatMsgs.delete(id);
-            } else {
-                selectedChatMsgs.add(id);
-            }
-            updateBulkBarChat();
-        }
-
-        function renderChat() {
-            const container = document.getElementById('chat-messages');
-            container.innerHTML = '';
-
-            chatMessages.forEach(msg => {
-                const isMe = msg.author === myName;
-                const row = document.createElement('div');
-                row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
-
-                const initial = msg.author ? msg.author.charAt(0).toUpperCase() : 'U';
-                const avatar = `<div class="chat-avatar">${initial}</div>`;
-                
-                const checkbox = isSelectModeChat ? 
-                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChatMsg(event, '${msg.id}')">` : '';
-
-                row.innerHTML = `
-                    ${avatar}
-                    <div>
-                        <div class="chat-author" style="${isMe ? 'text-align:right;' : ''}">${msg.author} (${msg.role || 'Invitado'})</div>
-                        <div class="chat-bubble">${msg.text}</div>
-                    </div>
-                    ${checkbox}
-                `;
-
-                container.appendChild(row);
-            });
-
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            if (text === '') return;
-
-            db.ref("chat_boda").push({
-                author: myName,
-                role: myRole,
-                text: text,
-                timestamp: Date.now()
-            });
-
-            input.value = '';
-        }
-
         function borrarChatSeleccionado() {
-            const pass = prompt("Clave admin para borrar mensajes:");
+            const pass = prompt("Clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
                 const updates = {};
                 selectedChatMsgs.forEach(id => {
