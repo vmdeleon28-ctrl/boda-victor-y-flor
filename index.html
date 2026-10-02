@@ -9,14 +9,10 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+        
         body {
             font-family: 'Cormorant Garamond', serif;
             background-color: #f7f9f6;
-            background-image: url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg');
-            background-size: 100% auto;
-            background-position: top center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
             color: #3a4237;
             text-align: center;
             max-width: 480px;
@@ -25,6 +21,24 @@
             padding-bottom: 60px;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* Solución de fondo fijo compatible con iOS */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            background-image: url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg');
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.85;
         }
 
         /* SOBRE ROMÁNTICO ANIMADO */
@@ -241,7 +255,7 @@
             position: relative;
             padding: 45px 25px;
             border-bottom: 1px solid rgba(210, 220, 208, 0.6);
-            background-color: rgba(255, 255, 255, 0.82);
+            background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(3px);
         }
         h2 {
@@ -509,7 +523,7 @@
 
         <div class="audio-container">
             <p class="audio-notice">▶ Presiona PLAY para escuchar nuestra canción</p>
-            <audio id="weddingAudio" controls>
+            <audio id="weddingAudio" controls preload="auto">
                 <source src="novatos.mp3" type="audio/mpeg">
                 Tu navegador no soporta el audio.
             </audio>
@@ -552,7 +566,7 @@
             <p style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #6a7966;">C.P. 94340 Orizaba, Ver.</p>
             <p style="margin-top: 8px; color: #586654; font-weight: 700;">⏰ 04:00 P.M.</p>
             
-            <a href="https://www.google.com/maps/search/?api=1&query=Independencia+201+Barrio+Nuevo+Orizaba+Veracruz" target="_blank" class="btn-maps">
+            <a href="https://www.google.com/maps/search/?api=1&query=Independencia+201+Barrio+Nuevo+Orizaba+Veracruz" target="_blank" rel="noopener noreferrer" class="btn-maps">
                 🗺️ Abrir en GPS / Mapas
             </a>
         </div>
@@ -598,7 +612,7 @@
         <h2>CONFIRMA TU ASISTENCIA</h2>
         <p>Último día para confirmar asistencia:<br><b style="color: #3a4237;">12 de Noviembre de 2026</b></p>
         
-        <a href="https://api.whatsapp.com/send?phone=2871213085&text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20civil%20de%20Víctor%20y%20Flor." target="_blank" class="btn-rsvp">
+        <a href="https://api.whatsapp.com/send?phone=2871213085&text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20civil%20de%20Víctor%20y%20Flor." target="_blank" rel="noopener noreferrer" class="btn-rsvp">
             Confirmar por WhatsApp
         </a>
     </div>
@@ -663,11 +677,14 @@
             wrapper.classList.add('open');
 
             if (audio) {
-                audio.play().then(() => {
-                    document.getElementById('musicToggleBtn').innerText = '⏸';
-                }).catch(() => {
-                    document.getElementById('musicToggleBtn').innerText = '🎵';
-                });
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        document.getElementById('musicToggleBtn').innerText = '⏸';
+                    }).catch(() => {
+                        document.getElementById('musicToggleBtn').innerText = '🎵';
+                    });
+                }
             }
 
             setTimeout(() => {
@@ -680,8 +697,9 @@
             const audio = document.getElementById('weddingAudio');
             const btn = document.getElementById('musicToggleBtn');
             if (audio.paused) {
-                audio.play();
-                btn.innerText = '⏸';
+                audio.play().then(() => {
+                    btn.innerText = '⏸';
+                }).catch(() => {});
             } else {
                 audio.pause();
                 btn.innerText = '🎵';
@@ -707,6 +725,7 @@
         }
 
         window.addEventListener('scroll', handleReveal);
+        window.addEventListener('load', handleReveal);
 
         const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
         setInterval(function() {
