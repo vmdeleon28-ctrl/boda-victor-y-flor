@@ -6,12 +6,16 @@
     <title>Víctor & Flor de Liz - Boda</title>
     
     <!-- Tipografías -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Librerías CDN -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     
+    <!-- JSZip y FileSaver para Descarga Múltiple en ZIP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
     <!-- SDK Firebase Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -19,13 +23,10 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html {
-            background-color: #eaf0ea;
-        }
+        html { background-color: #eaf0ea; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            /* Vinculado exacto con tu imagen de Zazzle subida a GitHub */
             background: #eaf0ea url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed;
             color: #2c352b;
             text-align: left;
@@ -33,7 +34,7 @@
             margin: 0 auto;
             min-height: 100vh;
             padding: 16px 16px 100px 16px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.15);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             overflow-x: hidden;
             position: relative;
         }
@@ -42,46 +43,38 @@
             content: '';
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            background: rgba(255, 255, 255, 0.55);
             z-index: 0;
             pointer-events: none;
         }
 
         .event-card-app {
             position: relative;
-            height: 250px;
-            border-radius: 24px;
+            height: 220px;
+            border-radius: 20px;
             overflow: hidden;
-            /* Vinculado a tu foto_pareja.jpg */
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(20, 30, 20, 0.8) 100%), 
                         #4a5a48 url('foto_pareja.jpg') center 30%/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 22px;
-            box-shadow: 0 10px 25px rgba(44, 53, 43, 0.15);
-            margin-bottom: 22px;
+            padding: 20px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.8);
-            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .badge-premium {
             position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.72rem;
+            top: 14px;
+            left: 14px;
+            background: #ffffff;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.7rem;
             font-weight: 600;
-            border: 1px solid rgba(138, 163, 134, 0.3);
             color: #3b493a;
-            letter-spacing: 0.8px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -93,72 +86,64 @@
             height: 6px;
             background: #7a9a76;
             border-radius: 50%;
-            box-shadow: 0 0 6px #7a9a76;
         }
 
         .event-card-app h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 600;
             color: #ffffff;
-            line-height: 1.05;
+            line-height: 1;
             margin-bottom: 4px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
         .event-card-app p {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: #f0f4f0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
 
         .app-actions {
             display: flex;
             justify-content: space-around;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(138, 163, 134, 0.25);
-            margin-bottom: 22px;
+            padding: 6px;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid rgba(138, 163, 134, 0.3);
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .action-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: none;
             border: none;
             color: #637562;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             flex: 1;
-            padding: 8px 0;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            border-radius: 18px;
+            padding: 6px 0;
+            border-radius: 14px;
         }
 
         .action-icon {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             background: #edf2ed;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1.1rem;
             border: 1px solid rgba(138, 163, 134, 0.2);
         }
 
@@ -168,126 +153,84 @@
         }
 
         .action-btn.active .action-icon {
-            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            background: #7e9d77;
             color: #ffffff;
-            transform: translateY(-4px) scale(1.08);
-            box-shadow: 0 8px 18px rgba(126, 157, 119, 0.35);
         }
 
         .tab-content {
             display: none;
-            opacity: 0;
-            transform: translateY(12px) scale(0.98);
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1;
             position: relative;
         }
 
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .tab-content.active { display: block; }
 
         .music-player-btn {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 16px;
+            right: 16px;
             z-index: 1500;
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             border: 1px solid rgba(138, 163, 134, 0.4);
-            border-radius: 30px;
-            padding: 8px 14px;
+            border-radius: 24px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            gap: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             cursor: pointer;
-            backdrop-filter: blur(10px);
             font-size: 0.75rem;
             font-weight: 600;
             color: #3b493a;
-            transition: transform 0.2s ease;
         }
 
-        .music-player-btn:active {
-            transform: scale(0.95);
-        }
-
-        .music-icon {
-            font-size: 1rem;
-            animation: spin 4s linear infinite;
-            animation-play-state: paused;
-        }
-
-        .music-player-btn.playing .music-icon {
-            animation-play-state: running;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
+        /* GALERÍA Y SELECCIÓN */
         .photos-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding: 0 4px;
-            gap: 8px;
+            margin-bottom: 14px;
+            padding: 0 2px;
         }
 
         .photos-count {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #4a5a48;
             font-weight: 600;
         }
 
-        .photos-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sort-select {
-            background: rgba(255, 255, 255, 0.95);
+        .sort-select, .admin-btn-select {
+            background: #ffffff;
             color: #2c352b;
             border: 1px solid rgba(138, 163, 134, 0.4);
-            padding: 8px 10px;
-            border-radius: 14px;
-            font-size: 0.75rem;
-            font-family: 'Montserrat', sans-serif;
+            padding: 6px 8px;
+            border-radius: 10px;
+            font-size: 0.72rem;
             outline: none;
             cursor: pointer;
+            font-weight: 600;
         }
 
-        .clear-btn {
-            background: rgba(255, 59, 48, 0.1);
-            border: 1px solid rgba(255, 59, 48, 0.25);
-            color: #d32f2f;
-            padding: 8px 10px;
-            border-radius: 14px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            font-weight: 600;
+        .admin-btn-select.active {
+            background: #7e9d77;
+            color: #ffffff;
         }
 
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
+            gap: 12px;
         }
 
         .photo-item {
             position: relative;
             aspect-ratio: 1 / 1;
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            background: #d8e2d7;
+            border: 1px solid #ffffff;
             cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .photo-item img, .photo-item video {
@@ -299,81 +242,101 @@
 
         .time-tag {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.68rem;
+            top: 8px;
+            left: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
             font-weight: 600;
             color: #2c352b;
             z-index: 2;
-            border: 1px solid rgba(138, 163, 134, 0.2);
         }
 
-        .like-btn {
+        .select-checkbox-overlay {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(138, 163, 134, 0.2);
-            border-radius: 14px;
-            padding: 4px 10px;
-            font-size: 0.72rem;
+            top: 8px;
+            right: 8px;
+            z-index: 4;
+            width: 22px;
+            height: 22px;
+            accent-color: #7e9d77;
+            cursor: pointer;
+        }
+
+        .photo-actions-overlay {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .action-pill {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 3px 8px;
+            font-size: 0.7rem;
             color: #2c352b;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* BARRA FLOTANTE DE ACCIONES MÚLTIPLES */
+        .bulk-action-bar {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c352b;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1200;
+            font-size: 0.78rem;
+            width: max-content;
+        }
+
+        .bulk-action-bar button {
+            border: none;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
-            z-index: 3;
-            cursor: pointer;
-            font-weight: 600;
         }
 
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(138, 163, 134, 0.2);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-        }
+        .btn-bulk-download { background: #71936a; }
+        .btn-bulk-delete { background: #ff4d4d; }
 
-        .timeline-time {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #557053;
-            min-width: 85px;
-        }
-
+        /* CHAT */
         .chat-container {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            height: 520px;
+            background: #ffffff;
+            border-radius: 20px;
+            height: 480px;
             display: flex;
             flex-direction: column;
             border: 1px solid rgba(138, 163, 134, 0.25);
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
         }
 
         .chat-header {
-            padding: 12px 16px;
-            background: rgba(240, 245, 240, 0.95);
+            padding: 10px 14px;
+            background: #f4f7f4;
             border-bottom: 1px solid rgba(138, 163, 134, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .chat-header-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -382,28 +345,24 @@
         .chat-user-settings {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .role-select {
             background: #ffffff;
-            color: #2c352b;
             border: 1px solid rgba(138, 163, 134, 0.4);
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 0.72rem;
-            font-family: 'Montserrat', sans-serif;
-            outline: none;
-            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
         }
 
         .name-badge {
             background: rgba(138, 163, 134, 0.15);
             border: 1px solid rgba(138, 163, 134, 0.3);
             color: #3b493a;
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-size: 0.72rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
         }
@@ -411,17 +370,17 @@
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .chat-msg-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: flex-end;
-            max-width: 85%;
+            max-width: 90%;
             position: relative;
         }
 
@@ -429,144 +388,84 @@
         .chat-msg-row.me { align-self: flex-end; flex-direction: row-reverse; }
 
         .chat-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            background: #7e9d77;
             color: #ffffff;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            text-transform: uppercase;
-        }
-
-        .chat-msg-row.me .chat-avatar {
-            background: linear-gradient(135deg, #557053 0%, #3b493a 100%);
-            color: #ffffff;
-        }
-
-        .chat-msg-row.novios .chat-avatar {
-            background: linear-gradient(135deg, #cde0ca 0%, #8fa18e 100%);
-            color: #1c261b;
-            box-shadow: 0 0 8px rgba(138, 163, 134, 0.5);
         }
 
         .chat-bubble {
-            padding: 10px 14px;
-            border-radius: 18px;
-            font-size: 0.83rem;
-            line-height: 1.4;
-            position: relative;
+            padding: 8px 12px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            line-height: 1.3;
             word-break: break-word;
         }
 
-        .chat-msg-row.other .chat-bubble {
-            background: #f0f4f0;
-            color: #2c352b;
-            border-bottom-left-radius: 4px;
-            border: 1px solid rgba(138, 163, 134, 0.15);
-        }
-
-        .chat-msg-row.me .chat-bubble {
-            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
-            color: #ffffff;
-            font-weight: 500;
-            border-bottom-right-radius: 4px;
-        }
-
-        .chat-msg-row.novios .chat-bubble {
-            background: #233022;
-            color: #ffffff;
-            border: 1px solid #a4be9e;
-        }
+        .chat-msg-row.other .chat-bubble { background: #f0f4f0; color: #2c352b; }
+        .chat-msg-row.me .chat-bubble { background: #7e9d77; color: #ffffff; }
 
         .chat-author {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 700;
             margin-bottom: 2px;
             color: #4a5a48;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .chat-msg-row.me .chat-author { color: #f0f4f0; }
-        .chat-msg-row.novios .chat-author { color: #cde0ca; }
-
-        .role-tag {
-            font-size: 0.6rem;
-            background: rgba(0, 0, 0, 0.08);
-            padding: 1px 5px;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        .chat-meta {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.62rem;
-            margin-top: 4px;
-            opacity: 0.8;
-        }
-
-        .delete-msg-icon {
+        .chat-msg-checkbox {
+            accent-color: #ff4d4d;
+            margin: auto 4px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            color: #d32f2f;
-            font-weight: bold;
-            font-size: 0.75rem;
         }
 
         .chat-input-area {
-            padding: 12px 14px;
-            background: rgba(240, 245, 240, 0.95);
+            padding: 10px;
+            background: #f4f7f4;
             border-top: 1px solid rgba(138, 163, 134, 0.2);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .chat-input-area input {
             flex: 1;
             background: #ffffff;
             border: 1px solid rgba(138, 163, 134, 0.3);
-            padding: 12px 16px;
-            border-radius: 20px;
+            padding: 10px 14px;
+            border-radius: 18px;
             color: #2c352b;
             outline: none;
-            font-size: 0.85rem;
-            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
         }
 
         .chat-send-btn {
-            background: linear-gradient(135deg, #a4be9e 0%, #7e9d77 100%);
+            background: #7e9d77;
             border: none;
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(126, 157, 119, 0.3);
         }
 
-        .chat-send-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: #ffffff;
-        }
+        .chat-send-btn svg { width: 16px; height: 16px; fill: #ffffff; }
 
         .upload-btn-container {
             position: fixed;
-            bottom: 24px;
-            left: 0;
-            right: 0;
+            bottom: 20px;
+            left: 0; right: 0;
             display: flex;
             justify-content: center;
             z-index: 1000;
@@ -575,14 +474,14 @@
 
         .upload-btn-main {
             pointer-events: auto;
-            background: linear-gradient(135deg, #9bb895 0%, #71936a 100%);
+            background: #71936a;
             color: #ffffff;
             border: none;
-            padding: 16px 32px;
-            border-radius: 35px;
+            padding: 14px 28px;
+            border-radius: 30px;
             font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 10px 25px rgba(113, 147, 106, 0.4);
+            font-size: 0.85rem;
+            box-shadow: 0 6px 18px rgba(113, 147, 106, 0.4);
             cursor: pointer;
         }
 
@@ -590,13 +489,12 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 20, 15, 0.92);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 2000;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .lightbox-modal.active { display: flex; }
@@ -613,9 +511,8 @@
         .lightbox-content {
             max-width: 100%;
             max-height: 65vh;
-            border-radius: 20px;
+            border-radius: 12px;
             object-fit: contain;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
         }
 
         .nav-btn {
@@ -623,63 +520,49 @@
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: none;
             color: #fff;
-            width: 44px;
-            height: 44px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            backdrop-filter: blur(10px);
             z-index: 10;
         }
 
-        .nav-btn.prev { left: -10px; }
-        .nav-btn.next { right: -10px; }
+        .nav-btn.prev { left: -6px; }
+        .nav-btn.next { right: -6px; }
 
         .lightbox-actions {
-            margin-top: 18px;
+            margin-top: 16px;
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
-        .lightbox-delete-btn {
-            background: rgba(255, 59, 48, 0.2);
-            border: 1px solid rgba(255, 59, 48, 0.5);
-            color: #ff453a;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .lightbox-close-btn {
+        .lightbox-btn {
             background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: none;
             color: #ffffff;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
+            text-decoration: none;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .lightbox-btn.download { background: #71936a; }
+        .lightbox-btn.delete { background: rgba(255, 59, 48, 0.4); color: #ff6b6b; }
     </style>
 </head>
 <body>
 
-    <!-- REPRODUCTOR VINCULADO A Tu novatos.mp3 -->
+    <!-- REPRODUCTOR -->
     <button class="music-player-btn" id="music-toggle" onclick="toggleMusic()">
-        <span class="music-icon">🎵</span>
+        <span>🎵</span>
         <span id="music-text">Música</span>
     </button>
     <audio id="bg-music" src="novatos.mp3" loop></audio>
@@ -705,36 +588,37 @@
         </button>
     </div>
 
-    <!-- PESTAÑA GALERÍA DE FOTOS -->
+    <!-- PESTAÑA FOTOS -->
     <div id="tab-fotos" class="tab-content active">
         <div class="photos-header">
             <span class="photos-count" id="photos-count">0 archivos</span>
-            <div class="photos-controls">
+            <div style="display:flex; gap:6px;">
+                <button class="admin-btn-select" id="btn-select-mode-photos" onclick="toggleSelectModePhotos()">☑️ Seleccionar</button>
                 <select class="sort-select" id="sort-select" onchange="renderGallery()">
                     <option value="newest">⚡ Recientes</option>
                     <option value="oldest">⏳ Antiguas</option>
                 </select>
-                <button class="clear-btn" onclick="borrarTodasLasFotos()">🗑️ Limpiar</button>
             </div>
         </div>
         <div class="photo-grid" id="gallery"></div>
     </div>
 
+    <!-- BARRA DE ACCIONES FLOTANTE DE FOTOS -->
+    <div class="bulk-action-bar" id="bulk-bar-photos">
+        <span id="selected-photos-count">0 seleccionados</span>
+        <button class="btn-bulk-download" id="btn-download-zip" onclick="descargarFotosSeleccionadas()">📥 Descargar ZIP</button>
+        <button class="btn-bulk-delete" onclick="borrarFotosSeleccionadas()">🗑 Eliminar</button>
+    </div>
+
     <!-- PESTAÑA PLANNING -->
     <div id="tab-planning" class="tab-content">
-        <div class="timeline-item">
-            <div class="timeline-time">16:00 h</div>
-            <div>
-                <h4>Ceremonia Civil</h4>
-                <p style="font-size: 0.8rem; opacity:0.75;">Jardín de las Orquídeas</p>
-            </div>
+        <div style="background:#fff; padding:16px; border-radius:16px; margin-bottom:10px;">
+            <h4 style="color:#557053;">16:00 h - Ceremonia Civil</h4>
+            <p style="font-size: 0.75rem;">Jardín de las Orquídeas</p>
         </div>
-        <div class="timeline-item">
-            <div class="timeline-time">18:00 h</div>
-            <div>
-                <h4>Recepción</h4>
-                <p style="font-size: 0.8rem; opacity:0.75;">Jardín Central</p>
-            </div>
+        <div style="background:#fff; padding:16px; border-radius:16px;">
+            <h4 style="color:#557053;">18:00 h - Recepción</h4>
+            <p style="font-size: 0.75rem;">Jardín Central</p>
         </div>
     </div>
 
@@ -742,12 +626,7 @@
     <div id="tab-chat" class="tab-content">
         <div class="chat-container">
             <div class="chat-header">
-                <div class="chat-header-top">
-                    <span style="font-size: 0.78rem; color: #4a5a48; font-weight: 600;">Perfil de Chat:</span>
-                    <span style="font-size: 0.7rem; color: #557053; display: flex; align-items: center; gap: 4px; font-weight:600;">
-                        <span style="width: 6px; height: 6px; background:#557053; border-radius:50%;"></span> En vivo
-                    </span>
-                </div>
+                <button class="admin-btn-select" id="btn-select-mode-chat" onclick="toggleSelectModeChat()">☑️ Seleccionar</button>
                 <div class="chat-user-settings">
                     <button class="name-badge" id="current-user-badge" onclick="cambiarNombre()">Invitado ✏️</button>
                     <select class="role-select" id="role-select" onchange="guardarRol()">
@@ -755,7 +634,6 @@
                         <option value="Novio (Víctor)">🤵 Novio (Víctor)</option>
                         <option value="Novia (Flor de Liz)">👰 Novia (Flor de Liz)</option>
                         <option value="Familia">❤️ Familia</option>
-                        <option value="Dama de Honor">🌸 Dama de Honor</option>
                     </select>
                 </div>
             </div>
@@ -763,7 +641,7 @@
             <div class="chat-messages" id="chat-messages"></div>
 
             <div class="chat-input-area">
-                <input type="text" id="msg-input" placeholder="Escribe un mensaje para los novios..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <input type="text" id="msg-input" placeholder="Escribe un mensaje..." onkeypress="if(event.key==='Enter') sendMessage()">
                 <button class="chat-send-btn" onclick="sendMessage()">
                     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                 </button>
@@ -771,11 +649,17 @@
         </div>
     </div>
 
+    <!-- BARRA BORRADO MASIVO CHAT -->
+    <div class="bulk-action-bar" id="bulk-bar-chat">
+        <span id="selected-chat-count">0 seleccionados</span>
+        <button class="btn-bulk-delete" onclick="borrarChatSeleccionado()">🗑 Eliminar</button>
+    </div>
+
     <div class="upload-btn-container" id="upload-btn-container">
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto o Video</button>
     </div>
 
-    <!-- MODAL VISOR EN CARRUSEL -->
+    <!-- VISOR EN CARRUSEL -->
     <div class="lightbox-modal" id="lightbox">
         <div class="lightbox-container">
             <button class="nav-btn prev" onclick="navigateCarousel(-1)">❮</button>
@@ -783,15 +667,16 @@
             <button class="nav-btn next" onclick="navigateCarousel(1)">❯</button>
         </div>
         <div class="lightbox-actions">
-            <button class="lightbox-delete-btn" id="lightbox-delete-btn">🗑 Eliminar</button>
-            <button class="lightbox-close-btn" onclick="closeLightbox()">Cerrar</button>
+            <a id="lightbox-download-link" class="lightbox-btn download" target="_blank" download>📥 Descargar</a>
+            <button class="lightbox-btn delete" id="lightbox-delete-btn">🗑 Eliminar</button>
+            <button class="lightbox-btn" onclick="closeLightbox()">Cerrar</button>
         </div>
     </div>
 
     <script>
         const CONTRASEÑA_ADMIN = "1234";
 
-        /* --- CONTROL DE MÚSICA --- */
+        /* MÚSICA */
         const audio = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-toggle');
         const musicText = document.getElementById('music-text');
@@ -799,15 +684,14 @@
         function toggleMusic() {
             if (audio.paused) {
                 audio.play();
-                musicBtn.classList.add('playing');
                 musicText.textContent = 'Pausa';
             } else {
                 audio.pause();
-                musicBtn.classList.remove('playing');
                 musicText.textContent = 'Música';
             }
         }
 
+        /* FIREBASE CONFIG */
         const firebaseConfig = {
             apiKey: "AIzaSyDUiIw6yisQ0u7Re06HPXroBIigiTr6Nvo",
             authDomain: "boda-victor-flor.firebaseapp.com",
@@ -818,18 +702,13 @@
             appId: "1:461181016128:web:36c3fa9307e1fc7d88e7a5"
         };
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let myName = localStorage.getItem('chat_username') || '';
+        let myName = localStorage.getItem('chat_username') || 'Invitado ' + Math.floor(100 + Math.random() * 900);
         let myRole = localStorage.getItem('chat_userrole') || 'Invitado';
+        localStorage.setItem('chat_username', myName);
 
-        if (!myName) {
-            myName = 'Invitado ' + Math.floor(100 + Math.random() * 900);
-            localStorage.setItem('chat_username', myName);
-        }
         document.getElementById('current-user-badge').textContent = myName + ' ✏️';
         document.getElementById('role-select').value = myRole;
 
@@ -840,12 +719,7 @@
             document.getElementById(`tab-${tabName}`).classList.add('active');
             btn.classList.add('active');
 
-            const uploadContainer = document.getElementById('upload-btn-container');
-            if (tabName === 'fotos') {
-                uploadContainer.style.display = 'flex';
-            } else {
-                uploadContainer.style.display = 'none';
-            }
+            document.getElementById('upload-btn-container').style.display = (tabName === 'fotos') ? 'flex' : 'none';
         }
 
         function cambiarNombre() {
@@ -860,11 +734,10 @@
         function guardarRol() {
             const select = document.getElementById('role-select');
             myRole = select.value;
-            
             if (myRole.includes('Novio') || myRole.includes('Novia')) {
-                const pass = prompt("Para identificarte como Novio/Novia ingresa la clave:");
+                const pass = prompt("Clave de novios:");
                 if (pass !== CONTRASEÑA_ADMIN) {
-                    alert("Clave incorrecta. Se mantendrá como Invitado.");
+                    alert("Clave incorrecta.");
                     myRole = 'Invitado';
                     select.value = 'Invitado';
                 }
@@ -872,9 +745,11 @@
             localStorage.setItem('chat_userrole', myRole);
         }
 
-        /* --- LÓGICA DE FOTOS Y GALERÍA --- */
+        /* GALERÍA DE FOTOS Y SELECCIÓN MÚLTIPLE */
         let galleryItems = [];
         let sortedItems = [];
+        let selectedPhotos = new Set();
+        let isSelectModePhotos = false;
         let currentIndex = 0;
 
         db.ref("galeria_boda").on("value", (snapshot) => {
@@ -888,16 +763,25 @@
             renderGallery();
         });
 
+        function toggleSelectModePhotos() {
+            isSelectModePhotos = !isSelectModePhotos;
+            selectedPhotos.clear();
+            const btn = document.getElementById('btn-select-mode-photos');
+            btn.classList.toggle('active', isSelectModePhotos);
+            btn.textContent = isSelectModePhotos ? 'Cancelar' : '☑️ Seleccionar';
+            updateBulkBarPhotos();
+            renderGallery();
+        }
+
         function renderGallery() {
             const gallery = document.getElementById('gallery');
             const sortOrder = document.getElementById('sort-select').value;
-            const countLabel = document.getElementById('photos-count');
+            document.getElementById('photos-count').textContent = `${galleryItems.length} archivos`;
 
             sortedItems = [...galleryItems].sort((a, b) => {
                 return sortOrder === 'newest' ? b.timestamp - a.timestamp : a.timestamp - b.timestamp;
             });
 
-            countLabel.textContent = `${sortedItems.length} archivos`;
             gallery.innerHTML = '';
 
             sortedItems.forEach((item, index) => {
@@ -905,20 +789,107 @@
                 card.className = 'photo-item';
 
                 const timeTag = `<span class="time-tag">⏱ ${item.timeStr || ''}</span>`;
-                const likeBtn = `<div class="like-btn" onclick="toggleLike(event, '${item.id}')">❤️ ${item.likes || 0}</div>`;
+                const checkbox = isSelectModePhotos ? 
+                    `<input type="checkbox" class="select-checkbox-overlay" ${selectedPhotos.has(item.id) ? 'checked' : ''} onclick="toggleSelectPhoto(event, '${item.id}')">` : '';
+
+                const overlay = `
+                    <div class="photo-actions-overlay">
+                        <span class="action-pill" onclick="toggleLike(event, '${item.id}')">❤️ ${item.likes || 0}</span>
+                        <a href="${item.url}" download target="_blank" class="action-pill" onclick="event.stopPropagation()">📥 Baja</a>
+                    </div>`;
 
                 if (item.type === 'video') {
-                    card.innerHTML = `${timeTag}<video src="${item.url}#t=0.5" preload="metadata"></video>${likeBtn}`;
+                    card.innerHTML = `${timeTag}${checkbox}<video src="${item.url}#t=0.5" preload="metadata"></video>${overlay}`;
                 } else {
-                    card.innerHTML = `${timeTag}<img src="${item.url}" loading="lazy">${likeBtn}`;
+                    card.innerHTML = `${timeTag}${checkbox}<img src="${item.url}" loading="lazy">${overlay}`;
                 }
 
                 card.onclick = (e) => {
-                    if (!e.target.closest('.like-btn')) openCarousel(index);
+                    if (isSelectModePhotos) {
+                        const cb = card.querySelector('.select-checkbox-overlay');
+                        if (cb && e.target !== cb) {
+                            cb.checked = !cb.checked;
+                            toggleSelectPhoto(null, item.id);
+                        }
+                    } else if (!e.target.closest('.photo-actions-overlay')) {
+                        openCarousel(index);
+                    }
                 };
 
                 gallery.appendChild(card);
             });
+        }
+
+        function toggleSelectPhoto(e, id) {
+            if (e) e.stopPropagation();
+            if (selectedPhotos.has(id)) {
+                selectedPhotos.delete(id);
+            } else {
+                selectedPhotos.add(id);
+            }
+            updateBulkBarPhotos();
+        }
+
+        function updateBulkBarPhotos() {
+            const bar = document.getElementById('bulk-bar-photos');
+            const countLabel = document.getElementById('selected-photos-count');
+            if (isSelectModePhotos && selectedPhotos.size > 0) {
+                bar.style.display = 'flex';
+                countLabel.textContent = `${selectedPhotos.size} sel.`;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        /* DESCARGA MÚLTIPLE COMPRIMIDA EN ZIP */
+        async function descargarFotosSeleccionadas() {
+            if (selectedPhotos.size === 0) return;
+
+            const btnDownload = document.getElementById('btn-download-zip');
+            const originalText = btnDownload.textContent;
+            btnDownload.textContent = "⏳ Descargando...";
+            btnDownload.disabled = true;
+
+            const zip = new JSZip();
+            const folder = zip.folder("Fotos_Boda_Victor_y_Flor");
+
+            const itemsToDownload = galleryItems.filter(item => selectedPhotos.has(item.id));
+
+            try {
+                for (let i = 0; i < itemsToDownload.length; i++) {
+                    const item = itemsToDownload[i];
+                    const response = await fetch(item.url);
+                    const blob = await response.blob();
+                    const ext = item.type === 'video' ? 'mp4' : 'jpg';
+                    folder.file(`archivo_boda_${i + 1}.${ext}`, blob);
+                }
+
+                const zipContent = await zip.generateAsync({ type: "blob" });
+                saveAs(zipContent, "Fotos_Boda_Victor_y_Flor.zip");
+
+            } catch (error) {
+                alert("Hubo un detalle al descargar algunos archivos. Descargando enlaces directos...");
+                itemsToDownload.forEach(item => window.open(item.url, '_blank'));
+            } finally {
+                btnDownload.textContent = originalText;
+                btnDownload.disabled = false;
+            }
+        }
+
+        function borrarFotosSeleccionadas() {
+            const pass = prompt("Clave admin para eliminar:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                const updates = {};
+                selectedPhotos.forEach(id => {
+                    updates[`galeria_boda/${id}`] = null;
+                });
+                db.ref().update(updates).then(() => {
+                    selectedPhotos.clear();
+                    toggleSelectModePhotos();
+                });
+            } else if (pass !== null) {
+                alert("Clave incorrecta.");
+            }
         }
 
         function toggleLike(e, itemId) {
@@ -950,6 +921,7 @@
             });
         }
 
+        /* CARRUSEL */
         function openCarousel(index) {
             currentIndex = index;
             updateCarouselContent();
@@ -958,6 +930,7 @@
 
         function updateCarouselContent() {
             const body = document.getElementById('lightbox-body');
+            const downloadLink = document.getElementById('lightbox-download-link');
             const deleteBtn = document.getElementById('lightbox-delete-btn');
             const item = sortedItems[currentIndex];
 
@@ -966,9 +939,10 @@
             if (item.type === 'video') {
                 body.innerHTML = `<video class="lightbox-content" src="${item.url}" controls autoplay></video>`;
             } else {
-                body.innerHTML = `<img class="lightbox-content" src="${item.url}" alt="Foto boda">`;
+                body.innerHTML = `<img class="lightbox-content" src="${item.url}">`;
             }
 
+            downloadLink.href = item.url;
             deleteBtn.onclick = () => borrarFoto(item.id);
         }
 
@@ -984,94 +958,114 @@
         }
 
         function borrarFoto(id) {
-            const pass = prompt("Para eliminar esta foto ingresa la clave admin:");
+            const pass = prompt("Clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`galeria_boda/${id}`).remove().then(() => {
-                    closeLightbox();
-                });
+                db.ref(`galeria_boda/${id}`).remove().then(() => closeLightbox());
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
         }
 
-        function borrarTodasLasFotos() {
-            const pass = prompt("¿Seguro que deseas borrar TODAS las fotos? Ingresa la clave:");
-            if (pass === CONTRASEÑA_ADMIN) {
-                db.ref("galeria_boda").remove();
-            } else if (pass !== null) {
-                alert("Clave incorrecta.");
-            }
-        }
+        /* CHAT Y SELECCIÓN MÚLTIPLE */
+        let chatMessagesData = [];
+        let selectedChatMsgs = new Set();
+        let isSelectModeChat = false;
 
-        /* --- LÓGICA DE CHAT EN VIVO --- */
         db.ref("chat_boda").on("value", (snapshot) => {
             const data = snapshot.val();
+            chatMessagesData = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    chatMessagesData.push({ id: key, ...data[key] });
+                });
+            }
+            renderChat();
+        });
+
+        function toggleSelectModeChat() {
+            isSelectModeChat = !isSelectModeChat;
+            selectedChatMsgs.clear();
+            const btn = document.getElementById('btn-select-mode-chat');
+            btn.classList.toggle('active', isSelectModeChat);
+            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️ Seleccionar';
+            updateBulkBarChat();
+            renderChat();
+        }
+
+        function renderChat() {
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
 
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const msg = data[key];
-                    const isMe = msg.name === myName;
-                    const isNovios = msg.role && (msg.role.includes('Novio') || msg.role.includes('Novia'));
+            chatMessagesData.forEach(msg => {
+                const isMe = msg.name === myName;
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
 
-                    let rowClass = 'chat-msg-row ';
-                    if (isNovios) rowClass += 'novios ';
-                    else if (isMe) rowClass += 'me ';
-                    else rowClass += 'other ';
+                const checkbox = isSelectModeChat ? 
+                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChat(event, '${msg.id}')">` : '';
 
-                    const initial = (msg.name || 'I').charAt(0).toUpperCase();
+                msgDiv.innerHTML = `
+                    ${checkbox}
+                    <div class="chat-avatar">${(msg.name || 'I').charAt(0).toUpperCase()}</div>
+                    <div class="chat-bubble">
+                        <div class="chat-author">${msg.name}</div>
+                        <div>${msg.text}</div>
+                    </div>
+                `;
+                container.appendChild(msgDiv);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
 
-                    const msgDiv = document.createElement('div');
-                    msgDiv.className = rowClass;
-
-                    msgDiv.innerHTML = `
-                        <div class="chat-avatar">${initial}</div>
-                        <div class="chat-bubble">
-                            <div class="chat-author">
-                                ${msg.name} 
-                                <span class="role-tag">${msg.role || 'Invitado'}</span>
-                            </div>
-                            <div>${msg.text}</div>
-                            <div class="chat-meta">
-                                <span>${msg.timeStr || ''}</span>
-                                <span class="delete-msg-icon" onclick="borrarMensaje('${key}')">×</span>
-                            </div>
-                        </div>
-                    `;
-
-                    container.appendChild(msgDiv);
-                });
-                container.scrollTop = container.scrollHeight;
+        function toggleSelectChat(e, id) {
+            if (e) e.stopPropagation();
+            if (selectedChatMsgs.has(id)) {
+                selectedChatMsgs.delete(id);
+            } else {
+                selectedChatMsgs.add(id);
             }
-        });
+            updateBulkBarChat();
+        }
+
+        function updateBulkBarChat() {
+            const bar = document.getElementById('bulk-bar-chat');
+            const countLabel = document.getElementById('selected-chat-count');
+            if (isSelectModeChat && selectedChatMsgs.size > 0) {
+                bar.style.display = 'flex';
+                countLabel.textContent = `${selectedChatMsgs.size} sel.`;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        function borrarChatSeleccionado() {
+            const pass = prompt("Clave admin para eliminar:");
+            if (pass === CONTRASEÑA_ADMIN) {
+                const updates = {};
+                selectedChatMsgs.forEach(id => {
+                    updates[`chat_boda/${id}`] = null;
+                });
+                db.ref().update(updates).then(() => {
+                    selectedChatMsgs.clear();
+                    toggleSelectModeChat();
+                });
+            } else if (pass !== null) {
+                alert("Clave incorrecta.");
+            }
+        }
 
         function sendMessage() {
             const input = document.getElementById('msg-input');
             const text = input.value.trim();
 
             if (text !== '') {
-                const now = new Date();
-                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} h`;
-
                 db.ref("chat_boda").push({
                     name: myName,
                     role: myRole,
                     text: text,
-                    timeStr: timeStr,
                     timestamp: Date.now()
                 });
-
                 input.value = '';
-            }
-        }
-
-        function borrarMensaje(key) {
-            const pass = prompt("Para eliminar este mensaje ingresa la clave:");
-            if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`chat_boda/${key}`).remove();
-            } else if (pass !== null) {
-                alert("Clave incorrecta.");
             }
         }
     </script>
