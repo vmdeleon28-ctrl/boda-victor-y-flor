@@ -8,7 +8,7 @@
     <!-- Tipografías -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Librerías CDN ligeras -->
+    <!-- Librerías CDN -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -20,11 +20,13 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { background-color: #eaf0ea; }
+        html { 
+            background: #eaf0ea;
+        }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #eaf0ea;
+            background: url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed #eaf0ea;
             color: #2c352b;
             text-align: left;
             max-width: 480px;
@@ -47,19 +49,23 @@
             padding: 16px;
             margin-bottom: 16px;
             z-index: 1;
-            border: 1px solid #7a9a76;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         }
 
         .badge-premium {
             position: absolute;
             top: 12px;
             left: 12px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.68rem;
             font-weight: 600;
             color: #3b493a;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .event-card-app h3 {
@@ -83,10 +89,14 @@
             display: flex;
             justify-content: space-around;
             padding: 4px;
-            background: #ffffff;
+            /* Más translúcido */
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 16px;
-            border: 1px solid rgba(138, 163, 134, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
 
         .action-btn {
@@ -96,24 +106,26 @@
             gap: 2px;
             background: none;
             border: none;
-            color: #637562;
+            color: #556653;
             font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
             flex: 1;
             padding: 6px 0;
             border-radius: 12px;
+            transition: all 0.2s ease;
         }
 
         .action-icon {
             width: 38px;
             height: 38px;
-            background: #edf2ed;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         .action-btn.active {
@@ -122,8 +134,9 @@
         }
 
         .action-btn.active .action-icon {
-            background: #7e9d77;
+            background: rgba(126, 157, 119, 0.85);
             color: #ffffff;
+            border-color: transparent;
         }
 
         .tab-content { display: none; }
@@ -134,8 +147,10 @@
             top: 12px;
             right: 12px;
             z-index: 1500;
-            background: #ffffff;
-            border: 1px solid rgba(138, 163, 134, 0.4);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 20px;
             padding: 5px 10px;
             display: flex;
@@ -145,6 +160,7 @@
             font-size: 0.72rem;
             font-weight: 600;
             color: #3b493a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         /* GALERÍA */
@@ -153,18 +169,26 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            /* Más translúcido */
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .photos-count {
             font-size: 0.78rem;
-            color: #4a5a48;
-            font-weight: 600;
+            color: #3b493a;
+            font-weight: 700;
         }
 
         .sort-select, .admin-btn-select {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
             color: #2c352b;
-            border: 1px solid rgba(138, 163, 134, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             padding: 5px 8px;
             border-radius: 8px;
             font-size: 0.7rem;
@@ -189,9 +213,11 @@
             aspect-ratio: 1 / 1;
             border-radius: 12px;
             overflow: hidden;
-            background: #d8e2d7;
+            background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             content-visibility: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .photo-item img {
@@ -204,7 +230,7 @@
         .video-placeholder {
             width: 100%;
             height: 100%;
-            background: #2c352b;
+            background: rgba(44, 53, 43, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -217,7 +243,8 @@
             position: absolute;
             top: 6px;
             left: 6px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
             padding: 2px 6px;
             border-radius: 8px;
             font-size: 0.6rem;
@@ -247,13 +274,16 @@
         }
 
         .action-pill {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border-radius: 10px;
             padding: 2px 6px;
             font-size: 0.65rem;
             color: #2c352b;
             font-weight: 600;
             text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         /* BARRAS FLOTANTES DE ACCIÓN MASIVA */
@@ -262,7 +292,9 @@
             bottom: 75px;
             left: 50%;
             transform: translateX(-50%);
-            background: #2c352b;
+            background: rgba(44, 53, 43, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: #ffffff;
             padding: 6px 12px;
             border-radius: 20px;
@@ -272,6 +304,8 @@
             z-index: 1200;
             font-size: 0.75rem;
             width: max-content;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .bulk-action-bar button {
@@ -287,21 +321,36 @@
         .btn-bulk-download { background: #71936a; }
         .btn-bulk-delete { background: #d9534f; }
 
+        /* PLANNING TARJETAS */
+        .planning-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
         /* CHAT */
         .chat-container {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
             height: 420px;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(138, 163, 134, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
         .chat-header {
             padding: 8px 12px;
-            background: #f4f7f4;
-            border-bottom: 1px solid rgba(138, 163, 134, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -314,16 +363,16 @@
         }
 
         .role-select {
-            background: #ffffff;
-            border: 1px solid rgba(138, 163, 134, 0.4);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             padding: 3px 5px;
             border-radius: 6px;
             font-size: 0.68rem;
         }
 
         .name-badge {
-            background: rgba(138, 163, 134, 0.15);
-            border: 1px solid rgba(138, 163, 134, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             color: #3b493a;
             padding: 3px 6px;
             border-radius: 6px;
@@ -371,10 +420,12 @@
             font-size: 0.78rem;
             line-height: 1.25;
             word-break: break-word;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .chat-msg-row.other .chat-bubble { background: #f0f4f0; color: #2c352b; }
-        .chat-msg-row.me .chat-bubble { background: #7e9d77; color: #ffffff; }
+        .chat-msg-row.other .chat-bubble { background: rgba(255, 255, 255, 0.85); color: #2c352b; }
+        .chat-msg-row.me .chat-bubble { background: rgba(126, 157, 119, 0.9); color: #ffffff; }
 
         .chat-author {
             font-size: 0.6rem;
@@ -391,8 +442,8 @@
 
         .chat-input-area {
             padding: 8px;
-            background: #f4f7f4;
-            border-top: 1px solid rgba(138, 163, 134, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -400,8 +451,8 @@
 
         .chat-input-area input {
             flex: 1;
-            background: #ffffff;
-            border: 1px solid rgba(138, 163, 134, 0.3);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             padding: 8px 12px;
             border-radius: 16px;
             color: #2c352b;
@@ -436,9 +487,11 @@
 
         .upload-btn-main {
             pointer-events: auto;
-            background: #71936a;
+            background: rgba(113, 147, 106, 0.95);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             color: #ffffff;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.4);
             padding: 12px 24px;
             border-radius: 25px;
             font-weight: 700;
@@ -452,7 +505,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.92);
             z-index: 2000;
             flex-direction: column;
             justify-content: center;
@@ -575,12 +628,12 @@
 
     <!-- PESTAÑA PLANNING -->
     <div id="tab-planning" class="tab-content">
-        <div style="background:#fff; padding:14px; border-radius:12px; margin-bottom:8px;">
-            <h4 style="color:#557053; font-size: 0.9rem;">16:00 h - Ceremonia Civil</h4>
+        <div class="planning-card">
+            <h4 style="color:#4a5a48; font-size: 0.9rem;">16:00 h - Ceremonia Civil</h4>
             <p style="font-size: 0.72rem;">Jardín de las Orquídeas</p>
         </div>
-        <div style="background:#fff; padding:14px; border-radius:12px;">
-            <h4 style="color:#557053; font-size: 0.9rem;">18:00 h - Recepción</h4>
+        <div class="planning-card">
+            <h4 style="color:#4a5a48; font-size: 0.9rem;">18:00 h - Recepción</h4>
             <p style="font-size: 0.72rem;">Jardín Central</p>
         </div>
     </div>
@@ -596,7 +649,7 @@
                         <option value="Invitado">👥 Invitado</option>
                         <option value="Novio (Víctor)">🤵 Novio (Víctor)</option>
                         <option value="Novia (Flor de Liz)">👰 Novia (Flor de Liz)</option>
-                        <option value="Familia">❤️ Familia</option>
+                        <option value="Familia">❤ Familia</option>
                     </select>
                 </div>
             </div>
@@ -983,7 +1036,7 @@
             selectedChatMsgs.clear();
             const btn = document.getElementById('btn-select-mode-chat');
             btn.classList.toggle('active', isSelectModeChat);
-            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑️ Seleccionar';
+            btn.textContent = isSelectModeChat ? 'Cancelar' : '☑ Seleccionar';
             updateBulkBarChat();
             renderChat();
         }
