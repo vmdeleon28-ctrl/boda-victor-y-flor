@@ -5,52 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Víctor & Flor de Liz - Boda</title>
     
-    <!-- Tipografías -->
+    <!-- Tipografías optimizadas con display=swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Librerías CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    
-    <!-- JSZip y FileSaver para Descarga Múltiple en ZIP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
-    <!-- SDK Firebase Compat -->
+    <!-- SDK Cloudinary y Firebase (Compat) -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         html { background-color: #eaf0ea; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #eaf0ea url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg') center top / cover no-repeat fixed;
+            background: #eaf0ea;
             color: #2c352b;
             text-align: left;
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             padding: 16px 16px 100px 16px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             overflow-x: hidden;
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.55);
-            z-index: 0;
-            pointer-events: none;
-        }
-
         .event-card-app {
             position: relative;
-            height: 220px;
+            height: 200px;
             border-radius: 20px;
             overflow: hidden;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(20, 30, 20, 0.8) 100%), 
@@ -59,9 +43,8 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 20px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             margin-bottom: 20px;
-            z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
@@ -75,17 +58,6 @@
             font-size: 0.7rem;
             font-weight: 600;
             color: #3b493a;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge-premium::after {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #7a9a76;
-            border-radius: 50%;
         }
 
         .event-card-app h3 {
@@ -95,14 +67,12 @@
             color: #ffffff;
             line-height: 1;
             margin-bottom: 4px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
         .event-card-app p {
             font-size: 0.8rem;
             font-weight: 500;
             color: #f0f4f0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
 
         .app-actions {
@@ -113,9 +83,6 @@
             border-radius: 20px;
             border: 1px solid rgba(138, 163, 134, 0.3);
             margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .action-btn {
@@ -129,7 +96,6 @@
             font-size: 0.72rem;
             font-weight: 600;
             cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
             flex: 1;
             padding: 6px 0;
             border-radius: 14px;
@@ -144,25 +110,12 @@
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            border: 1px solid rgba(138, 163, 134, 0.2);
         }
 
-        .action-btn.active {
-            color: #2c352b;
-            font-weight: 700;
-        }
+        .action-btn.active { color: #2c352b; font-weight: 700; }
+        .action-btn.active .action-icon { background: #7e9d77; color: #ffffff; }
 
-        .action-btn.active .action-icon {
-            background: #7e9d77;
-            color: #ffffff;
-        }
-
-        .tab-content {
-            display: none;
-            z-index: 1;
-            position: relative;
-        }
-
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         .music-player-btn {
@@ -177,27 +130,22 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             cursor: pointer;
             font-size: 0.75rem;
             font-weight: 600;
             color: #3b493a;
         }
 
-        /* GALERÍA Y SELECCIÓN */
+        /* GALERÍA */
         .photos-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 14px;
-            padding: 0 2px;
         }
 
-        .photos-count {
-            font-size: 0.8rem;
-            color: #4a5a48;
-            font-weight: 600;
-        }
+        .photos-count { font-size: 0.8rem; color: #4a5a48; font-weight: 600; }
 
         .sort-select, .admin-btn-select {
             background: #ffffff;
@@ -207,30 +155,26 @@
             border-radius: 10px;
             font-size: 0.72rem;
             outline: none;
-            cursor: pointer;
             font-weight: 600;
         }
 
-        .admin-btn-select.active {
-            background: #7e9d77;
-            color: #ffffff;
-        }
+        .admin-btn-select.active { background: #7e9d77; color: #ffffff; }
 
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
         .photo-item {
             position: relative;
             aspect-ratio: 1 / 1;
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
             background: #d8e2d7;
             border: 1px solid #ffffff;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            contain: strict;
         }
 
         .photo-item img, .photo-item video {
@@ -242,12 +186,12 @@
 
         .time-tag {
             position: absolute;
-            top: 8px;
-            left: 8px;
+            top: 6px;
+            left: 6px;
             background: rgba(255, 255, 255, 0.9);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.6rem;
             font-weight: 600;
             color: #2c352b;
             z-index: 2;
@@ -255,20 +199,19 @@
 
         .select-checkbox-overlay {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             z-index: 4;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             accent-color: #7e9d77;
-            cursor: pointer;
         }
 
         .photo-actions-overlay {
             position: absolute;
-            bottom: 8px;
-            left: 8px;
-            right: 8px;
+            bottom: 6px;
+            left: 6px;
+            right: 6px;
             display: flex;
             justify-content: space-between;
             z-index: 3;
@@ -276,18 +219,15 @@
 
         .action-pill {
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            padding: 3px 8px;
-            font-size: 0.7rem;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 0.65rem;
             color: #2c352b;
-            cursor: pointer;
             font-weight: 600;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
         }
 
-        /* BARRA FLOTANTE DE ACCIONES MÚLTIPLES */
+        /* BARRAS FLOTANTES */
         .bulk-action-bar {
             position: fixed;
             bottom: 80px;
@@ -303,7 +243,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1200;
             font-size: 0.78rem;
-            width: max-content;
         }
 
         .bulk-action-bar button {
@@ -314,9 +253,6 @@
             font-weight: 700;
             font-size: 0.72rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .btn-bulk-download { background: #71936a; }
@@ -326,7 +262,7 @@
         .chat-container {
             background: #ffffff;
             border-radius: 20px;
-            height: 480px;
+            height: 420px;
             display: flex;
             flex-direction: column;
             border: 1px solid rgba(138, 163, 134, 0.25);
@@ -342,11 +278,7 @@
             justify-content: space-between;
         }
 
-        .chat-user-settings {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .chat-user-settings { display: flex; align-items: center; gap: 6px; }
 
         .role-select {
             background: #ffffff;
@@ -364,13 +296,12 @@
             border-radius: 8px;
             font-size: 0.7rem;
             font-weight: 600;
-            cursor: pointer;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 14px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -381,20 +312,19 @@
             gap: 8px;
             align-items: flex-end;
             max-width: 90%;
-            position: relative;
         }
 
         .chat-msg-row.other { align-self: flex-start; }
         .chat-msg-row.me { align-self: flex-end; flex-direction: row-reverse; }
 
         .chat-avatar {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: #7e9d77;
             color: #ffffff;
             font-weight: 700;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -404,7 +334,7 @@
         .chat-bubble {
             padding: 8px 12px;
             border-radius: 14px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             line-height: 1.3;
             word-break: break-word;
         }
@@ -413,22 +343,14 @@
         .chat-msg-row.me .chat-bubble { background: #7e9d77; color: #ffffff; }
 
         .chat-author {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: 700;
             margin-bottom: 2px;
             color: #4a5a48;
         }
 
-        .chat-msg-checkbox {
-            accent-color: #ff4d4d;
-            margin: auto 4px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
         .chat-input-area {
-            padding: 10px;
+            padding: 8px 10px;
             background: #f4f7f4;
             border-top: 1px solid rgba(138, 163, 134, 0.2);
             display: flex;
@@ -440,27 +362,25 @@
             flex: 1;
             background: #ffffff;
             border: 1px solid rgba(138, 163, 134, 0.3);
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 18px;
-            color: #2c352b;
             outline: none;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
         }
 
         .chat-send-btn {
             background: #7e9d77;
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            flex-shrink: 0;
         }
 
-        .chat-send-btn svg { width: 16px; height: 16px; fill: #ffffff; }
+        .chat-send-btn svg { width: 14px; height: 14px; fill: #ffffff; }
 
         .upload-btn-container {
             position: fixed;
@@ -477,14 +397,15 @@
             background: #71936a;
             color: #ffffff;
             border: none;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 0.85rem;
-            box-shadow: 0 6px 18px rgba(113, 147, 106, 0.4);
+            font-size: 0.82rem;
+            box-shadow: 0 4px 12px rgba(113, 147, 106, 0.4);
             cursor: pointer;
         }
 
+        /* LIGHTBOX */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -522,12 +443,12 @@
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: #fff;
-            width: 40px; height: 40px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             z-index: 10;
         }
@@ -539,18 +460,16 @@
             margin-top: 16px;
             display: flex;
             gap: 10px;
-            align-items: center;
         }
 
         .lightbox-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: #ffffff;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 16px;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            cursor: pointer;
             text-decoration: none;
         }
 
@@ -560,12 +479,11 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR -->
     <button class="music-player-btn" id="music-toggle" onclick="toggleMusic()">
         <span>🎵</span>
         <span id="music-text">Música</span>
     </button>
-    <audio id="bg-music" src="novatos.mp3" loop></audio>
+    <audio id="bg-music" src="novatos.mp3" loop preload="none"></audio>
 
     <div class="event-card-app">
         <span class="badge-premium">Álbum Boda</span>
@@ -603,9 +521,8 @@
         <div class="photo-grid" id="gallery"></div>
     </div>
 
-    <!-- BARRA DE ACCIONES FLOTANTE DE FOTOS -->
     <div class="bulk-action-bar" id="bulk-bar-photos">
-        <span id="selected-photos-count">0 seleccionados</span>
+        <span id="selected-photos-count">0 sel.</span>
         <button class="btn-bulk-download" id="btn-download-zip" onclick="descargarFotosSeleccionadas()">📥 Descargar ZIP</button>
         <button class="btn-bulk-delete" onclick="borrarFotosSeleccionadas()">🗑 Eliminar</button>
     </div>
@@ -649,9 +566,8 @@
         </div>
     </div>
 
-    <!-- BARRA BORRADO MASIVO CHAT -->
     <div class="bulk-action-bar" id="bulk-bar-chat">
-        <span id="selected-chat-count">0 seleccionados</span>
+        <span id="selected-chat-count">0 sel.</span>
         <button class="btn-bulk-delete" onclick="borrarChatSeleccionado()">🗑 Eliminar</button>
     </div>
 
@@ -659,7 +575,7 @@
         <button class="upload-btn-main" onclick="openCloudinaryWidget()">📸 Subir Foto o Video</button>
     </div>
 
-    <!-- VISOR EN CARRUSEL -->
+    <!-- LIGHTBOX -->
     <div class="lightbox-modal" id="lightbox">
         <div class="lightbox-container">
             <button class="nav-btn prev" onclick="navigateCarousel(-1)">❮</button>
@@ -668,7 +584,7 @@
         </div>
         <div class="lightbox-actions">
             <a id="lightbox-download-link" class="lightbox-btn download" target="_blank" download>📥 Descargar</a>
-            <button class="lightbox-btn delete" id="lightbox-delete-btn">🗑 Eliminar</button>
+            <button class="lightbox-btn delete" onclick="deleteCurrentLightboxItem()">🗑 Eliminar</button>
             <button class="lightbox-btn" onclick="closeLightbox()">Cerrar</button>
         </div>
     </div>
@@ -678,7 +594,6 @@
 
         /* MÚSICA */
         const audio = document.getElementById('bg-music');
-        const musicBtn = document.getElementById('music-toggle');
         const musicText = document.getElementById('music-text');
 
         function toggleMusic() {
@@ -745,7 +660,7 @@
             localStorage.setItem('chat_userrole', myRole);
         }
 
-        /* GALERÍA DE FOTOS Y SELECCIÓN MÚLTIPLE */
+        /* GALERÍA Y COMPRESIÓN DE MINIATURAS CLOUDINARY */
         let galleryItems = [];
         let sortedItems = [];
         let selectedPhotos = new Set();
@@ -773,6 +688,13 @@
             renderGallery();
         }
 
+        function getOptimizedUrl(originalUrl) {
+            if (originalUrl.includes('/upload/')) {
+                return originalUrl.replace('/upload/', '/upload/c_scale,w_400,f_auto,q_auto/');
+            }
+            return originalUrl;
+        }
+
         function renderGallery() {
             const gallery = document.getElementById('gallery');
             const sortOrder = document.getElementById('sort-select').value;
@@ -795,13 +717,15 @@
                 const overlay = `
                     <div class="photo-actions-overlay">
                         <span class="action-pill" onclick="toggleLike(event, '${item.id}')">❤️ ${item.likes || 0}</span>
-                        <a href="${item.url}" download target="_blank" class="action-pill" onclick="event.stopPropagation()">📥 Baja</a>
+                        <a href="${item.url}" download target="_blank" class="action-pill" onclick="event.stopPropagation()">📥 Descargar</a>
                     </div>`;
+
+                const thumbUrl = getOptimizedUrl(item.url);
 
                 if (item.type === 'video') {
                     card.innerHTML = `${timeTag}${checkbox}<video src="${item.url}#t=0.5" preload="metadata"></video>${overlay}`;
                 } else {
-                    card.innerHTML = `${timeTag}${checkbox}<img src="${item.url}" loading="lazy">${overlay}`;
+                    card.innerHTML = `${timeTag}${checkbox}<img src="${thumbUrl}" loading="lazy" decoding="async">${overlay}`;
                 }
 
                 card.onclick = (e) => {
@@ -841,35 +765,51 @@
             }
         }
 
-        /* DESCARGA MÚLTIPLE COMPRIMIDA EN ZIP */
+        /* CARGA DINÁMICA DE JSZIP SOLO SI SE NECESITA */
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+        }
+
         async function descargarFotosSeleccionadas() {
             if (selectedPhotos.size === 0) return;
 
             const btnDownload = document.getElementById('btn-download-zip');
             const originalText = btnDownload.textContent;
-            btnDownload.textContent = "⏳ Descargando...";
+            btnDownload.textContent = "⏳ Cargando zip...";
             btnDownload.disabled = true;
 
-            const zip = new JSZip();
-            const folder = zip.folder("Fotos_Boda_Victor_y_Flor");
-
-            const itemsToDownload = galleryItems.filter(item => selectedPhotos.has(item.id));
-
             try {
+                if (!window.JSZip) {
+                    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+                    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
+                }
+
+                btnDownload.textContent = "⏳ Descargando...";
+                const zip = new JSZip();
+                const folder = zip.folder("Fotos_Boda_Victor_y_Flor");
+
+                const itemsToDownload = galleryItems.filter(item => selectedPhotos.has(item.id));
+
                 for (let i = 0; i < itemsToDownload.length; i++) {
                     const item = itemsToDownload[i];
                     const response = await fetch(item.url);
                     const blob = await response.blob();
                     const ext = item.type === 'video' ? 'mp4' : 'jpg';
-                    folder.file(`archivo_boda_${i + 1}.${ext}`, blob);
+                    folder.file(`boda_${i + 1}.${ext}`, blob);
                 }
 
                 const zipContent = await zip.generateAsync({ type: "blob" });
                 saveAs(zipContent, "Fotos_Boda_Victor_y_Flor.zip");
 
             } catch (error) {
-                alert("Hubo un detalle al descargar algunos archivos. Descargando enlaces directos...");
-                itemsToDownload.forEach(item => window.open(item.url, '_blank'));
+                alert("Error comprimiendo. Abriendo enlaces directos...");
+                galleryItems.filter(item => selectedPhotos.has(item.id)).forEach(item => window.open(item.url, '_blank'));
             } finally {
                 btnDownload.textContent = originalText;
                 btnDownload.disabled = false;
@@ -877,7 +817,7 @@
         }
 
         function borrarFotosSeleccionadas() {
-            const pass = prompt("Clave admin para eliminar:");
+            const pass = prompt("Clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
                 const updates = {};
                 selectedPhotos.forEach(id => {
@@ -914,8 +854,6 @@
                         timeStr: timeStr,
                         timestamp: Date.now(),
                         likes: 0
-                    }).then(() => {
-                        if (typeof confetti === 'function') confetti();
                     });
                 }
             });
@@ -923,33 +861,10 @@
 
         /* CARRUSEL */
         function openCarousel(index) {
-            currentIndex = index;
-            updateCarouselContent();
-            document.getElementById('lightbox').classList.add('active');
-        }
-
-        function updateCarouselContent() {
-            const body = document.getElementById('lightbox-body');
-            const downloadLink = document.getElementById('lightbox-download-link');
-            const deleteBtn = document.getElementById('lightbox-delete-btn');
-            const item = sortedItems[currentIndex];
-
-            if (!item) return;
-
-            if (item.type === 'video') {
-                body.innerHTML = `<video class="lightbox-content" src="${item.url}" controls autoplay></video>`;
-            } else {
-                body.innerHTML = `<img class="lightbox-content" src="${item.url}">`;
-            }
-
-            downloadLink.href = item.url;
-            deleteBtn.onclick = () => borrarFoto(item.id);
-        }
-
-        function navigateCarousel(step) {
             if (sortedItems.length === 0) return;
-            currentIndex = (currentIndex + step + sortedItems.length) % sortedItems.length;
-            updateCarouselContent();
+            currentIndex = index;
+            updateLightboxContent();
+            document.getElementById('lightbox').classList.add('active');
         }
 
         function closeLightbox() {
@@ -957,26 +872,46 @@
             document.getElementById('lightbox-body').innerHTML = '';
         }
 
-        function borrarFoto(id) {
+        function navigateCarousel(direction) {
+            currentIndex = (currentIndex + direction + sortedItems.length) % sortedItems.length;
+            updateLightboxContent();
+        }
+
+        function updateLightboxContent() {
+            const item = sortedItems[currentIndex];
+            const container = document.getElementById('lightbox-body');
+            const downloadLink = document.getElementById('lightbox-download-link');
+
+            downloadLink.href = item.url;
+
+            if (item.type === 'video') {
+                container.innerHTML = `<video class="lightbox-content" src="${item.url}" controls autoplay></video>`;
+            } else {
+                container.innerHTML = `<img class="lightbox-content" src="${item.url}">`;
+            }
+        }
+
+        function deleteCurrentLightboxItem() {
+            const item = sortedItems[currentIndex];
             const pass = prompt("Clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
-                db.ref(`galeria_boda/${id}`).remove().then(() => closeLightbox());
+                db.ref(`galeria_boda/${item.id}`).remove().then(() => closeLightbox());
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
             }
         }
 
-        /* CHAT Y SELECCIÓN MÚLTIPLE */
-        let chatMessagesData = [];
+        /* CHAT */
+        let chatMessages = [];
         let selectedChatMsgs = new Set();
         let isSelectModeChat = false;
 
         db.ref("chat_boda").on("value", (snapshot) => {
             const data = snapshot.val();
-            chatMessagesData = [];
+            chatMessages = [];
             if (data) {
                 Object.keys(data).forEach(key => {
-                    chatMessagesData.push({ id: key, ...data[key] });
+                    chatMessages.push({ id: key, ...data[key] });
                 });
             }
             renderChat();
@@ -996,28 +931,42 @@
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
 
-            chatMessagesData.forEach(msg => {
-                const isMe = msg.name === myName;
-                const msgDiv = document.createElement('div');
-                msgDiv.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
+            chatMessages.forEach(msg => {
+                const isMe = msg.author === myName;
+                const row = document.createElement('div');
+                row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
 
+                const initial = (msg.author || 'I').charAt(0).toUpperCase();
                 const checkbox = isSelectModeChat ? 
-                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChat(event, '${msg.id}')">` : '';
+                    `<input type="checkbox" style="margin: 0 4px; accent-color:#7e9d77;" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChatMsg(event, '${msg.id}')">` : '';
 
-                msgDiv.innerHTML = `
+                row.innerHTML = `
                     ${checkbox}
-                    <div class="chat-avatar">${(msg.name || 'I').charAt(0).toUpperCase()}</div>
-                    <div class="chat-bubble">
-                        <div class="chat-author">${msg.name}</div>
-                        <div>${msg.text}</div>
+                    <div class="chat-avatar">${initial}</div>
+                    <div>
+                        <div class="chat-author">${msg.author} (${msg.role || 'Invitado'})</div>
+                        <div class="chat-bubble">${msg.text}</div>
                     </div>
                 `;
-                container.appendChild(msgDiv);
+
+                if (isSelectModeChat) {
+                    row.style.cursor = 'pointer';
+                    row.onclick = (e) => {
+                        const cb = row.querySelector('input[type="checkbox"]');
+                        if (cb && e.target !== cb) {
+                            cb.checked = !cb.checked;
+                            toggleSelectChatMsg(null, msg.id);
+                        }
+                    };
+                }
+
+                container.appendChild(row);
             });
+
             container.scrollTop = container.scrollHeight;
         }
 
-        function toggleSelectChat(e, id) {
+        function toggleSelectChatMsg(e, id) {
             if (e) e.stopPropagation();
             if (selectedChatMsgs.has(id)) {
                 selectedChatMsgs.delete(id);
@@ -1038,8 +987,23 @@
             }
         }
 
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            db.ref("chat_boda").push({
+                author: myName,
+                role: myRole,
+                text: text,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+        }
+
         function borrarChatSeleccionado() {
-            const pass = prompt("Clave admin para eliminar:");
+            const pass = prompt("Clave admin:");
             if (pass === CONTRASEÑA_ADMIN) {
                 const updates = {};
                 selectedChatMsgs.forEach(id => {
@@ -1051,21 +1015,6 @@
                 });
             } else if (pass !== null) {
                 alert("Clave incorrecta.");
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-
-            if (text !== '') {
-                db.ref("chat_boda").push({
-                    name: myName,
-                    role: myRole,
-                    text: text,
-                    timestamp: Date.now()
-                });
-                input.value = '';
             }
         }
     </script>
