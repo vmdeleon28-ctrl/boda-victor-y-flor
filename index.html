@@ -192,7 +192,7 @@
             50% { opacity: 1; }
         }
 
-        /* HERO - FOTO Y ENCUADRE DE REFERENCIA EXACTO */
+        /* HERO - CENTRADO DE AMBAS PERSONAS */
         .hero {
             position: relative;
             width: 100%;
@@ -200,12 +200,12 @@
             min-height: 500px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             color: #ffffff;
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('foto_pareja.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('foto_pareja.jpg');
             background-size: cover;
-            background-position: right center;
+            background-position: 50% center;
             padding: 40px 20px 50px 20px;
         }
 
@@ -216,10 +216,9 @@
             text-transform: uppercase;
             color: #ffffff;
             font-weight: 300;
-            margin-bottom: 20px;
         }
 
-        .hero-names { margin: 0; }
+        .hero-names { margin-top: auto; }
 
         .hero h1 {
             font-family: 'Cormorant Garamond', serif;
