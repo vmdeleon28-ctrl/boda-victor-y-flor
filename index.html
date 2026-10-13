@@ -192,7 +192,7 @@
             50% { opacity: 1; }
         }
 
-        /* HERO - CENTRADO DE AMBAS PERSONAS */
+        /* HERO VERTICAL CON FOTO ADAPTADA EN HORIZONTAL */
         .hero {
             position: relative;
             width: 100%;
@@ -203,10 +203,25 @@
             justify-content: space-between;
             align-items: center;
             color: #ffffff;
-            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('foto_pareja.jpg');
-            background-size: cover;
-            background-position: 80% center;
+            background-color: #2b3329;
             padding: 40px 20px 50px 20px;
+            overflow: hidden;
+        }
+
+        .hero-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            z-index: 1;
+        }
+
+        .hero .subtitle, .hero .hero-names {
+            position: relative;
+            z-index: 2;
         }
 
         .hero .subtitle {
@@ -216,6 +231,7 @@
             text-transform: uppercase;
             color: #ffffff;
             font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         .hero-names { margin-top: auto; }
@@ -227,7 +243,7 @@
             font-weight: 300;
             text-transform: uppercase;
             color: #ffffff;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
             line-height: 1.1;
         }
 
@@ -236,11 +252,11 @@
             font-size: 3.2rem;
             margin: -5px 0;
             color: #ffffff;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
             font-weight: 400;
         }
 
-        /* SECCIONES Y TRANSICIÓN */
+        /* SECCIONES Y TRANSICIÓN VERTICAL */
         .reveal {
             opacity: 0;
             transform: translateY(25px);
@@ -281,7 +297,7 @@
             padding: 0 10px;
         }
 
-        /* CARRUSEL */
+        /* CARRUSEL HORIZONTAL */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -291,7 +307,7 @@
             overflow: hidden;
             box-shadow: 0 6px 18px rgba(0,0,0,0.06);
             background: #f0f3ee;
-            aspect-ratio: 4 / 5;
+            aspect-ratio: 16 / 9;
             touch-action: pan-y;
         }
         .carousel-track {
@@ -308,7 +324,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top center;
+            object-position: center center;
             display: block;
             pointer-events: none;
         }
@@ -494,6 +510,7 @@
     </div>
 
     <div class="hero">
+        <img src="foto_pareja.jpg" alt="Víctor y Flor" class="hero-img">
         <p class="subtitle">NUESTRA BODA CIVIL</p>
         <div class="hero-names">
             <h1>VÍCTOR MIGUEL</h1>
