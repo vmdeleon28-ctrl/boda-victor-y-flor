@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Víctor Miguel & Flor de Liz - Boda Civil</title>
+    
+    <!-- Etiquetas Open Graph para vista previa en WhatsApp -->
+    <meta property="og:title" content="Víctor Miguel & Flor de Liz - Nuestra Boda Civil">
+    <meta property="og:description" content="Invitación válida por 4 pases • 12 de Diciembre de 2026, Orizaba, Ver.">
+    <meta property="og:image" content="https://vmdeleon28-ctrl.github.io/boda-victor-y-flor/foto_pareja.jpg">
+    <meta property="og:url" content="https://vmdeleon28-ctrl.github.io/boda-victor-y-flor/4-invitados.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: #f7f9f6;
+            color: #3a4237;
+            text-align: center;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: 0 0 25px rgba(138, 154, 134, 0.15);
+            padding-bottom: 60px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fondo fijo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            background-image: url('Eucalyptus Greenery Gum Botanical Rustic Wedding Envelope _ Zazzle.jpg');
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.85;
+        }
+
+        /* SOBRE ANIMADO */
+        .envelope-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #3b4538;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+        }
+        .envelope-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 280px;
+            height: 200px;
+            background-color: #f4f6f3;
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            cursor: pointer;
+            perspective: 800px;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 110px solid #8A9A86;
+            transform-origin: top;
+            transition: transform 0.8s ease;
+            z-index: 4;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid #99AA95;
+            border-right: 140px solid #99AA95;
+            border-bottom: 110px solid #7A8A76;
+            border-top: 90px solid transparent;
+            z-index: 3;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .envelope-card {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 250px;
+            height: 170px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 4px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.8s ease 0.4s;
+            z-index: 2;
+            overflow: hidden;
+            border: 1px solid #dcdfd9;
+        }
+
+        .envelope-card .initials-card {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.2rem;
+            color: #6a7966;
+            margin: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .envelope-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #4a5746;
+            margin-top: 6px;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 82px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #a2b29f 0%, #7a8a76 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-family: 'Alex Brush', cursive;
+            font-size: 1.5rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            z-index: 5;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            line-height: 1;
+        }
+
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .envelope-card {
+            transform: translateY(-80px);
+        }
+
+        .envelope-wrapper.open .wax-seal {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.5);
+        }
+
+        .click-hint {
+            margin-top: 40px;
+            color: #e2e8e1;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* HERO - FOTO PRINCIPAL */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            padding: 40px 20px 50px 20px;
+            overflow: hidden;
+        }
+
+        .hero-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center; 
+            z-index: 1;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.6) 100%);
+            z-index: 2;
+        }
+
+        .hero .subtitle, .hero .hero-names {
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .hero-names { margin-top: auto; }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.3rem;
+            letter-spacing: 4px;
+            font-weight: 300;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            line-height: 1.1;
+        }
+
+        .hero .ampersand {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.2rem;
+            margin: -5px 0;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            font-weight: 400;
+        }
+
+        /* SECCIONES Y TRANSICIÓN */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section {
+            position: relative;
+            padding: 45px 25px;
+            border-bottom: 1px solid rgba(210, 220, 208, 0.6);
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(3px);
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: #4a5746;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .ampersand-olive {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: #8A9A86;
+            margin: 10px 0;
+        }
+        .story-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #586654;
+            padding: 0 10px;
+        }
+
+        /* CARRUSEL MULTIMEDIA */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            margin: 25px auto 10px auto;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            background: #f0f3ee;
+            aspect-ratio: 4 / 5;
+            touch-action: pan-y;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+            height: 100%;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+        .carousel-slide img, .carousel-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(122, 138, 118, 0.75);
+            color: #ffffff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+        .carousel-btn:hover { background: rgba(122, 138, 118, 0.95); }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5c8;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .dot.active {
+            background: #8A9A86;
+            transform: scale(1.2);
+        }
+
+        /* MÚSICA & BOTÓN FLOTANTE */
+        .audio-container {
+            margin-top: 20px;
+            background: rgba(243, 246, 241, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #d4ddd1;
+        }
+        .audio-notice {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            color: #586654;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        audio { width: 100%; border-radius: 30px; }
+
+        .music-float-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 46px;
+            height: 46px;
+            background-color: #7A8A76;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 99;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .music-float-btn:hover {
+            transform: scale(1.08);
+            background-color: #6a7966;
+        }
+
+        /* PADRES & DETALLES */
+        .parent-group { margin: 15px 0; }
+        .parent-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8A9A86;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .parent-name { font-size: 1.15rem; color: #3a4237; }
+
+        .date-text { font-size: 1.4rem; font-style: italic; margin-bottom: 20px; color: #3a4237; font-weight: 600; }
+        .timer { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+        .time-box {
+            border: 1px solid #c5d1c1;
+            background: rgba(243, 246, 241, 0.95);
+            padding: 10px 5px;
+            border-radius: 6px;
+            width: 70px;
+        }
+        .time-box span { display: block; font-size: 1.5rem; font-weight: 600; color: #3a4237; }
+        .time-box label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7A8A76;
+            font-weight: 600;
+        }
+
+        /* SECCIÓN MESA DE REGALOS / TRANSFERENCIA */
+        .gift-card {
+            background: rgba(243, 246, 241, 0.92);
+            border: 1px solid #d4ddd1;
+            border-radius: 12px;
+            padding: 22px 18px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .gift-info {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #586654;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .bank-details {
+            background: #ffffff;
+            border: 1px dashed #8A9A86;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            color: #3a4237;
+            word-break: break-all;
+        }
+        .bank-details p { margin-bottom: 6px; }
+        .btn-copy {
+            display: inline-block;
+            background-color: #8A9A86;
+            color: #ffffff;
+            padding: 8px 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-copy:hover { background-color: #6a7966; }
+
+        .btn-maps, .btn-rsvp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #8A9A86;
+            color: #ffffff;
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(138, 154, 134, 0.3);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-maps:hover, .btn-rsvp:hover {
+            background-color: #6a7966;
+            transform: translateY(-2px);
+        }
+        .btn-rsvp { background-color: #7A8A76; border-radius: 4px; padding: 14px 28px; }
+
+        .info-card {
+            background: rgba(243, 246, 241, 0.92);
+            border: 1px solid #d4ddd1;
+            border-radius: 12px;
+            padding: 22px 18px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .info-icon { font-size: 2rem; margin-bottom: 8px; }
+
+        .weather-box {
+            background: rgba(243, 246, 241, 0.9);
+            border: 1px solid #d4ddd1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        .weather-temp { font-size: 2rem; font-weight: 600; color: #3a4237; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="music-float-btn" id="musicToggleBtn" onclick="toggleAudio()" title="Reproducir / Pausar Música">
+        🎵
+    </div>
+
+    <div class="envelope-overlay" id="envelopeOverlay">
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+            <div class="wax-seal">V & F</div>
+            <div class="envelope-flap"></div>
+            <div class="envelope-pocket"></div>
+            <div class="envelope-card">
+                <div class="initials-card">V & F</div>
+                <h3>VÍCTOR & FLOR</h3>
+                <p style="font-family:'Montserrat'; font-size:0.65rem; letter-spacing:1px; color:#6a7966; margin-top:5px; font-weight:700;">NUESTRA BODA CIVIL</p>
+            </div>
+        </div>
+        <div class="click-hint">Toca el sobre para abrir</div>
+    </div>
+
+    <div class="hero">
+        <img src="foto_pareja.jpg" alt="Flor de Liz" class="hero-img">
+        <p class="subtitle">NUESTRA BODA CIVIL</p>
+        <div class="hero-names">
+            <h1>VÍCTOR MIGUEL</h1>
+            <div class="ampersand">&</div>
+            <h1>FLOR DE LIZ</h1>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <h2>NUESTRA HISTORIA</h2>
+        <p class="story-text">"Nos conocimos por casualidad, siendo de lugares distintos y siempre buscando la manera de coincidir. Hoy elegimos caminar juntos el resto de la vida y formalizar este amor que no ha parado de crecer."</p>
+        
+        <div class="carousel-container" id="carouselContainer">
+            <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide"><img src="foto_pareja.jpg" alt="Foto 1"></div>
+                <div class="carousel-slide"><img src="foto_pareja_4.jpg" alt="Foto 2"></div>
+                <div class="carousel-slide"><img src="foto_pareja_5.jpg" alt="Foto 3"></div>
+                <div class="carousel-slide">
+                    <video autoplay loop muted playsinline>
+                        <source src="video_1.mp4" type="video/mp4">
+                        Tu navegador no soporta el video.
+                    </video>
+                </div>
+            </div>
+            <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <div class="audio-container">
+            <p class="audio-notice">▶ Presiona PLAY para escuchar nuestra canción</p>
+            <audio id="weddingAudio" controls preload="auto">
+                <source src="novatos.mp3" type="audio/mpeg">
+                Tu navegador no soporta el audio.
+            </audio>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <div class="parent-group">
+            <p class="parent-title">Padres de la Novia</p>
+            <p class="parent-name">Guadalupe Anzures Ruiz</p>
+            <p class="parent-name">Norberto Castañeda Vera</p>
+        </div>
+        
+        <div class="ampersand-olive">&</div>
+        
+        <div class="parent-group">
+            <p class="parent-title">Padres del Novio</p>
+            <p class="parent-name">María del Rosario Peña de la O</p>
+            <p class="parent-name">Miguel Ángel de León Sánchez</p>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <p style="letter-spacing: 2px; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 10px; color: #586654; font-weight: 700;">Tenemos el honor de invitarlos a celebrar nuestra unión, este:</p>
+        <p class="date-text">12 de Diciembre de 2026</p>
+        
+        <div class="timer">
+            <div class="time-box"><span id="days">00</span><label>Días</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Horas</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Min</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Seg</label></div>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <h2>UBICACIÓN</h2>
+        <div class="location-card">
+            <div style="font-size: 2rem; margin-bottom: 10px;">🏛</div>
+            <p style="font-size: 1.2rem; font-weight: 600; color: #3a4237;">📍 Independencia 201, Barrio Nuevo</p>
+            <p style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #6a7966;">C.P. 94340 Orizaba, Ver.</p>
+            <p style="margin-top: 8px; color: #586654; font-weight: 700;">⏰ 04:30 P.M.</p>
+            
+            <a href="https://www.google.com/maps/search/?api=1&query=Independencia+201+Barrio+Nuevo+Orizaba+Veracruz" target="_blank" rel="noopener noreferrer" class="btn-maps">
+                🗺️ Abrir en GPS / Mapas
+            </a>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <h2>DETALLES IMPORTANTES</h2>
+        
+        <div class="info-card">
+            <div class="info-icon">🍸</div>
+            <p style="font-size: 1.1rem; font-weight: 600; color: #3a4237;">Solo Adultos</p>
+            <p style="font-size: 0.85rem; color: #7A8A76; margin-top: 4px; line-height: 1.5;">Queremos que disfrutes al máximo de esta noche. Por razones de logística y para comodidad de todos, nuestro evento ha sido planeado exclusivamente para adultos.</p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-icon">✉️</div>
+            <p style="font-size: 1.1rem; font-weight: 600; color: #3a4237;">Pases Limitados (4 Pases)</p>
+            <p style="font-size: 0.85rem; color: #7A8A76; margin-top: 4px; line-height: 1.5;">Hemos reservado con mucho cariño <b>4 lugares reservados</b> especialmente para ti. Te agradecemos enormemente respetar este número asignado.</p>
+        </div>
+
+        <!-- SECCIÓN MESA DE REGALOS CON DATOS DE SANTANDER DE LIZ -->
+        <div class="gift-card">
+            <div class="info-icon">🎁</div>
+            <p style="font-size: 1.1rem; font-weight: 600; color: #3a4237; margin-bottom: 5px;">Mesa de Regalos</p>
+            <p class="gift-info">"Su presencia es nuestro mejor regalo. Si desean tener un detalle con nosotros, les compartimos nuestra cuenta:"</p>
+            
+            <div class="bank-details" id="bankInfo">
+                <p><strong>Banco:</strong> Santander</p>
+                <p><strong>Titular:</strong> Flor de Liz Castañeda Anzures</p>
+                <p><strong>No. de Cuenta:</strong> <span id="cuentaNum">56-85277706-5</span></p>
+                <p><strong>CLABE Interbancaria:</strong> <span id="clabeNum">014882568527770653</span></p>
+            </div>
+            <button class="btn-copy" onclick="copyCLABE()">Copiar CLABE</button>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <h2>CLIMA</h2>
+        <p style="font-size: 0.9rem; color: #586654;">Pronóstico para Orizaba, Veracruz</p>
+        <div class="weather-box">
+            <p style="font-weight: 700; color: #4a5746;">ORIZABA</p>
+            <div class="weather-temp" id="weatherTemp">--°C</div>
+            <p style="font-size: 0.85rem; color: #7A8A76;" id="weatherDesc">Cargando clima...</p>
+        </div>
+    </div>
+
+    <div class="section reveal">
+        <p class="story-text">"El amor es paciente, es bondadoso. El amor no es envidioso ni jactancioso ni orgulloso. Todo lo disculpa, todo lo cree, todo lo espera, todo lo soporta."</p>
+        <p style="font-size: 0.8rem; letter-spacing: 2px; margin-top: 10px; color: #8A9A86; font-weight: 700;">1 CORINTIOS 13: 4-7</p>
+        
+        <br><br>
+        <h2>CÓDIGO DE VESTIMENTA</h2>
+        <p style="font-size: 0.85rem; color: #586654; margin-top: 8px; line-height: 1.6; padding: 0 10px;">
+            Les solicitamos amablemente reservar el color blanco y los tonos crema exclusivamente para la novia.<br>
+            <i>Considerando las bajas temperaturas de la temporada, les recomendamos asistir con abrigo, saco o chaqueta abrigadora.</i>
+        </p>
+    </div>
+
+    <div class="section reveal" style="border-bottom: none; padding-bottom: 50px;">
+        <h2>CONFIRMA TU ASISTENCIA</h2>
+        <p>Agradecemos confirmar su valiosa presencia antes del:<br><b style="color: #3a4237;">25 de Noviembre de 2026</b></p>
+        
+        <a href="https://api.whatsapp.com/send?phone=522871213085&text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20civil%20de%20Víctor%20y%20Flor%20(4%20pases)." target="_blank" rel="noopener noreferrer" class="btn-rsvp">
+            Confirmar por WhatsApp
+        </a>
+    </div>
+
+    <script>
+        function copyCLABE() {
+            const clabeText = document.getElementById("clabeNum").innerText;
+            navigator.clipboard.writeText(clabeText).then(() => {
+                alert("¡CLABE Interbancaria copiada al portapapeles!");
+            }).catch(err => {
+                console.error("Error al copiar: ", err);
+            });
+        }
+
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        const carouselContainer = document.getElementById('carouselContainer');
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlideIndex);
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = slides.length - 1;
+            } else if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = 0;
+            }
+            updateCarousel();
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            updateCarousel();
+        }
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carouselContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carouselContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 40;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                moveSlide(1);
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                moveSlide(-1);
+            }
+        }
+
+        setInterval(() => { moveSlide(1); }, 7000);
+
+        function openEnvelope() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            const overlay = document.getElementById('envelopeOverlay');
+            const audio = document.getElementById('weddingAudio');
+
+            wrapper.classList.add('open');
+
+            if (audio) {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        document.getElementById('musicToggleBtn').innerText = '⏸';
+                    }).catch(() => {
+                        document.getElementById('musicToggleBtn').innerText = '🎵';
+                    });
+                }
+            }
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                handleReveal();
+            }, 1200);
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('weddingAudio');
+            const btn = document.getElementById('musicToggleBtn');
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.innerText = '⏸';
+                }).catch(() => {});
+            } else {
+                audio.pause();
+                btn.innerText = '🎵';
+            }
+        }
+
+        const weddingAudio = document.getElementById('weddingAudio');
+        if (weddingAudio) {
+            weddingAudio.onplay = () => { document.getElementById('musicToggleBtn').innerText = '⏸'; };
+            weddingAudio.onpause = () => { document.getElementById('musicToggleBtn').innerText = '🎵'; };
+        }
+
+        function handleReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 40) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleReveal);
+        window.addEventListener('load', handleReveal);
+
+        const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance > 0) {
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }
+        }, 1000);
+
+        async function fetchWeather() {
+            try {
+                const response = `https://api.open-meteo.com/v1/forecast?latitude=18.85&longitude=-97.10&current_weather=true`;
+                const data = await (await fetch(response)).json();
+                
+                if (data && data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    
+                    document.getElementById('weatherTemp').innerText = `${temp}°C`;
+                    document.getElementById('weatherDesc').innerText = getWeatherDescription(code);
+                }
+            } catch (error) {
+                document.getElementById('weatherTemp').innerText = '22°C';
+                document.getElementById('weatherDesc').innerText = 'Clima templado habitual';
+            }
+        }
+        fetchWeather();
+
+        function getWeatherDescription(code) {
+            const weatherMap = {
+                0: 'Cielo despejado',
+                1: 'Principalmente despejado',
+                2: 'Parcialmente nublado',
+                3: 'Nublado',
+                45: 'Neblina',
+                48: 'Neblina con escarcha',
+                51: 'Llovizna ligera',
+                53: 'Llovizna moderada',
+                61: 'Lluvia ligera'
+            };
+            return weatherMap[code] || 'Clima agradable';
+        }
+    </script>
+</body>
+</html>
