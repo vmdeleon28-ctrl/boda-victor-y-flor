@@ -37,39 +37,20 @@
             position: relative;
         }
 
-  .event-card-app {
+        .event-card-app {
             position: relative;
-            height: 270px;
+            height: 240px;
             border-radius: 16px;
             overflow: hidden;
-            background: #2c352b url('foto_pareja.jpg') center top / cover no-repeat;
+            background: #4a5a48 url('foto_pareja.jpg') center 20% / cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 14px 16px;
+            padding: 16px 190px 16px 16px;
             margin-bottom: 16px;
             z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        }
-
-        .event-card-app::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                rgba(28, 36, 27, 0.72) 0%,
-                rgba(28, 36, 27, 0.22) 48%,
-                rgba(28, 36, 27, 0.05) 100%
-            );
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .event-card-app > * {
-            position: relative;
-            z-index: 1;
         }
 
         .badge-premium {
@@ -89,7 +70,7 @@
 
         .event-card-app h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.65rem;
+            font-size: 1.55rem;
             font-weight: 600;
             color: #ffffff;
             line-height: 1.05;
@@ -108,6 +89,7 @@
             display: flex;
             justify-content: space-around;
             padding: 4px;
+            /* Más translúcido */
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -187,6 +169,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            /* Más translúcido */
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -717,11 +700,8 @@
 
         function toggleMusic() {
             if (audio.paused) {
-                audio.play().then(() => {
-                    musicText.textContent = 'Pausa';
-                }).catch(() => {
-                    alert("No se pudo reproducir el audio. Revisa que novatos.mp3 esté en el repositorio.");
-                });
+                audio.play();
+                musicText.textContent = 'Pausa';
             } else {
                 audio.pause();
                 musicText.textContent = 'Música';
@@ -811,17 +791,10 @@
         }
 
         function getOptimizedUrl(url, type) {
-            if (type === 'image' && url && url.includes('cloudinary.com')) {
+            if (type === 'image' && url.includes('cloudinary.com')) {
                 return url.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
             }
             return url;
-        }
-
-        function getFileExtension(url, type) {
-            if (type === 'video') return 'mp4';
-            const cleanUrl = (url || '').split('?')[0];
-            const match = cleanUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i);
-            return match ? match[1].toLowerCase() : 'jpg';
         }
 
         function renderGallery() {
@@ -911,7 +884,7 @@
                     const item = itemsToDownload[i];
                     const response = await fetch(item.url);
                     const blob = await response.blob();
-                    const ext = getFileExtension(item.url, item.type);
+                    const ext = item.type === 'video' ? 'mp4' : 'jpg';
                     folder.file(`archivo_boda_${i + 1}.${ext}`, blob);
                 }
 
@@ -1007,7 +980,7 @@
             downloadLink.href = item.url;
 
             if (item.type === 'video') {
-                body.innerHTML = `<video src="${item.url}" controls autoplay playsinline class="lightbox-content"></video>`;
+                body.innerHTML = `<video src="${item.url}" controls autoplay class="lightbox-content"></video>`;
             } else {
                 body.innerHTML = `<img src="${item.url}" class="lightbox-content">`;
             }
