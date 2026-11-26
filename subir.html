@@ -39,14 +39,14 @@
 
         .event-card-app {
             position: relative;
-            height: 180px;
+            height: 240px;
             border-radius: 16px;
             overflow: hidden;
-            background: #4a5a48 url('foto_pareja.jpg') center 30%/cover no-repeat;
+            background: #4a5a48 url('foto_pareja.jpg') center 20% / cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 16px;
+            padding: 16px 190px 16px 16px;
             margin-bottom: 16px;
             z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -70,12 +70,12 @@
 
         .event-card-app h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.55rem;
             font-weight: 600;
             color: #ffffff;
-            line-height: 1;
+            line-height: 1.05;
             margin-bottom: 4px;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.75);
         }
 
         .event-card-app p {
@@ -1050,22 +1050,35 @@
                 const row = document.createElement('div');
                 row.className = `chat-msg-row ${isMe ? 'me' : 'other'}`;
 
+                if (isSelectModeChat) {
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.className = 'chat-msg-checkbox';
+                    cb.checked = selectedChatMsgs.has(msg.id);
+                    cb.onclick = (e) => toggleSelectChat(e, msg.id);
+                    row.appendChild(cb);
+                }
+
                 const initial = msg.author ? msg.author.charAt(0).toUpperCase() : '?';
-                const avatar = `<div class="chat-avatar">${initial}</div>`;
-                
-                const checkbox = isSelectModeChat ? 
-                    `<input type="checkbox" class="chat-msg-checkbox" ${selectedChatMsgs.has(msg.id) ? 'checked' : ''} onclick="toggleSelectChat(event, '${msg.id}')">` : '';
+                const avatar = document.createElement('div');
+                avatar.className = 'chat-avatar';
+                avatar.textContent = initial;
+                row.appendChild(avatar);
 
+                const contentWrapper = document.createElement('div');
+
+                const authorDiv = document.createElement('div');
+                authorDiv.className = 'chat-author';
                 const roleBadge = msg.role && msg.role !== 'Invitado' ? ` (${msg.role})` : '';
+                authorDiv.textContent = `${msg.author || 'Invitado'}${roleBadge}`;
 
-                row.innerHTML = `
-                    ${checkbox}
-                    ${avatar}
-                    <div>
-                        <div class="chat-author">${msg.author}${roleBadge}</div>
-                        <div class="chat-bubble">${msg.text}</div>
-                    </div>
-                `;
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'chat-bubble';
+                bubbleDiv.textContent = msg.text || '';
+
+                contentWrapper.appendChild(authorDiv);
+                contentWrapper.appendChild(bubbleDiv);
+                row.appendChild(contentWrapper);
 
                 container.appendChild(row);
             });
